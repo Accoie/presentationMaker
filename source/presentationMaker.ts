@@ -1,88 +1,90 @@
-type Presentation = {
+export type Presentation = {
     title: string;
     slides: Slide[];
     selection: PresentationSelection;
+    background: string;
   }
-type PresentationSelection = {
+  export type PresentationSelection = {
     elementId: string;
     slideId: string;
 }
-type Color = {
+export type Color = {
     type: 'solid';
     color: string;
 };
 
-type ImgObj = BaseSlideObj &{
-    type: 'image';
+export type ImgObj = BaseSlideObj &{
+    type: ElementType.image;
     src: string;
 };
-type TextObj = BaseSlideObj &{
-    type: 'text';
+export type TextObj = BaseSlideObj &{
+    type: ElementType.text;
     src: string;
     fontSize: number;
     fontFamily: string;
 };
-type Slide = {
+export type Slide = {
     id: string;
     elements: (SlideObj)[];
     background: string;
+    position: number;
 }  
 
-type SlideObj = TextObj | ImgObj;
-type Size = {
+export type SlideObj = TextObj | ImgObj;
+export type Size = {
     width: number;
-    heigth: number;
+    height: number;
 }
-type Pos  = {
+export type Pos  = {
     x: number;
     y: number;
 }
-type BaseSlideObj = {
+export type BaseSlideObj = {
     size: Size;
     pos: Pos;
     id: string;
 };
 
-enum ElementType {
+export enum ElementType {
     text = 'text',
     image = 'image',
 };
 
-function changePresentationName(presentation: Presentation, newTitle: string): Presentation { 
+export function changePresentationName(presentation: Presentation, newTitle: string): Presentation { 
     return {...presentation, title: newTitle};
 }
 
-function addSlide(presentation: Presentation, newSlide: Slide): Presentation {
+export function addSlide(presentation: Presentation, newSlide: Slide): Presentation {
     return {...presentation, slides: [...presentation.slides, newSlide]};
 }
 
-function removeSlide(presentation: Presentation, slideId: string): Presentation {
+export function removeSlide(presentation: Presentation, slideId: string): Presentation {
     return {...presentation, slides: presentation.slides.filter(slide => slide.id !== slideId)};
 
 }
 
-function changeSlidePosition(presentation: Presentation, slideId: string, newPosition: number): Presentation {
+export function changeSlidePosition(presentation: Presentation, slideId: string, newPosition: number): Presentation {
     return {
         ...presentation, 
         slides: presentation.slides.map(slide => slide.id === slideId ? {...slide, position: newPosition} : slide)
     };
 }
 
-function addElementToSlide(presentation: Presentation, slideId: string, newElement: SlideObj): Presentation {
+export function addElementToSlide(presentation: Presentation, slideId: string, newElement: SlideObj): Presentation {
     return {
         ...presentation, 
         slides: presentation.slides.map(slide => slide.id === slideId ? {...slide, elements: [...slide.elements, newElement]} : slide)
     };
 }  
 
-function removeElementFromSlide(presentation: Presentation, slideId: string, elementId: string): Presentation {
+export function removeElementFromSlide(presentation: Presentation, slideId: string, elementId: string): Presentation {
     return {
         ...presentation, 
         slides: presentation.slides.map(slide => slide.id === slideId ? {...slide, elements: slide.elements.filter(element => element.id !== elementId)} : slide)
   }
 }
 
-function changeElementPosition(presentation: Presentation, slideId: string, elementId: string, newPosition: Pos): Presentation {
+export function changeElementPosition(presentation: Presentation, slideId: string, elementId: string, newPosition: Pos): Presentation {
     return {
         ...presentation,
         slides: presentation.slides.map(slide => slide.id === slideId ? 
@@ -90,7 +92,7 @@ function changeElementPosition(presentation: Presentation, slideId: string, elem
     };
 }
 
-function changeElementSize(presentation: Presentation, slideId:string, elementId: string, newSize: Size): Presentation {
+export function changeElementSize(presentation: Presentation, slideId:string, elementId: string, newSize: Size): Presentation {
     return {
         ...presentation,
         slides: presentation.slides.map(slide => slide.id === slideId ? 
@@ -98,7 +100,7 @@ function changeElementSize(presentation: Presentation, slideId:string, elementId
     };
 }
 
-function changeTextContent(presentation: Presentation, slideId: string, textElementId: string, newText: string): Presentation {
+export function changeTextContent(presentation: Presentation, slideId: string, textElementId: string, newText: string): Presentation {
     return {
         ...presentation,
         slides: presentation.slides.map(slide => slide.id === slideId ? 
@@ -106,7 +108,7 @@ function changeTextContent(presentation: Presentation, slideId: string, textElem
     };
 }
 
-function changeTextSize(presentation: Presentation, slideId: string, textElementId: string, newSize: number): Presentation {
+export function changeTextSize(presentation: Presentation, slideId: string, textElementId: string, newSize: number): Presentation {
     return {
       ...presentation,
       slides: presentation.slides.map(slide => slide.id === slideId ? 
@@ -114,7 +116,7 @@ function changeTextSize(presentation: Presentation, slideId: string, textElement
     };
 }
 
-function changeFontFamily(presentation: Presentation, slideId: string, textElementId: string, newFontFamily: string): Presentation {
+export function changeFontFamily(presentation: Presentation, slideId: string, textElementId: string, newFontFamily: string): Presentation {
     return {
         ...presentation,
         slides: presentation.slides.map(slide => slide.id === slideId ? 
@@ -122,7 +124,7 @@ function changeFontFamily(presentation: Presentation, slideId: string, textEleme
       };
 }
  
-function changeSlideBackground(presentation: Presentation, newBackground: string, slideId: string): Presentation {
+export function changeSlideBackground(presentation: Presentation, newBackground: string, slideId: string): Presentation {
     return {
         ...presentation,
         slides: presentation.slides.map(element => element.id === slideId ? {...element, background: newBackground} : element)
