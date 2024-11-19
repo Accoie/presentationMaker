@@ -1,0 +1,20 @@
+.slides-list {
+    padding-right: 15px;
+    padding-top: 10px;
+    background-color: #C4D6F1;
+    overflow: auto;
+    min-width: 10%;
+}
+.slides-list::-webkit-scrollbar {
+    width: 6px;               /* ширина всей полосы прокрутки */
+    height: 6px;
+  }
+  
+  .slides-list::-webkit-scrollbar-track {
+    background: transparent;        /* цвет зоны отслеживания */
+  }
+  
+  .slides-list::-webkit-scrollbar-thumb {
+    background-color: #2A4878;;    /* цвет бегунка */
+    border-radius: 20px;       /* округлось бегунка */
+  }

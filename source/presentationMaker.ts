@@ -3,6 +3,7 @@ export type Presentation = {
     slides: Slide[];
     selection: PresentationSelection;
     background: string;
+    sizeWorkspace: Size;
   }
   export type PresentationSelection = {
     elementId: string;
@@ -27,7 +28,6 @@ export type Slide = {
     id: string;
     elements: (SlideObj)[];
     background: string;
-    position: number;
 }  
 
 export type SlideObj = TextObj | ImgObj;
@@ -63,12 +63,6 @@ export function removeSlide(presentation: Presentation, slideId: string): Presen
 
 }
 
-export function changeSlidePosition(presentation: Presentation, slideId: string, newPosition: number): Presentation {
-    return {
-        ...presentation, 
-        slides: presentation.slides.map(slide => slide.id === slideId ? {...slide, position: newPosition} : slide)
-    };
-}
 
 export function addElementToSlide(presentation: Presentation, slideId: string, newElement: SlideObj): Presentation {
     return {

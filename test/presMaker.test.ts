@@ -6,6 +6,7 @@ describe('Presentation Functions with min data', () => {
 
     beforeEach(() => {
         minimalPresentation = {
+            sizeWorkspace: {width: 0, height: 0},
             background: '',
             title: '',
             slides: [],
@@ -94,6 +95,7 @@ describe('Presentation Functions with max data', () => {
     const maximalPresentation: tools.Presentation = {
         title: 'Original Title',
         background: 'white',
+        sizeWorkspace: {width: 1200, height: 700},
         slides: [
           {
             id: 'slide1',
