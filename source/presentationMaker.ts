@@ -1,11 +1,13 @@
+export type EditorType = {
+    presentation: Presentation;
+    selection: PresentationSelection;
+}
 export type Presentation = {
     title: string;
     slides: Slide[];
-    selection: PresentationSelection;
-    background: string;
     sizeWorkspace: Size;
   }
-  export type PresentationSelection = {
+export type PresentationSelection = {
     elementId: string;
     slideId: string;
 }

@@ -1,0 +1,8 @@
+.button {
+    font-size: small;
+}
+.button:hover {
+    /* Стили для состояния hover */
+    background-color: lightgray;
+    color: blue;
+}

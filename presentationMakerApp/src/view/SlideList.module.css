@@ -1,0 +1,26 @@
+.slideslist {
+    padding-right: 15px;
+    padding-top: 10px;
+    background-color: #C4D6F1;
+    overflow: auto;
+    min-width: 10%;
+}
+.numberslide {
+  padding-right: 3px;
+  padding-left: 3px;
+  color: #1E2A78;
+  font-family: 'Impact';
+}
+.slideslist::-webkit-scrollbar {
+    width: 6px;             
+    height: 6px;
+  }
+  
+  .slideslist::-webkit-scrollbar-track {
+    background: transparent;       
+  }
+  
+  .slideslist::-webkit-scrollbar-thumb {
+    background-color: #1E2A78;
+    border-radius: 20px;      
+  }

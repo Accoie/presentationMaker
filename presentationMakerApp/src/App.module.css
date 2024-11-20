@@ -24,18 +24,9 @@ html, body {
   background-color: #dceaff;
 }
 
-.title {
-  font-size: 32px;
-  color: white;
-  background-color: #1E2A78;
-  padding-left: 10px;
-
-}
-
-.presentation-container {
+.presentationcontainer {
   display: flex;
   flex: 1;
-   /* Заставляем контейнер занимать всю оставшуюся высоту */
   min-height: 0;
 }
 
