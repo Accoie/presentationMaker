@@ -21,3 +21,9 @@
     padding: 7px;
     background-color: transparent;
 }
+.colorPicker {
+    width: 30px;
+    height: 100%;
+    border: none;
+    background-color:#1E2A78;
+}

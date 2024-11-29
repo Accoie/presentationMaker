@@ -10,7 +10,9 @@ function addSlide(editor: EditorType): EditorType {
         background: 'white'
     };
     const newSlides = [...editor.presentation.slides]; // Создаем копию текущего массива слайдов
+    
     newSlides.splice(insertIndex + 1, 0, newSlide);
+    console.log(newSlides);
     return {
         ...editor,
         presentation: {

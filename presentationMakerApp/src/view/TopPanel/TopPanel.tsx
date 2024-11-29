@@ -15,8 +15,10 @@ type TopPanelProps = {
   presentationTitle: string,
 }
 export const TopPanel = ({presentationTitle} : TopPanelProps) => {
+  
+
   function onAddSlide() {
-    dispatch(addSlide)
+    dispatch(addSlide);
   }
   function onRemoveSlide() {
       dispatch(removeSlide)
@@ -25,29 +27,45 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
       dispatch(renamePresentationTitle, (event.target as HTMLInputElement).value)
   }
   function onChangeSlideBackground() {
-    dispatch(changeSlideBackground, '#D2D2D2')
+    const color = (document.getElementById('colorPicker') as HTMLInputElement).value;
+    dispatch(changeSlideBackground, color)
   }
   function onAddImageToSlide() {
-    const imgObj = {
-      id: '',
-      type: ElementType.image, 
-      src: 'https://www.pravmir.ru/wp-content/uploads/2023/07/comedy-pet-photography-awards-2023-64b0e94571574__880-936x560.jpeg',
-      size: {width: 200, height: 200},
-      pos: {x: 10, y: 100}
-    };
-    dispatch(addImageToSlide, imgObj)
+    const imageUrl = prompt('Введите URL-адрес картинки');
+  
+    if (imageUrl) {
+        // Создаем объект для изображения на основе введенной ссылки
+        const imgObj = {
+            id: '',
+            type: ElementType.image,
+            src: imageUrl,
+            size: { width: 200, height: 200 },
+            pos: { x: 10, y: 100 }
+        };
+        
+        // Вы можете добавить дополнительные проверки URL перед использованием, например, проверку на корректность URL.
+
+        // Здесь будет ваша логика dispatch
+        dispatch(addImageToSlide, imgObj);
+    } else {
+        alert('Вы не ввели URL-адрес!');
+    }
   }
   function onAddTextToSlide() {
-    const textObj = {
-      id: '',
-      type: ElementType.text,
-      fontSize: 20,
-      fontFamily: '', 
-      src: 'Смешно, как иногда случайное становится судьбоносным, а предназначенное превращается в случайное. Жизнь играет с нами в свои замысловатые игры, бросая вызов нашим ожиданиям и планам. Впереди - бесконечные возможности, за каждым поворотом кроется удивительное приключение. Даже в хаосе случайностей мы находим свою уникальную судьбу.',
-      size: {width: 700, height: 200},
-      pos: {x: 230, y: 100}
-    };
-    dispatch(addTextToSlide, textObj)
+    const textContent = prompt('Введите текст');
+    if(textContent){
+      const textObj = {
+        id: '',
+        type: ElementType.text,
+        fontSize: 20,
+        fontFamily: '', 
+        src: textContent,
+        size: {width: 100, height: 200},
+        pos: {x: 230, y: 100}
+      };
+      dispatch(addTextToSlide, textObj)
+    }
+    
   }
   function onRemoveElement() {
     dispatch(removeElement)
@@ -60,8 +78,9 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
         <Button className={styles.toolbarbutton} text={'Удалить слайд'} onClick={onRemoveSlide}></Button>
         <Button className={styles.toolbarbutton} text={'Добавить картинку'} onClick={onAddImageToSlide}></Button>
         <Button className={styles.toolbarbutton} text={'Добавить текст'} onClick={onAddTextToSlide}></Button>
-        <Button className={styles.toolbarbutton} text={'Удалить элемент'} onClick={onRemoveElement}></Button>
+        <Button className={styles.toolbarbutton} text={'Удалить элемент'} onClick={onRemoveElement}></Button>  
         <Button className={styles.toolbarbutton} text={'Изменить фон'} onClick={onChangeSlideBackground}></Button>
+        <input className = {styles.colorPicker} type="color" id="colorPicker" ></input>
       </div>
       </>
     );

@@ -13,7 +13,7 @@ import * as tools from '/Frontend/presentationMaker/source/presentationMaker.ts'
           src: 'Hello World',
           fontSize: 20,
           fontFamily: 'Impact',
-          size: { width: 1000, height: 400},
+          size: { width: 800, height: 400},
           pos: { x: 10, y: 100 },
         } as tools.TextObj,
         {
@@ -29,7 +29,7 @@ import * as tools from '/Frontend/presentationMaker/source/presentationMaker.ts'
           src: 'Hello World',
           fontSize: 20,
           fontFamily: 'Impact',
-          size: { width: 1000, height: 400},
+          size: { width: 800, height: 400},
           pos: { x: 100, y: 20 },
         } as tools.TextObj
       ],

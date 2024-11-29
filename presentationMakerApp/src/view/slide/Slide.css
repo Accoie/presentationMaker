@@ -2,4 +2,6 @@
     position: relative;
     border-radius: 10px;
     overflow: hidden;
+    max-width: 100%; /* Учитываем ограничения родителя */
+    box-sizing: border-box;
 }
