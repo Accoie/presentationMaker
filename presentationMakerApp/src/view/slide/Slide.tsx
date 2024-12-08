@@ -9,20 +9,12 @@ type SlideProps = {
     slide: tools.Slide,
     scale?: number,
     selected: PresentationSelection,
-    onUpdateSlide?: (updatedSlide: tools.Slide) => void,
     showBorder: boolean
 }
 
 
-export const Slide = ({slide, scale = 1, selected, showBorder, onUpdateSlide}: SlideProps) => {    
+export const Slide = ({slide, scale = 1, selected, showBorder}: SlideProps) => {   
     const isSelected = slide.id === selected.slideId;    
-    function updateElement(updatedElement: tools.SlideObj) {
-        const updatedSlide = {...slide, elements: slide.elements.map(element =>
-             element.id === updatedElement.id ? updatedElement : element)}
-        if (onUpdateSlide) {
-            onUpdateSlide(updatedSlide);
-        }     
-    }
     const slideStyles:CSSProperties = {
         backgroundColor: slide.background,
         width: SLIDE_WIDTH * scale,
@@ -35,11 +27,13 @@ export const Slide = ({slide, scale = 1, selected, showBorder, onUpdateSlide}: S
     if (isSelected && showBorder) {
         slideStyles.border = '4px solid #1E2A78'
     }
+    
     return (
         <div className='slide' style={slideStyles}>
         {slide.elements.map((element) => (
-            <Element  element = {element} scale = {scale} selected={selected} onUpdateElement={updateElement}/>
+            <Element  element = {element} scale = {scale} selected={selected}/>
           ))}
+        <div></div>
         </div>
     );
 };

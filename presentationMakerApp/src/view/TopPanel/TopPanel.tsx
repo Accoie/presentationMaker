@@ -1,6 +1,6 @@
 import styles from './TopPanel.module.css';
 import React from 'react';
-import { Button } from '../../components/button/Button.tsx';
+import { TextButton, ImgButton } from '../../components/button/Button.tsx';
 import {dispatch} from '/Frontend/presentationMaker/presentationMakerApp/store/editor.ts';
 import {removeSlide} from '/Frontend/presentationMaker/presentationMakerApp/store/removeSlide.ts';
 import {renamePresentationTitle} from '/Frontend/presentationMaker/presentationMakerApp/store/renamePresentationTitle.ts';
@@ -34,7 +34,6 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
     const imageUrl = prompt('Введите URL-адрес картинки');
   
     if (imageUrl) {
-        // Создаем объект для изображения на основе введенной ссылки
         const imgObj = {
             id: '',
             type: ElementType.image,
@@ -42,10 +41,7 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
             size: { width: 200, height: 200 },
             pos: { x: 10, y: 100 }
         };
-        
-        // Вы можете добавить дополнительные проверки URL перед использованием, например, проверку на корректность URL.
 
-        // Здесь будет ваша логика dispatch
         dispatch(addImageToSlide, imgObj);
     } else {
         alert('Вы не ввели URL-адрес!');
@@ -67,21 +63,23 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
     }
     
   }
+  function onImportEditorState() {}
   function onRemoveElement() {
     dispatch(removeElement)
   }
     return (
-      <>
+      <div className={styles.toppanel}>
       <input className={styles.title} type="text" defaultValue={presentationTitle} onChange={onTitleChange}/>
       <div className={styles.toolbar}>
-        <Button className={styles.toolbarbutton} text={'Добавить слайд'} onClick={onAddSlide}></Button>
-        <Button className={styles.toolbarbutton} text={'Удалить слайд'} onClick={onRemoveSlide}></Button>
-        <Button className={styles.toolbarbutton} text={'Добавить картинку'} onClick={onAddImageToSlide}></Button>
-        <Button className={styles.toolbarbutton} text={'Добавить текст'} onClick={onAddTextToSlide}></Button>
-        <Button className={styles.toolbarbutton} text={'Удалить элемент'} onClick={onRemoveElement}></Button>  
-        <Button className={styles.toolbarbutton} text={'Изменить фон'} onClick={onChangeSlideBackground}></Button>
-        <input className = {styles.colorPicker} type="color" id="colorPicker" ></input>
+        <TextButton className={styles.toolbarbutton} text={'Импортировать'} onClick={onImportEditorState}></TextButton>
+        <ImgButton className={styles.toolbarbutton} img={'https://cdn-icons-png.flaticon.com/512/13059/13059905.png'} onClick={onAddSlide}></ImgButton>
+        <ImgButton className={styles.toolbarbutton} img={'https://mywebicons.ru/i/png/ff4ac0059617d939c4c210752d267a10.png'} onClick={onRemoveSlide}></ImgButton>
+        <ImgButton className={styles.toolbarbutton} img={'https://icons.iconarchive.com/icons/praveen/minimal-outline/512/gallery-icon.png'} onClick={onAddImageToSlide}></ImgButton>
+        <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/draw-text-icon-475x512-4z4gbgou.png'} onClick={onAddTextToSlide}></ImgButton>
+        <ImgButton className={styles.toolbarbutton} img={'https://www.iconpacks.net/icons/2/free-minus-icon-3108-thumb.png'} onClick={onRemoveElement}></ImgButton>  
+        <ImgButton className={styles.toolbarbutton} img={'https://cdn4.iconfinder.com/data/icons/essentials-6/32/398-01-512.png'} onClick={onChangeSlideBackground}></ImgButton> 
+        <input className = {styles.colorPicker} type="color" id="colorPicker" ></input>       
       </div>
-      </>
+      </div>
     );
   };

@@ -12,11 +12,13 @@ type AppProps = {
 }
 
 function App({ editor }: AppProps) {
-  const [slides, setSlides] = useState(editor.presentation.slides);
 
-  useEffect(() => {
-    setSlides(editor.presentation.slides);
-  }, [editor.presentation.slides]);
+  const slides = editor.presentation.slides
+  // const [slides, setSlides] = useState(editor.presentation.slides);
+
+  // useEffect(() => {
+  //   setSlides(editor.presentation.slides);
+  // }, [editor.presentation.slides]);
 
   function updateSlides(updatedSlides: tools.Slide[]) {
     dispatch((editor: EditorType) => ({
@@ -38,7 +40,7 @@ function App({ editor }: AppProps) {
             selected={editor.selection}
             onUpdateSlides={updateSlides}
           /></div>
-          <WorkSpace presentationData={editor.presentation} selected={editor.selection} onUpdateSlides={updateSlides}/>
+          <WorkSpace presentationData={editor.presentation} selected={editor.selection}/>
         </div>
       </div>
     </>

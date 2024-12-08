@@ -1,5 +1,9 @@
+.toppanel {
+    background-color: #1E2A78;
+}
 .title {
-    font-size: 32px;
+    width: 20%;
+    font-size: 20px;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: white;
     background-color: #1E2A78;
@@ -23,7 +27,7 @@
 }
 .colorPicker {
     width: 30px;
-    height: 100%;
+    height: auto;
     border: none;
     background-color:#1E2A78;
 }

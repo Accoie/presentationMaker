@@ -1,7 +1,24 @@
-.button {
+.textbutton {
     font-size: small;
 }
-.button:hover {
+.textbutton:hover {
     background-color: #dceaff;
     color: #1E2A78;
+}
+.imgbutton {
+    width: 40px;
+    height: 40px;
+    filter: invert(100%);
+    border: 4px solid transparent;
+    border-radius: 5px;
+}
+.imgbutton:hover {
+    border: 2px solid black;
+    border-radius: 10px;
+}
+.imgbutton:active {
+    
+    background-color: #dceaff;
+    filter: invert(0%);
+
 }

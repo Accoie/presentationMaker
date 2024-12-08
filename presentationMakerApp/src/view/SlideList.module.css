@@ -58,3 +58,6 @@
   transition: all 0.2s ease; /* Добавляем плавный переход между состояниями */
   border-radius: 20px;
 }
+.slideContainer:hover {
+  background-color: #1E2A78;
+}

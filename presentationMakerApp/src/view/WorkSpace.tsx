@@ -5,16 +5,10 @@ import styles from './WorkSpace.module.css'
 type WorkSpaceProps = {
   presentationData: tools.Presentation,
   selected: tools.PresentationSelection,
-  onUpdateSlides: (updatedSlides: tools.Slide[]) => void, 
 }
 
-export const WorkSpace = ({presentationData, selected, onUpdateSlides} : WorkSpaceProps) => {
-    function insertUpdatedSlideIntoSlides(updatedSlide: tools.Slide) {
-      let updatedSlides: tools.Slide[];
-      updatedSlides = [...presentationData.slides];
-      updatedSlides = updatedSlides.map(slide => slide.id === updatedSlide.id ? updatedSlide : slide);
-      onUpdateSlides(updatedSlides);
-    }
+export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
+
     const selectedSlide = presentationData.slides.find((slide) => slide.id === selected.slideId);
     if (!selectedSlide) {
       return (
@@ -27,7 +21,7 @@ export const WorkSpace = ({presentationData, selected, onUpdateSlides} : WorkSpa
     return (
           <div className={styles.workspace} key={selectedSlide.id}>
             <div className={styles.scrollcontainer}>
-              <Slide slide={selectedSlide} selected={{slideId: selected.slideId, elementId: selected.elementId}} showBorder={false} onUpdateSlide={insertUpdatedSlideIntoSlides}/>
+              <Slide slide={selectedSlide} selected={{slideId: selected.slideId, elementId: selected.elementId}} showBorder={false} />
             </div>
           </div>
     );
