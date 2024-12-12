@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import * as tools from '/Frontend/presentationMaker/source/presentationMaker.ts';
 import { TopPanel } from './view/TopPanel/TopPanel.tsx';
 import { SlidesList } from './view/SlideList.tsx';
@@ -14,11 +13,6 @@ type AppProps = {
 function App({ editor }: AppProps) {
 
   const slides = editor.presentation.slides
-  // const [slides, setSlides] = useState(editor.presentation.slides);
-
-  // useEffect(() => {
-  //   setSlides(editor.presentation.slides);
-  // }, [editor.presentation.slides]);
 
   function updateSlides(updatedSlides: tools.Slide[]) {
     dispatch((editor: EditorType) => ({

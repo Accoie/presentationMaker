@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { Slide } from "./slide/Slide";
 import styles from './SlideList.module.css';
 import * as tools from "../../../source/presentationMaker.ts";
 import { dispatch } from '../../store/editor.ts';
 import { setSelection } from '../../store/setSelection.ts';
-
 type SlidesListProps = {
   slidesList: tools.Slide[], 
   selected: { slideId: string, elementId: string },
@@ -13,33 +12,9 @@ type SlidesListProps = {
 
 export const SlidesList = ({ slidesList, selected, onUpdateSlides }: SlidesListProps) => {
   const [draggedSlideId, setDraggedSlideId] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-
-  useEffect(() => {
-    function handleMouseMove(event: MouseEvent) {
-      if (!isDragging) return;
-      console.log('Mouse moved at:', event.clientX, event.clientY);
-    }
-
-    function handleMouseUp() {
-      if (isDragging) {
-        setIsDragging(false);
-        setDraggedSlideId(null);
-      }
-    }
-
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-    }
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging]);
 
   function onSlideClick(slideId: string) {
+    console.log('sdfdsfasdfasdfasdfasd');
     dispatch(setSelection, {
       slideId: slideId, 
       elementId: ''
@@ -47,8 +22,8 @@ export const SlidesList = ({ slidesList, selected, onUpdateSlides }: SlidesListP
   }
 
   function onDragStart(slideId: string) {
+    
     setDraggedSlideId(slideId);
-    setIsDragging(true);
   }
 
   function onDragOver(event: React.DragEvent<HTMLDivElement>) {
@@ -70,23 +45,22 @@ export const SlidesList = ({ slidesList, selected, onUpdateSlides }: SlidesListP
     onUpdateSlides(updatedSlides);
 
     setDraggedSlideId(null);
-    setIsDragging(false);
   }
-
+  const defaultSelected = {slideId: selected.slideId, elementId: ''};
   return (
     <div className={styles.slideslist}>
       {slidesList.map((slide) => (
         <div style={{display: 'flex'}} key={slide.id}>
           <div className={styles.numberslide}>{slidesList.indexOf(slide) + 1}</div>
           <div
-            className={styles.slideContainer}
+            className={`${styles.slideContainer} ${selected.slideId === slide.id ? styles.selected : ''}`}
             draggable
-            onDragStart={() => onDragStart(slide.id)}
+            onDragStartCapture={() => onDragStart(slide.id)}
             onDragOver={onDragOver}
             onDrop={() => onDrop(slide.id)}
-            onClick={() => onSlideClick(slide.id)}
+            onMouseDownCapture={() => onSlideClick(slide.id)}
           >
-            <Slide slide={slide} scale={0.15} selected={selected} showBorder={true}/>
+            <Slide slide={slide} scale={0.15} selected={defaultSelected} />
           </div>
         </div>
       ))}

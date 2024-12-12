@@ -11,6 +11,8 @@
 .scrollcontainer {
     overflow: auto; 
     max-height: 100%;
+    border: 4px solid transparent;
+    border-radius: 15px;
 }
 .scrollcontainer::-webkit-scrollbar {
     width: 6px;              

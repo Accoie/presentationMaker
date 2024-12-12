@@ -1,5 +1,5 @@
 import * as tools from '/Frontend/presentationMaker/source/presentationMaker.ts'
-import { CSSProperties } from 'react'
+import { CSSProperties} from 'react'
 import { SLIDE_HEIGHT, SLIDE_WIDTH } from './Slide';
 import { dispatch } from '../../../store/editor';
 import { setSelection } from '../../../store/setSelection';
@@ -20,16 +20,19 @@ interface ImgElementProps {
 }
 
 export const TextElement = ({ element, scale }: TextElementProps) => {
+ 
     const textElementStyles: CSSProperties = {
         fontSize: `${element.fontSize * scale}px`,
         fontFamily: element.fontFamily || 'Arial',
         width: '100%',
         height: '100%',
-
+        overflowWrap: 'break-word',
     }
-
+    
     return (
-        <div style={textElementStyles}>{element.src}</div>
+        <div style={textElementStyles}>
+            {element.src}
+        </div>
     )
 };
 export const ImgElement = ({ element }: ImgElementProps) => {
@@ -37,8 +40,9 @@ export const ImgElement = ({ element }: ImgElementProps) => {
         width: '100%',
         height: '100%',
     }
+
     return (
-        <img src={element.src} alt={element.id} style={imgElementStyles}></img>
+        <img src={element.src} alt={element.id} style={imgElementStyles} ></img>
     )
 };
 
@@ -47,9 +51,9 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
     const [isResizing, setIsResizing] = React.useState(false);
     const [resizeDirection, setResizeDirection] = React.useState<string | null>(null);
     const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
-
+   
     const isSelected = selected.elementId === element.id;
-
+    
     const handleResizeStart = (direction: string) => (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -59,6 +63,9 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
 
     const handleMouseMove = React.useCallback(
         (e: MouseEvent) => {
+            
+            e.stopPropagation(); 
+                 
             if (isDragging) {
                 const newX = e.clientX - dragOffset.x;
                 const newY = e.clientY - dragOffset.y;
@@ -66,8 +73,8 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
                 const updatedElement = {
                     ...element,
                     pos: {
-                        x: Math.max(0, Math.min(SLIDE_WIDTH - element.size.width, newX / scale)),
-                        y: Math.max(0, Math.min(SLIDE_HEIGHT - element.size.height, newY / scale)),
+                        x: Math.max(0, Math.min(SLIDE_WIDTH - 4 - element.size.width, newX / scale)),
+                        y: Math.max(0, Math.min(SLIDE_HEIGHT - 4 - element.size.height, newY / scale)),
                     },
                 };
                 dispatch(updateElement, updatedElement);
@@ -106,7 +113,7 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
                 dispatch(updateElement, updatedElement);
             }
         },
-        [isDragging, isResizing, resizeDirection, element, scale]
+        [isDragging, isResizing, resizeDirection, element, scale, dragOffset.x, dragOffset.y]
     );
 
     const handleMouseUp = React.useCallback(() => {
@@ -126,13 +133,20 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
         };
     }, [isDragging, isResizing, handleMouseMove, handleMouseUp]);
 
+    function onElementClick(slideId: string, elementId: string) {
+        dispatch(setSelection, { slideId, elementId });
+    }
     const handleMouseDown = (e: React.MouseEvent) => {
+        if (selected.elementId) {
+          e.preventDefault();
+        }
+        e.stopPropagation();
+        onElementClick(selected.slideId, element.id);
         if (element.id !== selected.elementId) {
             setIsDragging(false);
             return;
         }
-        e.preventDefault();
-        e.stopPropagation();
+       
         setIsDragging(true);
         setDragOffset({
             x: e.clientX - element.pos.x * scale,
@@ -140,9 +154,7 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
         });
     };
 
-    function onElementClick(slideId: string, elementId: string) {
-        dispatch(setSelection, { slideId, elementId });
-    }
+    
 
     const elementStyles: CSSProperties = {
         cursor: isDragging ? "grabbing" : "auto",
@@ -159,28 +171,27 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
 
     const handleStyles: CSSProperties = {
         position: "absolute",
-        width: "10px",
-        height: "10px",
+        width: 8*scale,
+        height: 8*scale,
         background: "#1E2A78",
     };
 
     const handlePositions = [
-        { direction: "top-left", style: { top: "-5px", left: "-5px", cursor: "nwse-resize" } },
-        { direction: "top-right", style: { top: "-5px", right: "-5px", cursor: "nesw-resize" } },
-        { direction: "bottom-left", style: { bottom: "-5px", left: "-5px", cursor: "nesw-resize" } },
-        { direction: "bottom-right", style: { bottom: "-5px", right: "-5px", cursor: "nwse-resize" } },
-        { direction: "top", style: { top: "-5px", left: "50%", transform: "translateX(-50%)", cursor: "ns-resize" } },
-        { direction: "bottom", style: { bottom: "-5px", left: "50%", transform: "translateX(-50%)", cursor: "ns-resize" } },
-        { direction: "left", style: { top: "50%", left: "-5px", transform: "translateY(-50%)", cursor: "ew-resize" } },
-        { direction: "right", style: { top: "50%", right: "-5px", transform: "translateY(-50%)", cursor: "ew-resize" } },
+        { direction: "top-left", style: { top: -5*scale, left: -5*scale, cursor: "nwse-resize" } },
+        { direction: "top-right", style: { top: -5*scale, right: -5*scale, cursor: "nesw-resize" } },
+        { direction: "bottom-left", style: { bottom: -5*scale, left: -5*scale, cursor: "nesw-resize" } },
+        { direction: "bottom-right", style: { bottom: -5*scale, right: -5*scale, cursor: "nwse-resize" } },
+        { direction: "top", style: { top: -5*scale, left: "50%", transform: "translateX(-50%)", cursor: "ns-resize" } },
+        { direction: "bottom", style: { bottom: -5*scale, left: "50%", transform: "translateX(-50%)", cursor: "ns-resize" } },
+        { direction: "left", style: { top: "50%", left: -5*scale, transform: "translateY(-50%)", cursor: "ew-resize" } },
+        { direction: "right", style: { top: "50%", right: -5*scale, transform: "translateY(-50%)", cursor: "ew-resize" } },
     ];
 
     return (
         <div
             style={elementStyles}
-            onMouseDown={handleMouseDown}
-            onClick={() => onElementClick(selected.slideId, element.id)}
-            onDragStart={(e) => e.preventDefault()}
+            onMouseDown={handleMouseDown}          
+
         >
             {isSelected &&
                 handlePositions.map((handle) => (
