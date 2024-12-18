@@ -1,33 +1,27 @@
 import styles from './TopPanel.module.css';
 import React from 'react';
 import { ImgButton } from '../../components/button/Button.tsx';
-import {dispatch, importEditorState, exportEditorState} from '/Frontend/presentationMaker/presentationMakerApp/store/editor.ts';
-import {removeSlide} from '/Frontend/presentationMaker/presentationMakerApp/store/removeSlide.ts';
-import {renamePresentationTitle} from '/Frontend/presentationMaker/presentationMakerApp/store/renamePresentationTitle.ts';
-import {addSlide} from '../../../store/addSlide.ts';
-import { changeSlideBackground } from '../../../store/changeSlideBackground.ts';
-import {addImageToSlide} from '../../../store/addImageToSlide.ts';
-import { addTextToSlide} from '../../../store/addTextToSlide.ts'
 import { ElementType} from '/Frontend/presentationMaker/source/presentationMaker.ts';
-import {removeElement} from '../../../store/removeElement.ts'
 
+import { useDispatch} from 'react-redux';
 type TopPanelProps = {
   presentationTitle: string,
 }
+
 export const TopPanel = ({presentationTitle} : TopPanelProps) => {
-  
+  const dispatch = useDispatch();
   function onAddSlide() {
-    dispatch(addSlide);
+    dispatch({type: 'ADD_SLIDE'});
   }
   function onRemoveSlide() {
-      dispatch(removeSlide)
+      dispatch({type: 'REMOVE_SLIDE'})
   }
   const onTitleChange: React.ChangeEventHandler = (event) => {
-      dispatch(renamePresentationTitle, (event.target as HTMLInputElement).value)
+      dispatch({type: 'RENAME_TITLE', payload: (event.target as HTMLInputElement).value} )
   }
   function onChangeSlideBackground() {
     const color = (document.getElementById('colorPicker') as HTMLInputElement).value;
-    dispatch(changeSlideBackground, color)
+    dispatch({type: 'CHANGE_BACKGROUND',payload: color})
   }
   function onAddImageToSlide() {
     const imageUrl = prompt('Введите URL-адрес картинки');
@@ -40,7 +34,7 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
             pos: { x: 10, y: 100 }
         };
 
-        dispatch(addImageToSlide, imgObj);
+        dispatch({type: 'ADD_IMAGE', payload: imgObj});
     } else {
         alert('Вы не ввели URL-адрес!');
     }
@@ -57,7 +51,7 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
         size: {width: 200, height: 200},
         pos: {x: 0, y: 0}
       };
-      dispatch(addTextToSlide, textObj)
+      dispatch({type: 'ADD_TEXT', payload: textObj})
     }
     
   }
@@ -76,7 +70,7 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
         reader.onload = () => {
           try {
             const jsonString = reader.result as string;
-            dispatch(importEditorState, jsonString);  
+            dispatch({type: 'IMPORT_EDITOR', payload: jsonString});  
              // Отправляем в dispatch
             alert('Импорт завершён успешно!');
           } catch (error) {
@@ -96,10 +90,10 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
     fileInput.click();
   }
   function onExportEditorState() {
-    exportEditorState();
+    dispatch({type: 'EXPORT_EDITOR'});
   }
   function onRemoveElement() {
-    dispatch(removeElement)
+    dispatch({type: 'REMOVE_ELEMENT'});
   }
     return (
       <div className={styles.toppanel}>
@@ -116,7 +110,9 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
           <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/draw-text-icon-475x512-4z4gbgou.png'} onClick={onAddTextToSlide}></ImgButton>
           <ImgButton className={styles.toolbarbutton} img={'https://www.iconpacks.net/icons/2/free-minus-icon-3108-thumb.png'} onClick={onRemoveElement}></ImgButton>  
           <ImgButton className={styles.toolbarbutton} img={'https://cdn4.iconfinder.com/data/icons/essentials-6/32/398-01-512.png'} onClick={onChangeSlideBackground}></ImgButton> 
-          <input className = {styles.colorPicker} type="color" id="colorPicker" ></input>      
+          <input className = {styles.colorPicker} type="color" id="colorPicker" ></input>
+          <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/undo-icon-461x512-lujtd07h.png'} onClick={onChangeSlideBackground}></ImgButton>
+          <ImgButton className={styles.toolbarredobutton} img={'https://static-00.iconduck.com/assets.00/undo-icon-461x512-lujtd07h.png'} onClick={onChangeSlideBackground}></ImgButton>       
         </div>
          
       </div>

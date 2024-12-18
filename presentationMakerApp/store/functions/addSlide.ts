@@ -1,4 +1,4 @@
-import {EditorType, Slide} from '../../source/presentationMaker.ts';
+import {EditorType, Slide} from '../../../source/presentationMaker.ts';
 import { v4 as uuidv4 } from 'uuid';
 
 function addSlide(editor: EditorType): EditorType {

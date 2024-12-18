@@ -1,28 +1,15 @@
-import * as tools from '/Frontend/presentationMaker/source/presentationMaker.ts';
 import { TopPanel } from './view/TopPanel/TopPanel.tsx';
 import { SlidesList } from './view/SlideList.tsx';
 import { WorkSpace } from './view/WorkSpace.tsx';
 import styles from './App.module.css';
-import { dispatch } from '../store/editor.ts';
+import {useAppSelector} from '../store/store.ts'
 import { EditorType } from '../../source/presentationMaker.ts';
 
-type AppProps = {
-  editor: tools.EditorType,
-}
 
-function App({ editor }: AppProps) {
-
+function App() {
+  const editor = useAppSelector((state: EditorType) => state);
   const slides = editor.presentation.slides
 
-  function updateSlides(updatedSlides: tools.Slide[]) {
-    dispatch((editor: EditorType) => ({
-      ...editor,
-      presentation: {
-        ...editor.presentation,
-        slides: updatedSlides,
-      },
-    }));
-  }
   console.log('Editor: ', editor);
   return (
     <>
@@ -32,7 +19,6 @@ function App({ editor }: AppProps) {
           <div style={{width: 'auto', height: '100%'}}><SlidesList
             slidesList={slides}
             selected={editor.selection}
-            onUpdateSlides={updateSlides}
           /></div>
           <WorkSpace presentationData={editor.presentation} selected={editor.selection}/>
         </div>

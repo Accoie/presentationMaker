@@ -27,6 +27,11 @@
     padding: 7px;
     background-color: transparent;
 }
+.toolbarredobutton {
+    padding: 7px;
+    background-color: transparent;
+    transform: scaleX(-1);
+}
 .colorPicker {
     width: 30px;
     height: auto;

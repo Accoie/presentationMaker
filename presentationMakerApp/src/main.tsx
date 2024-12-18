@@ -1,15 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Provider } from 'react-redux';
 import './index.css'
 import App from './App.tsx'
-import {addEditorChangeHandler, getEditor} from "/Frontend/presentationMaker/presentationMakerApp/store/editor.ts"
+import {store} from "../store/store.ts"
 const root = createRoot(document.getElementById('root')!)
 function render() {
   root.render(
   <StrictMode>
-    <App editor = {getEditor()}/>
+    <Provider store={store}>
+    <App />
+    </Provider>
   </StrictMode>,
   )
 }
-addEditorChangeHandler(render)
 render()
