@@ -24,7 +24,7 @@ export const Slide = ({slide, scale = 1, selected}: SlideProps) => {
     
     
     return (
-        <div className='slide' style={slideStyles}>
+        <div className='slide' style={slideStyles} id = {selected.slideId}>
         {slide.elements.map((element) => (
             <Element  element = {element} scale = {scale} selected={selected}/>
           ))}
