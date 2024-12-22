@@ -191,7 +191,7 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
         <div
             style={elementStyles}
             onMouseDown={handleMouseDown}          
-
+            id = {element.id}
         >
             {isSelected &&
                 handlePositions.map((handle) => (

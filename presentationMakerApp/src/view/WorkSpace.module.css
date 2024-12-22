@@ -9,7 +9,7 @@
 }
 
 .scrollcontainer {
-    overflow: auto; 
+    overflow: hidden; 
     max-height: 100%;
     border: 4px solid transparent;
     border-radius: 15px;

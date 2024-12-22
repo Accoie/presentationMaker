@@ -37,10 +37,11 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
     };
   }, []);
   useEffect(() => {
-          const handleClickOutside = () => {
+          const handleClickOutside = (e: MouseEvent) => {
               // Проверяем, попал ли клик на элемент или его дочерние элементы
               const elementNode = document.getElementById(selected.slideId);
-              if (elementNode) {
+              console.log(e.target, elementNode)
+              if (elementNode === e.target) {
                   dispatch(setSelectionAction({ slideId: selected.slideId, elementId: '' })); // Сбрасываем выделение
               }
           };
