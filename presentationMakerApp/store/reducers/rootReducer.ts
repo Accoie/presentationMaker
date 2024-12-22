@@ -1,21 +1,32 @@
 import { UnknownAction } from "redux";
-import { EditorType } from "../../../source/presentationMaker";
 import { editorPresentationReducer } from "./editorPresentationReducer";
 import { editorReducer } from "./editorReducer";
 import { editorSlidesReducer } from "./editorSlidesReducer";
 import { editorSlideElementsReducer } from "./editorSlideElementsReducer";
+
+import { LOCAL_STORAGE_KEY, UndoableState } from "../store";
+import * as tools from '../../../source/presentationMaker'
 import { editor } from "../data";
-import { LOCAL_STORAGE_KEY } from "../store";
-function saveEditorStateToLocalStorage(editorState: EditorType): void {
+function saveEditorStateToLocalStorage(editorState: tools.EditorType): void {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(editorState));
 }
 
-export const rootReducer = (state: EditorType = editor, action: UnknownAction): EditorType => {
-  let newState = state;
-  newState = editorPresentationReducer(newState, action);
+export const rootReducer = (state: UndoableState = {past: [], present: editor, future: [], isChanging: false}, action: UnknownAction): UndoableState => {
+  let newState = {...state};
+  newState.present = editorPresentationReducer(newState.present, action);
+  newState.present = editorSlidesReducer(newState.present, action);
+  newState.present = editorSlideElementsReducer(newState.present, action);
   newState = editorReducer(newState, action);
-  newState = editorSlidesReducer(newState, action);
-  newState = editorSlideElementsReducer(newState, action);
-  saveEditorStateToLocalStorage(newState);
+  if (
+    state.isChanging !== action.payload &&
+    state.isChanging === false &&      // Это не `UNDO` или `REDO`
+    action.type !== 'UNDO_EDITOR' &&      // Не сбрасывать `future` для `UNDO`
+    action.type !== 'REDO_EDITOR' &&
+    action.type !== 'SET_SELECTION'        // Не сбрасывать `future` для `REDO`
+  ) {
+    newState.past = [...newState.past, state.present];
+    newState.future = [];
+  }
+  saveEditorStateToLocalStorage(newState.present);
   return newState;
 };

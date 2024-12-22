@@ -3,7 +3,8 @@ import { Slide } from "./slide/Slide";
 import styles from './SlideList.module.css';
 import * as tools from "../../../source/presentationMaker.ts";
 import { useDispatch } from 'react-redux';
-
+import {setSelectionAction} from '../../store/actions/editorPresentationActions.ts'
+import { updateSlidesAction } from '../../store/actions/editorSlidesActions.ts';
 type SlidesListProps = {
   slidesList: tools.Slide[], 
   selected: { slideId: string, elementId: string },
@@ -13,8 +14,7 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
   const [draggedSlideId, setDraggedSlideId] = useState<string | null>(null);
   const dispatch = useDispatch();
   function onSlideClick(slideId: string) {
-    console.log('sdfdsfasdfasdfasdfasd');
-    dispatch({type: 'SET_SELECTION', payload: {slideId: slideId, elementId: ''}});
+    dispatch(setSelectionAction({slideId: slideId, elementId: ''}) );
   }
 
   function onDragStart(slideId: string) {
@@ -37,7 +37,7 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
     const updatedSlides = [...slidesList];
 
     [updatedSlides[draggedIndex], updatedSlides[targetIndex]] = [updatedSlides[targetIndex], updatedSlides[draggedIndex]];
-    dispatch({type: 'UPDATE_SLIDES', payload: updatedSlides});
+    dispatch(updateSlidesAction(updatedSlides));
     
 
     setDraggedSlideId(null);

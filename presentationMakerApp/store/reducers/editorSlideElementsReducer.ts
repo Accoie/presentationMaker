@@ -4,6 +4,7 @@ import { updateElement} from '../functions/updateSlideElement'
 import {removeElement} from '../functions/removeElement'
 import { addImageToSlide } from '../functions/addImageToSlide';
 import { addTextToSlide } from '../functions/addTextToSlide';
+
 export const editorSlideElementsReducer = (state: tools.EditorType, action: UnknownAction): tools.EditorType => {
   switch (action.type) {
     case 'UPDATE_ELEMENT': {
@@ -18,6 +19,7 @@ export const editorSlideElementsReducer = (state: tools.EditorType, action: Unkn
     case 'ADD_TEXT' : {
         return addTextToSlide(state, action.payload as tools.TextObj)
     }
+
     default:
       return state;
   }

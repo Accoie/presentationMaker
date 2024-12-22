@@ -4,7 +4,9 @@ import { SLIDE_HEIGHT, SLIDE_WIDTH } from './Slide';
 
 import React from 'react';
 import { useDispatch } from 'react-redux';
-
+import { updateElementAction } from '../../../store/actions/editorSlideElementsActions';
+import { setSelectionAction } from '../../../store/actions/editorPresentationActions';
+import { setIsChangingAction } from '../../../store/actions/editorActions';
 interface ElementProps {
     element: tools.SlideObj;
     scale: number;
@@ -77,7 +79,8 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
                         y: Math.max(0, Math.min(SLIDE_HEIGHT - 4 - element.size.height, newY / scale)),
                     },
                 };
-                dispatch({type: 'UPDATE_ELEMENT', payload: updatedElement});
+                dispatch(setIsChangingAction(true));
+                dispatch(updateElementAction(updatedElement));
             }
 
             if (isResizing && resizeDirection) {
@@ -109,18 +112,19 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
                     size: { width: newWidth, height: newHeight },
                     pos: { x: newX, y: newY },
                 };
-
-                dispatch({type: 'UPDATE_ELEMENT', payload: updatedElement});
+                dispatch(setIsChangingAction(true));
+                dispatch(updateElementAction(updatedElement));
             }
         },
         [isDragging, isResizing, resizeDirection, element, scale, dragOffset.x, dragOffset.y, dispatch]
     );
 
     const handleMouseUp = React.useCallback(() => {
+        dispatch(setIsChangingAction(false));
         setIsDragging(false);
         setIsResizing(false);
         setResizeDirection(null);
-    }, []);
+    }, [dispatch]);
 
     React.useEffect(() => {
         if (isDragging || isResizing) {
@@ -132,9 +136,9 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
             document.removeEventListener("mouseup", handleMouseUp);
         };
     }, [isDragging, isResizing, handleMouseMove, handleMouseUp]);
-
+    
     function onElementClick(slideId: string, elementId: string) {
-        dispatch({type: 'SET_SELECTION', payload:{ slideId, elementId }});
+        dispatch(setSelectionAction({ slideId, elementId }));
     }
     const handleMouseDown = (e: React.MouseEvent) => {
         if (selected.elementId) {
@@ -142,10 +146,6 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
         }
         e.stopPropagation();
         onElementClick(selected.slideId, element.id);
-        if (element.id !== selected.elementId) {
-            setIsDragging(false);
-            return;
-        }
        
         setIsDragging(true);
         setDragOffset({

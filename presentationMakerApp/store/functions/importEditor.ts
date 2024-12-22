@@ -106,7 +106,7 @@ export const editorSchema = {
   };
   
 const validateEditor = ajv.compile(editorSchema);
-function validateEditorState(editorState: EditorType): boolean  {
+export function validateEditorState(editorState: EditorType): boolean  {
     const valid = validateEditor(editorState) as boolean;
     if (!valid) {
         console.error('Validation errors:', validateEditor.errors);
@@ -122,7 +122,7 @@ export function importEditor(editor: EditorType, jsonString: string): EditorType
                 console.log('Импортирован и прошел валидацию:', importedState);
                 return importedState;
             } else {
-                console.error('editor state не прошел валидацию.');
+                alert('editor state не прошел валидацию.');
                 return editor;
             }
         } catch (error) {

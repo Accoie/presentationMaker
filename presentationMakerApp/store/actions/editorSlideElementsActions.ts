@@ -12,11 +12,11 @@ export const updateElementAction = (newElement: tools.SlideObj) => ({
 export const removeElementAction = () => ({
     type: REMOVE_ELEMENT,
 });
-export const addImageToSlide = (newImg: tools.ImgObj) => ({
+export const addImageToSlideAction = (newImg: tools.ImgObj) => ({
     type:  ADD_IMAGE,
     payload: newImg,
 });
-export const addTextToSlide = (newText: tools.TextObj) => ({
+export const addTextToSlideAction = (newText: tools.TextObj) => ({
     type:  ADD_TEXT,
     payload: newText,
 });
