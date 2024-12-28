@@ -1,0 +1,13 @@
+/* Растянуть Player на весь экран */
+* {
+  user-select: none;
+}
+
+.playercontainer {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #dceaff;
+}
+
+/* Растянуть Slide внутри контейнера */

@@ -1,0 +1,60 @@
+* {
+  box-sizing: border-box;
+  /* Учитывает padding и border внутри размера блока */
+}
+
+.slideslist {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 15px;
+  padding-right: 7px;
+  display: flex;
+  width: min-content;
+  overflow-x: auto;
+  /* Прокрутка, если необходимо */
+  box-sizing: border-box;
+
+  padding-left: 1px;
+}
+
+.slideContainer {
+
+  margin-bottom: 20px;
+  box-sizing: border-box;
+
+  overflow: hidden;
+  border: 4px solid transparent;
+  border-radius: 10px;
+
+}
+
+.slideContainer.selected {
+  border: 4px solid #1E2A78;
+  /* Цвет рамки для выбранного слайда */
+}
+
+.numberslide {
+  padding-right: 5px;
+  padding-left: 5px;
+  color: #1E2A78;
+  font-family: 'Impact';
+}
+
+.slideslist::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.slideslist::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slideslist::-webkit-scrollbar-thumb {
+  background-color: #1E2A78;
+  border-radius: 20px;
+}
+
+
+.slideContainer.selected:hover {
+  border: 4px solid #1E2A78;
+}

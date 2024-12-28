@@ -1,0 +1,8 @@
+.playergotobuttons {
+  margin-left: auto;
+  margin-right: auto;
+}
+.playerprevbutton {
+    background-color: transparent;
+    transform: scaleX(-1);
+}

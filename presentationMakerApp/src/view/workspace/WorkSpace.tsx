@@ -1,10 +1,10 @@
-import { Slide } from "./slide/Slide";
+import { Slide } from "../slide/Slide";
 import * as tools from "/Frontend/presentationMaker/source/presentationMaker"
 import styles from './WorkSpace.module.css'
 import { useEffect, useState } from "react";
-import { SLIDE_HEIGHT, SLIDE_WIDTH } from "./slide/Slide";
-import { useAppDispatch } from "../../store/store";
-import { setSelectionAction } from "../../store/actions/editorPresentationActions";
+import { useAppDispatch, useAppSelector, UndoableState } from "../../../store/store";
+import { setSelectionAction } from "../../../store/actions/editorPresentationActions";
+import { undoEditorAction, redoEditorAction } from "../../../store/actions/editorActions";
 type WorkSpaceProps = {
   presentationData: tools.Presentation,
   selected: tools.PresentationSelection,
@@ -13,15 +13,38 @@ type WorkSpaceProps = {
 export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
   const [scale, setScale] = useState(1); 
   const dispatch = useAppDispatch();
+  const sizeSlide = useAppSelector((state: UndoableState) => state.present.presentation.sizeWorkspace);
+  
   const calculateScale = () => {
-    const maxWidth = SLIDE_WIDTH + SLIDE_WIDTH* 0.3;
-    const maxHeight = SLIDE_HEIGHT; 
+    const maxWidth = sizeSlide.width + sizeSlide.width* 0.3;
+    const maxHeight = sizeSlide.height; 
     const scaleWidth = window.innerWidth / maxWidth;
     const scaleHeight = window.innerHeight / maxHeight;
 
   
     return Math.min(scaleWidth, scaleHeight) * 0.8;
   };
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const isUndo = (event.ctrlKey || event.metaKey) && event.key === 'z';
+      const isRedo = (event.ctrlKey || event.metaKey) && event.key === 'y';
+  
+      if (isUndo) {
+        event.preventDefault();
+        dispatch(undoEditorAction());
+      } else if (isRedo) {
+        event.preventDefault();
+        dispatch(redoEditorAction());
+      }
+    };
+  
+    document.addEventListener('keydown', handleKeyDown);
+  
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [dispatch]);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,13 +58,13 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  });
   useEffect(() => {
           const handleClickOutside = (e: MouseEvent) => {
               const workspace = document.getElementById('workspace');
 
               if (workspace?.contains(e.target as Node)) {
-                  dispatch(setSelectionAction({ slideId: selected.slideId, elementId: '' })); // Сбрасываем выделение
+                  dispatch(setSelectionAction({ slideId: selected.slideId, elementId: '' })); 
               }
           };
       
@@ -65,7 +88,7 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
       
           <div className={styles.workspace} key={selected.slideId} id = 'workspace'>
             <div className={styles.scrollcontainer} key = {'sdfasdfasd'}>
-              <Slide slide={selectedSlide} scale = {scale} selected={{slideId: selected.slideId, elementId: selected.elementId}} />
+              <Slide slide={selectedSlide} scale = {scale} selected={{slideId: selected.slideId, elementId: selected.elementId} }isEditorView={true} />
             </div>
           </div>
     );

@@ -11,12 +11,15 @@ import { TextObj } from '../../../../source/presentationMaker.ts';
 import { useAppDispatch, useAppSelector } from '../../../store/store.ts';
 import { UndoableState } from '../../../store/store.ts';
 import { generatePDF } from '../../../store/functions/generatePDF.ts';
+
+import { useNavigate } from 'react-router';
 type TopPanelProps = {
   presentationTitle: string,
 }
 
 export const TopPanel = ({presentationTitle} : TopPanelProps) => {
   const editor = useAppSelector((state: UndoableState) => state.present);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   function onAddSlide() {
     dispatch(addSlideAction());
@@ -48,19 +51,18 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
     }
   }
   function onAddTextToSlide() {
-    const textContent = prompt('Введите текст');
-    if(textContent){
+   
       const textObj: TextObj = {
         id: '',
         type: ElementType.text,
         fontSize: 20,
         fontFamily: 'Helvetica', 
-        src: textContent,
+        src: 'Новый текст',
         size: {width: 200, height: 200},
         pos: {x: 0, y: 0}
       };
       dispatch(addTextToSlideAction(textObj))
-    }
+
     
   }
   function onImportEditorState() {
@@ -116,6 +118,11 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
   const handleOpenModal = () => {
     dispatch(importImage());
   };
+  function handleGoToPlayer() {
+    return (
+      navigate('/player')
+    )
+  }
     return (
       <div className={styles.toppanel}>
       <input className={styles.title} type="text" defaultValue={presentationTitle} onChange={onTitleChange}/>
@@ -134,11 +141,10 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
           <input className = {styles.colorPicker} type="color" id="colorPicker" ></input>
           <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/undo-icon-461x512-lujtd07h.png'} onClick={onUndo}></ImgButton>
           <ImgButton className={styles.toolbarredobutton} img={'https://static-00.iconduck.com/assets.00/undo-icon-461x512-lujtd07h.png'} onClick={onRedo}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'https://cdn-icons-png.flaticon.com/512/80/80942.png'} onClick={onGeneratePdf}></ImgButton>
           <ImgButton className={styles.toolbarbutton} img={'https://cdn.icon-icons.com/icons2/2566/PNG/512/unsplash_icon_153496.png'} onClick={handleOpenModal}></ImgButton>
-                
         </div>
-         
+        <ImgButton className={styles.toolbarbutton} img={'https://cdn-icons-png.flaticon.com/512/80/80942.png'} onClick={onGeneratePdf}></ImgButton>
+        <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/presentation-report-icon-256x256-2nj0obl4.png'} onClick={handleGoToPlayer}></ImgButton>
       </div>
       </div>
     );

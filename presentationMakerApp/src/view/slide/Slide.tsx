@@ -1,32 +1,35 @@
 import * as tools from '/Frontend/presentationMaker/source/presentationMaker.ts'
 import {CSSProperties} from 'react'
 import { Element } from './SlideElement'
-export const SLIDE_WIDTH = 935
-export const SLIDE_HEIGHT = 525
+
 import { PresentationSelection } from '../../../../source/presentationMaker'
+import { UndoableState, useAppSelector } from '../../../store/store'
 
 type SlideProps = {
     slide: tools.Slide,
     scale?: number,
     selected: PresentationSelection,
-    
+    isEditorView: boolean
 }
 
 
-export const Slide = ({slide, scale = 1, selected}: SlideProps) => {   
-   
+export const Slide = ({slide, scale = 1, selected, isEditorView}: SlideProps) => {   
+      const sizeSlide = useAppSelector((state: UndoableState) => state.present.presentation.sizeWorkspace);
+    
     const slideStyles:CSSProperties = {
         backgroundColor: slide.background,
-        width: SLIDE_WIDTH * scale,
-        height: SLIDE_HEIGHT * scale,
+        width: sizeSlide.width * scale,
+        height: sizeSlide.height * scale,
         position: 'relative',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     }
     
     
     return (
         <div className='slide' style={slideStyles} id = {selected.slideId}>
         {slide.elements.map((element) => (
-            <Element  element = {element} scale = {scale} selected={selected}/>
+            <Element  element = {element} scale = {scale} selected={selected} isEditorView={isEditorView}/>
           ))}
         </div>
     );

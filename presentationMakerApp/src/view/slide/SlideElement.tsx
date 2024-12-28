@@ -1,7 +1,6 @@
 import * as tools from '/Frontend/presentationMaker/source/presentationMaker.ts'
 import { CSSProperties} from 'react'
-import { SLIDE_HEIGHT, SLIDE_WIDTH } from './Slide';
-
+import { useAppSelector, UndoableState } from '../../../store/store';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { updateElementAction } from '../../../store/actions/editorSlideElementsActions';
@@ -11,31 +10,86 @@ interface ElementProps {
     element: tools.SlideObj;
     scale: number;
     selected: tools.PresentationSelection;
+    isEditorView: boolean;
 }
 interface TextElementProps {
     element: tools.TextObj;
     scale: number;
+    isEditorView: boolean;
 }
 interface ImgElementProps {
     element: tools.ImgObj;
 }
 
-export const TextElement = ({ element, scale }: TextElementProps) => {
- 
+export const TextElement = ({ element, scale, isEditorView}: TextElementProps) => {
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [text, setText] = React.useState(element.src);
+    const dispatch = useDispatch();
+    const textareaRef = React.useRef<HTMLTextAreaElement | null>(null); // Реф для textarea
+    
+    
     const textElementStyles: CSSProperties = {
         fontSize: `${element.fontSize * scale}px`,
         fontFamily: element.fontFamily || 'Arial',
         width: '100%',
         height: '100%',
         overflowWrap: 'break-word',
-    }
-    
-    return (
-        <div style={textElementStyles}>
+        cursor: isEditing ? 'text' : 'default',
+    };
+
+    const handleDoubleClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleBlur = () => {
+        setIsEditing(false);
+        if (text !== element.src) {
+            const updatedElement = { ...element, src: text }; // Обновляем текст элемента
+            dispatch(updateElementAction(updatedElement));
+        }
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setText(e.target.value);
+    };
+
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleBlur();
+        }
+    };
+
+    React.useEffect(() => {
+        if (isEditing && textareaRef.current) {
+            textareaRef.current.focus();
+            textareaRef.current.select();
+            
+        }
+    }, [isEditing]);
+
+    return isEditing ? (
+        <textarea
+            ref={textareaRef} 
+            style={{ ...textElementStyles, resize: 'none', border: '1px solid #ccc', padding: '4px', backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
+            value={text}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            autoFocus
+        />
+    ) : isEditorView ?(
+        <div style={textElementStyles} onDoubleClick={handleDoubleClick}>
             {element.src}
         </div>
-    )
+    ): <div style={textElementStyles}>
+    {element.src}
+</div>
+    ;
 };
+
+
 export const ImgElement = ({ element }: ImgElementProps) => {
     const imgElementStyles: CSSProperties = {
         width: '100%',
@@ -47,13 +101,13 @@ export const ImgElement = ({ element }: ImgElementProps) => {
     )
 };
 
-export const Element = ({ element, scale, selected }: ElementProps) => {
+export const Element = ({ element, scale, selected, isEditorView }: ElementProps) => {
     const dispatch = useDispatch();
     const [isDragging, setIsDragging] = React.useState(false);
     const [isResizing, setIsResizing] = React.useState(false);
     const [resizeDirection, setResizeDirection] = React.useState<string | null>(null);
     const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
-   
+    const sizeSlide = useAppSelector((state: UndoableState) => state.present.presentation.sizeWorkspace);
     const isSelected = selected.elementId === element.id;
     
     const handleResizeStart = (direction: string) => (e: React.MouseEvent) => {
@@ -75,8 +129,8 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
                 const updatedElement = {
                     ...element,
                     pos: {
-                        x: Math.max(0, Math.min(SLIDE_WIDTH - 4 - element.size.width, newX / scale)),
-                        y: Math.max(0, Math.min(SLIDE_HEIGHT - 4 - element.size.height, newY / scale)),
+                        x: Math.max(0, Math.min(sizeSlide.width - 4 - element.size.width, newX / scale)),
+                        y: Math.max(0, Math.min(sizeSlide.height - 4 - element.size.height, newY / scale)),
                     },
                 };
                 dispatch(setIsChangingAction(true));
@@ -97,14 +151,14 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
                 }
                 if (resizeDirection.includes("left")) {
                     newWidth = Math.max(10, element.size.width - deltaX);
-                    newX = Math.min(SLIDE_WIDTH - newWidth, Math.max(0, element.pos.x + deltaX));
+                    newX = Math.min(sizeSlide.width - newWidth, Math.max(0, element.pos.x + deltaX));
                 }
                 if (resizeDirection.includes("bottom")) {
                     newHeight = Math.max(10, element.size.height + deltaY);
                 }
                 if (resizeDirection.includes("top")) {
                     newHeight = Math.max(10, element.size.height - deltaY);
-                    newY = Math.min(SLIDE_HEIGHT - newHeight, Math.max(0, element.pos.y + deltaY));
+                    newY = Math.min(sizeSlide.height - newHeight, Math.max(0, element.pos.y + deltaY));
                 }
 
                 const updatedElement = {
@@ -116,7 +170,7 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
                 dispatch(updateElementAction(updatedElement));
             }
         },
-        [isDragging, isResizing, resizeDirection, element, scale, dragOffset.x, dragOffset.y, dispatch]
+        [isDragging, isResizing, resizeDirection, element, scale, dragOffset.x, dragOffset.y, dispatch, sizeSlide.width, sizeSlide.height]
     );
 
     const handleMouseUp = React.useCallback(() => {
@@ -141,6 +195,7 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
         dispatch(setSelectionAction({ slideId, elementId }));
     }
     const handleMouseDown = (e: React.MouseEvent) => {
+        console.log(e.target);
         if (selected.elementId) {
           e.preventDefault();
         }
@@ -187,26 +242,35 @@ export const Element = ({ element, scale, selected }: ElementProps) => {
         { direction: "right", style: { top: "50%", right: -5*scale, transform: "translateY(-50%)", cursor: "ew-resize" } },
     ];
 
-    return (
+    return isEditorView ? (
         <div
             style={elementStyles}
-            onMouseDown={handleMouseDown}          
-            id = {element.id}
+            onMouseDown={handleMouseDown}
+            id={element.id}
         >
             {isSelected &&
                 handlePositions.map((handle) => (
                     <div
                         key={handle.direction}
                         style={{ ...handleStyles, ...handle.style }}
+
                         onMouseDown={handleResizeStart(handle.direction)}
                     ></div>
                 ))}
-
+    
             {element.type === tools.ElementType.text ? (
-                <TextElement element={element} scale={scale} />
+                <TextElement element={element} scale={scale} isEditorView={isEditorView}/>
             ) : element.type === tools.ElementType.image ? (
                 <ImgElement element={element} />
             ) : null}
+        </div>
+    ) : (
+        <div style={elementStyles}>
+        {element.type === tools.ElementType.text ? (
+            <TextElement element={element} scale={scale} isEditorView={isEditorView}/>
+        ) : element.type === tools.ElementType.image ? (
+            <ImgElement element={element} />
+        ) : null}
         </div>
     );
 };
