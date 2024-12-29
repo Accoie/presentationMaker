@@ -44,7 +44,7 @@ export const TextElement = ({ element, scale, isEditorView}: TextElementProps) =
     const handleBlur = () => {
         setIsEditing(false);
         if (text !== element.src) {
-            const updatedElement = { ...element, src: text }; // Обновляем текст элемента
+            const updatedElement = { ...element, src: text }; 
             dispatch(updateElementAction(updatedElement));
         }
     };
@@ -195,13 +195,9 @@ export const Element = ({ element, scale, selected, isEditorView }: ElementProps
         dispatch(setSelectionAction({ slideId, elementId }));
     }
     const handleMouseDown = (e: React.MouseEvent) => {
-        console.log(e.target);
-        if (selected.elementId) {
-          e.preventDefault();
-        }
         e.stopPropagation();
         onElementClick(selected.slideId, element.id);
-       
+        e.preventDefault();
         setIsDragging(true);
         setDragOffset({
             x: e.clientX - element.pos.x * scale,

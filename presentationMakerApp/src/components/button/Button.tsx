@@ -1,5 +1,4 @@
 import styles from '../button/Button.module.css'
-
 type TextButtonProps = {
     text: string,
     onClick: () => void,

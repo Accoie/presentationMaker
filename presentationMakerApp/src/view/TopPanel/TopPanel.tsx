@@ -11,8 +11,8 @@ import { TextObj } from '../../../../source/presentationMaker.ts';
 import { useAppDispatch, useAppSelector } from '../../../store/store.ts';
 import { UndoableState } from '../../../store/store.ts';
 import { generatePDF } from '../../../store/functions/generatePDF.ts';
-
 import { useNavigate } from 'react-router';
+
 type TopPanelProps = {
   presentationTitle: string,
 }
@@ -123,28 +123,31 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
       navigate('/player')
     )
   }
+    
     return (
       <div className={styles.toppanel}>
       <input className={styles.title} type="text" defaultValue={presentationTitle} onChange={onTitleChange}/>
       <div className={styles.toolbar}>
         <div className={styles.slideslisttoolbar}>
-          <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/import-icon-512x427-7l04qvae.png'} onClick={onImportEditorState}></ImgButton> 
-          <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/export-icon-2048x2045-dzj1wnpt.png'} onClick={onExportEditorState}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'https://cdn-icons-png.flaticon.com/512/13059/13059905.png'} onClick={onAddSlide}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'https://mywebicons.ru/i/png/ff4ac0059617d939c4c210752d267a10.png'} onClick={onRemoveSlide}></ImgButton>
+         {/*здесь ссылка в img записывается относительно компонента ImgButton, который находится в components */}
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/import-icon.png'} onClick={onImportEditorState}></ImgButton> 
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/export-icon.png'} onClick={onExportEditorState}></ImgButton>
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-slide.png'} onClick={onAddSlide}></ImgButton>
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/delete-icon.png'} onClick={onRemoveSlide}></ImgButton>
         </div>
         <div className={styles.workspacetoolbar}>
-          <ImgButton className={styles.toolbarbutton} img={'https://cdn-icons-png.flaticon.com/128/8113/8113737.png'} onClick={onAddImageToSlide}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/draw-text-icon-475x512-4z4gbgou.png'} onClick={onAddTextToSlide}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'https://www.iconpacks.net/icons/2/free-minus-icon-3108-thumb.png'} onClick={onRemoveElement}></ImgButton>  
-          <ImgButton className={styles.toolbarbutton} img={'https://cdn-icons-png.flaticon.com/512/483/483918.png'} onClick={onChangeSlideBackground}></ImgButton> 
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-image.png'} onClick={onAddImageToSlide}></ImgButton>
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-text.png'} onClick={onAddTextToSlide}></ImgButton>
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/remove-element.png'} onClick={onRemoveElement}></ImgButton>  
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/change-background-color.png'} onClick={onChangeSlideBackground}></ImgButton> 
+          
           <input className = {styles.colorPicker} type="color" id="colorPicker" ></input>
-          <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/undo-icon-461x512-lujtd07h.png'} onClick={onUndo}></ImgButton>
-          <ImgButton className={styles.toolbarredobutton} img={'https://static-00.iconduck.com/assets.00/undo-icon-461x512-lujtd07h.png'} onClick={onRedo}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'https://cdn.icon-icons.com/icons2/2566/PNG/512/unsplash_icon_153496.png'} onClick={handleOpenModal}></ImgButton>
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onUndo}></ImgButton>
+          <ImgButton className={styles.toolbarredobutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onRedo}></ImgButton>
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={handleOpenModal}></ImgButton>
         </div>
-        <ImgButton className={styles.toolbarbutton} img={'https://cdn-icons-png.flaticon.com/512/80/80942.png'} onClick={onGeneratePdf}></ImgButton>
-        <ImgButton className={styles.toolbarbutton} img={'https://static-00.iconduck.com/assets.00/presentation-report-icon-256x256-2nj0obl4.png'} onClick={handleGoToPlayer}></ImgButton>
+        <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/pdf-icon.png'} onClick={onGeneratePdf}></ImgButton>
+        <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/player-icon.png'} onClick={handleGoToPlayer}></ImgButton>
       </div>
       </div>
     );

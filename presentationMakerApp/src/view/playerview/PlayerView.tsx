@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import styles from './PlayerView.module.css';
 import { setSelectionAction } from "../../../store/actions/editorPresentationActions";
 import { PlayerViewSlidesList } from "./playerviewslideslist/PlayerViewSlidesList";
-import { PlayerPanel } from "./playerpanel/playerpanel";
+import { PlayerPanel} from "./playerpanel/PlayerPanel.tsx";
 
 function Player() {
   const editor = useAppSelector((state: UndoableState) => state.present);
@@ -64,7 +64,7 @@ function Player() {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [currentSlideIndex, slides]);
+  });
 
   useEffect(() => {
     const updateScale = () => {

@@ -13,8 +13,8 @@
     border-radius: 5px;
 }
 .imgbutton:hover {
-    border: 2px solid black;
-    border-radius: 10px;
+    border:none;
+    
 }
 .imgbutton:active {
     
