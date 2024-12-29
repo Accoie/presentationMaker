@@ -17,11 +17,18 @@ export const generatePDF = (editor: EditorType): AppThunk => {
       img.src = imgSrc;
 
       return new Promise<void>((resolve, reject) => {
+        console.log('asdf')
         img.onload = () => {
-          doc.addImage(img.src, "PNG", x, y, width, height);
-          resolve();
+          try {
+            doc.addImage(img.src, "PNG", x, y, width, height);
+            resolve();
+          } catch (e){
+            alert('Ошибка при добавлении картинки в PDF')
+            console.log(e);
+          }
+          
         };
-        img.onerror = (err) => reject(err);
+        img.onerror = (err) => {reject(err)};
       });
     };
 

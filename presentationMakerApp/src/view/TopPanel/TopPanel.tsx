@@ -35,21 +35,38 @@ export const TopPanel = ({presentationTitle} : TopPanelProps) => {
     dispatch(changeSlideBackgroundAction(color))
   }
   function onAddImageToSlide() {
-    const imageUrl = prompt('Введите URL-адрес картинки');
-    if (imageUrl) {
-        const imgObj: ImgObj= {
-            id: '',
-            type: ElementType.image,
-            src: imageUrl,
-            size: { width: 200, height: 200 },
-            pos: { x: 10, y: 100 }
-        };
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*'; // Ограничение на выбор только изображений
 
-        dispatch(addImageToSlideAction(imgObj));
-    } else {
-        alert('Вы не ввели URL-адрес!');
-    }
-  }
+    fileInput.addEventListener('change', async (event) => {
+        const file = (event.target as HTMLInputElement).files?.[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                const imageUrl = reader.result as string;
+
+                const imgObj: ImgObj = {
+                    id: '',
+                    type: ElementType.image,
+                    src: imageUrl,
+                    size: { width: 200, height: 200 },
+                    pos: { x: 10, y: 100 },
+                };
+
+                dispatch(addImageToSlideAction(imgObj));
+            };
+
+            reader.readAsDataURL(file); // Преобразует файл в Base64 строку
+        } else {
+            alert('Вы не выбрали файл!');
+        }
+    });
+
+    fileInput.click(); // Программно открываем диалог выбора файла
+}
   function onAddTextToSlide() {
    
       const textObj: TextObj = {
