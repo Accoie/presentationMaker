@@ -46,3 +46,61 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.toolbarbutton {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .wrapper {
+    position: relative;
+  }
+  .optionsContainer {
+    position: absolute;
+    top: 50px; /* Расположение под основной кнопкой */
+    left: 0;
+    background: rgba(30, 42, 120, 0.7);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 999; /* Поверх всех элементов */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .option {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .gradientPicker {
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+  }
+  
+  .imageInput {
+    cursor: pointer;
+  }
+  .imageInputHidden {
+    display: none;
+  }
+  .imageInputLabel {
+    cursor: pointer;
+    display: inline-block;
+  }
+  
+  .imageInputIcon {
+    width: 30px; /* Задайте размер */
+    height: 30px;
+    filter: invert();
+    object-fit: contain; /* Или cover для заполнения */
+  }
+  .imageInputIcon:hover {
+    transform: scale(1.2);
+    color: #1E2A78;
+  }

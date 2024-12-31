@@ -25,15 +25,17 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
     return Math.min(scaleWidth, scaleHeight) * 0.8;
   };
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const isUndo = (event.ctrlKey || event.metaKey) && event.key === 'z';
-      const isRedo = (event.ctrlKey || event.metaKey) && event.key === 'y';
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const undoKeys = new Set(['z', 'Z', 'Я', 'я']);
+      const redoKeys = new Set(['y', 'Y', 'н', 'Н']);
+      const isUndo = (e.ctrlKey || e.metaKey) && undoKeys.has(e.key);
+      const isRedo = (e.ctrlKey || e.metaKey) && redoKeys.has(e.key);
   
       if (isUndo) {
-        event.preventDefault();
+        e.preventDefault();
         dispatch(undoEditorAction());
       } else if (isRedo) {
-        event.preventDefault();
+        e.preventDefault();
         dispatch(redoEditorAction());
       }
     };

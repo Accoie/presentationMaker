@@ -17,7 +17,7 @@ export const Slide = ({slide, scale = 1, selected, isEditorView}: SlideProps) =>
       const sizeSlide = useAppSelector((state: UndoableState) => state.present.presentation.sizeWorkspace);
     
     const slideStyles:CSSProperties = {
-        backgroundColor: slide.background,
+        background: slide.background,
         width: sizeSlide.width * scale,
         height: sizeSlide.height * scale,
         position: 'relative',
