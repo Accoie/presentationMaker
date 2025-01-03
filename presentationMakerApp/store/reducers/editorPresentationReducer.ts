@@ -1,5 +1,5 @@
 import { UnknownAction } from 'redux';
-import * as tools from '/Frontend/presentationMaker/source/presentationMaker';
+import * as tools from '../../../source/presentationMaker';
 import { renamePresentationTitle } from '../functions/renamePresentationTitle';
 import { setSelection } from '../functions/setSelection';
 

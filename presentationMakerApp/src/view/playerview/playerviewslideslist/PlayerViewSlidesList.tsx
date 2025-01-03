@@ -6,7 +6,7 @@ import * as tools from "../../../../../source/presentationMaker.ts";
 
 type SlidesListProps = {
   slidesList: tools.Slide[],
-  selected: { slideId: string, elementId: string },
+  selected: tools.Selection,
 };
 
 export const PlayerViewSlidesList = ({ slidesList, selected }: SlidesListProps) => {

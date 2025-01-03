@@ -9,7 +9,7 @@ import { setIsChangingAction } from '../../../store/actions/editorActions';
 interface ElementProps {
     element: tools.SlideObj;
     scale: number;
-    selected: tools.PresentationSelection;
+    selected: tools.Selection;
     isEditorView: boolean;
 }
 interface TextElementProps {
@@ -192,7 +192,7 @@ export const Element = ({ element, scale, selected, isEditorView }: ElementProps
     }, [isDragging, isResizing, handleMouseMove, handleMouseUp]);
     
     function onElementClick(slideId: string, elementId: string) {
-        dispatch(setSelectionAction({ slideId, elementId }));
+        dispatch(setSelectionAction([{ slideId, elementId }]));
     }
     const handleMouseDown = (e: React.MouseEvent) => {
         e.stopPropagation();

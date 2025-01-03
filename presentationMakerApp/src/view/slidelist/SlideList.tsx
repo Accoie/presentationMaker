@@ -5,10 +5,11 @@ import * as tools from "../../../../source/presentationMaker.ts";
 import { useDispatch } from 'react-redux';
 import { setSelectionAction } from '../../../store/actions/editorPresentationActions.ts';
 import { updateSlidesAction } from '../../../store/actions/editorSlidesActions.ts';
+import { PresentationSelection } from '/Frontend/presentationMaker/source/presentationMaker.ts';
 
 type SlidesListProps = {
   slidesList: tools.Slide[], 
-  selected: { slideId: string, elementId: string },
+  selected: tools.PresentationSelection,
 };
 
 export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
@@ -17,8 +18,19 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
   const dispatch = useDispatch();
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
-  function onSlideClick(slideId: string) {
-    dispatch(setSelectionAction({ slideId: slideId, elementId: '' }));
+  function onSlideClick(slideId: string, event: React.MouseEvent<HTMLDivElement>) {
+    if (event.ctrlKey || event.metaKey) {
+      // Проверяем, выбран ли слайд
+      const isAlreadySelected: boolean = selected.some((sel) => sel.slideId === slideId);
+      let updatedSelection: PresentationSelection;
+      if (isAlreadySelected && selected.length > 1) {
+        updatedSelection = selected.filter((sel) => sel.slideId !== slideId) 
+      } else if (!isAlreadySelected) {updatedSelection = [...selected, { slideId: slideId, elementId: '' }]} else {updatedSelection = [{ slideId: '', elementId: '' }]}
+      dispatch(setSelectionAction(updatedSelection));
+    } else {
+      // Если не нажата Ctrl/Meta, выбираем только один слайд
+      dispatch(setSelectionAction([{ slideId, elementId: '' }]));
+    }
   }
 
   function onDragStart(slideId: string, event: React.DragEvent<HTMLDivElement>) {
@@ -74,7 +86,6 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
     onDragEnd();
   }
 
-  const defaultSelected = { slideId: selected.slideId, elementId: '' };
 
   return (
     <div className={styles.slideslist}>
@@ -95,30 +106,29 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
           <Slide
             slide={slidesList.find((slide) => slide.id === draggedSlideId)!}
             scale={0.15}
-            selected={defaultSelected}
+            selected={selected[0]}
             isEditorView={true}
           />
         )}
       </div>
 
-      {/* Список слайдов */}
+      
       {slidesList.map((slide) => (
-        <div style={{ display: 'flex' }} key={slide.id}>
-          <div className={styles.numberslide}>{slidesList.indexOf(slide) + 1}</div>
-          <div
-            className={`${styles.slideContainer} ${selected.slideId === slide.id ? styles.selected : ''}`}
-            draggable
-            onDragStartCapture={(event) => onDragStart(slide.id, event)}
-            onDragOver={(event) => onDragOver(event)}
-            onDrop={() => onDrop(slide.id)}
-            onMouseDownCapture={(event) => {
-              event.stopPropagation();
-              onSlideClick(slide.id); 
-            }}
-          >
-            <Slide slide={slide} scale={0.15} selected={defaultSelected} isEditorView={true}/>
-          </div>
-        </div>
+        <div
+        className={`${styles.slideContainer} ${
+          selected.some((sel) => sel.slideId === slide.id) ? styles.selected : ''
+        }`}
+        draggable
+        onDragStartCapture={(event) => onDragStart(slide.id, event)}
+        onDragOver={(event) => onDragOver(event)}
+        onDrop={() => onDrop(slide.id)}
+        onMouseDownCapture={(event) => {
+          event.stopPropagation();
+          onSlideClick(slide.id, event);
+        }}
+      >
+        <Slide slide={slide} scale={0.15} selected={selected[0]} isEditorView={true} />
+      </div>
       ))}
     </div>
   );

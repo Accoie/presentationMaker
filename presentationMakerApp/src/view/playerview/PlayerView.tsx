@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import styles from './PlayerView.module.css';
 import { setSelectionAction } from "../../../store/actions/editorPresentationActions";
 import { PlayerViewSlidesList } from "./playerviewslideslist/PlayerViewSlidesList";
-import { PlayerPanel} from "./playerpanel/PlayerPanel.tsx";
+import { PlayerPanel} from '../playerview/playerpanel/playerpanel';
 
 function Player() {
   const editor = useAppSelector((state: UndoableState) => state.present);
@@ -15,18 +15,18 @@ function Player() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [scale, setScale] = useState(1);
 
-  editor.selection = { ...editor.selection, slideId: slides[currentSlideIndex].id, elementId: '' };
+  editor.selection = [{ ...editor.selection, slideId: slides[currentSlideIndex].id, elementId: '' }];
 
   const goToNextSlide = () => {
     setCurrentSlideIndex((prevIndex) => Math.min(slides.length - 1, prevIndex + 1));
     const slide = { ...slides[Math.min(slides.length - 1, currentSlideIndex + 1)] };
-    dispatch(setSelectionAction({ slideId: slide.id, elementId: '' }));
+    dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
   };
 
   const goToPreviousSlide = () => {
     setCurrentSlideIndex((prevIndex) => Math.max(0, prevIndex - 1));
     const slide = { ...slides[Math.max(0, currentSlideIndex - 1)] };
-    dispatch(setSelectionAction({ slideId: slide.id, elementId: '' }));
+    dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -93,7 +93,7 @@ function Player() {
       <div style={{ marginRight: 'auto', marginLeft: 'auto', width: 'auto' }} id="player">
         <Slide
           slide={editor.presentation.slides[currentSlideIndex]}
-          selected={{ slideId: editor.selection.slideId, elementId: "" }}
+          selected={{ slideId: editor.selection[0].slideId, elementId: "" }}
           scale={scale + 0.01}
           isEditorView={false}
         />
@@ -107,7 +107,7 @@ function Player() {
             toggleFullscreen={toggleFullscreen}
           />
           <div style={{ width: '100%', overflowX: 'auto' }} id='playerviewslideslist'>
-            <PlayerViewSlidesList slidesList={slides} selected={editor.selection} />
+            <PlayerViewSlidesList slidesList={slides} selected={editor.selection[0]} />
           </div>
         </>
       )}

@@ -11,6 +11,8 @@ type WorkSpaceProps = {
 }
 
 export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
+  const selectedSlide: tools.Selection = selected[0];
+  console.log(selectedSlide)
   const [scale, setScale] = useState(1); 
   const dispatch = useAppDispatch();
   const sizeSlide = useAppSelector((state: UndoableState) => state.present.presentation.sizeWorkspace);
@@ -66,7 +68,7 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
               const workspace = document.getElementById('workspace');
 
               if (workspace?.contains(e.target as Node)) {
-                  dispatch(setSelectionAction({ slideId: selected.slideId, elementId: '' })); 
+                  dispatch(setSelectionAction([{ slideId: selectedSlide.slideId, elementId: '' }])); 
               }
           };
       
@@ -75,12 +77,12 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
           return () => {
               document.removeEventListener("mousedown", handleClickOutside);
           };
-      }, [selected.slideId, dispatch]);
-    const selectedSlide = presentationData.slides.find((slide) => slide.id === selected.slideId);
-    if (!selectedSlide) {
+      });
+    const workspaceSlide = presentationData.slides.find((slide) => slide.id === selectedSlide.slideId);
+    if (!workspaceSlide) {
       return (
         <div style={{display: "flex", justifyContent: 'center', alignItems: 'center', flexGrow: '1'}}>
-          <div style={{padding: 10, fontFamily: 'Calibri', fontSize: 52, color: '#1E2A78'}}>Где слайды?</div>
+          <div style={{padding: 10, fontFamily: 'Calibri', fontSize: 52, color: '#1E2A78'}}>Выбрал слайд?</div>
           <img src='https://cdni.iconscout.com/illustration/premium/thumb/caucasian-man-getting-lost-in-forest-illustration-download-svg-png-gif-file-formats--scared-male-seeking-way-out-of-wood-dangerous-situation-people-pack-illustrations-9334975.png' style ={{width: '40%', height: '75%', filter: 'grayscale(0) sepia(1) hue-rotate(190deg) saturate(4.7) brightness(1)',}}></img>
         </div>
       )
@@ -88,9 +90,9 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
   
     return (
       
-          <div className={styles.workspace} key={selected.slideId} id = 'workspace'>
+          <div className={styles.workspace} key={selectedSlide.slideId} id = 'workspace'>
             <div className={styles.scrollcontainer} key = {'sdfasdfasd'}>
-              <Slide slide={selectedSlide} scale = {scale} selected={{slideId: selected.slideId, elementId: selected.elementId} }isEditorView={true} />
+              <Slide slide={workspaceSlide} scale = {scale} selected={{slideId: selectedSlide.slideId, elementId: selectedSlide.elementId} }isEditorView={true} />
             </div>
           </div>
     );

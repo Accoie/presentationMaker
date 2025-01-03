@@ -1,14 +1,12 @@
 import * as tools from '/Frontend/presentationMaker/source/presentationMaker.ts'
 import {CSSProperties} from 'react'
 import { Element } from './SlideElement'
-
-import { PresentationSelection } from '../../../../source/presentationMaker'
 import { UndoableState, useAppSelector } from '../../../store/store'
 
 type SlideProps = {
     slide: tools.Slide,
     scale?: number,
-    selected: PresentationSelection,
+    selected: tools.Selection,
     isEditorView: boolean
 }
 
@@ -25,7 +23,7 @@ export const Slide = ({slide, scale = 1, selected, isEditorView}: SlideProps) =>
         marginRight: 'auto'
     }
     
-    
+
     return (
         <div className='slide' style={slideStyles} id = {selected.slideId}>
         {slide.elements.map((element) => (
