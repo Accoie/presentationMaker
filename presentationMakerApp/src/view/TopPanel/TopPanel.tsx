@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import GradientPicker from 'react-best-gradient-color-picker'
 import { v4 as uuidv4 } from 'uuid';
-
 type TopPanelProps = {
   presentationTitle: string,
 }
@@ -47,11 +46,11 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
   };
 
   const handleImageChange = (e) => {
+    console.log(e)
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
 
-      // Чтение файла в формате Base64
       reader.onload = () => {
         const base64Image = reader.result as string;
         dispatch(changeSlideBackgroundAction(`url(${base64Image}) no-repeat center center / cover`));
@@ -62,13 +61,13 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
         console.error('Error reading file:', reader.error);
       };
 
-      reader.readAsDataURL(file); // Преобразование в Base64
+      reader.readAsDataURL(file); 
     }
   };
   function onAddImageToSlide() {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
-    fileInput.accept = 'image/*'; // Ограничение на выбор только изображений
+    fileInput.accept = 'image/*';
 
     fileInput.addEventListener('change', async (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
@@ -191,7 +190,6 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
             <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/change-background-color.png'} onClick={handleToggleOptions}></ImgButton>
             {showOptions && (
               <div className={styles.optionsContainer}>
-                {/* Кнопка для выбора градиента */}
                 <div className={styles.option}>
                   <GradientPicker
                     value={gradient}
@@ -206,7 +204,6 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
                     hideGradientStop
                   />
                 </div>
-                {/* Кнопка для выбора изображения */}
                 <div className={styles.option}>
                   <input
                     id="fileInput"
@@ -228,6 +225,7 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
               </div>
             )}
           </div>
+          
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onUndo}></ImgButton>
           <ImgButton className={styles.toolbarredobutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onRedo}></ImgButton>
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={handleOpenModal}></ImgButton>

@@ -2,16 +2,30 @@ import {EditorType, ImgObj} from "/Frontend/presentationMaker/source/presentatio
 import { v4 as uuidv4 } from 'uuid';
 function addImageToSlide(editor: EditorType, newImage: ImgObj): EditorType {
     newImage.id = uuidv4();
-    const slideId = editor.selection.slideId;
+    let slideId: string | undefined;
+    if (editor.selection && editor.selection.length > 0 && editor.selection[0]) {
+        slideId = editor.selection[0].slideId;
+    } else {
+        return { ...editor };
+    }
 
     return {
         ...editor,
-        selection: {slideId: slideId, elementId: newImage.id},
+        selection: [
+            {
+                ...editor.selection[0], 
+                slideId: slideId,
+                elementId: newImage.id,
+            },
+        ],
         presentation: {
             ...editor.presentation,
-            slides: editor.presentation.slides.map(slide => slide.id === editor.selection.slideId
-                 ? {...slide, elements: [...slide.elements, newImage]} : slide)
-        }
+            slides: editor.presentation.slides.map((slide) =>
+                slide.id === slideId
+                    ? { ...slide, elements: [...slide.elements, newImage] }
+                    : slide
+            ),
+        },
     }
 }
 

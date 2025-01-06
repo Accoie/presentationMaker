@@ -50,6 +50,7 @@ export const generatePDF = (editor: EditorType): AppThunk => {
       if (index > 0) doc.addPage();
 
       if (slide.background) {
+        
         doc.setFillColor(slide.background);
         doc.rect(0, 0, editor.presentation.sizeWorkspace.width, editor.presentation.sizeWorkspace.height, "F");
       }

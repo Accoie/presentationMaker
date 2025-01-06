@@ -54,8 +54,8 @@ export const minimalPresentation: tools.Presentation = {
 };
 export const editor: tools.EditorType = {
   presentation: maximalPresentation,
-  selection: {
+  selection: [{
     elementId: '',
     slideId: maximalPresentation.slides[0].id,
-  }
+  }]
 };  

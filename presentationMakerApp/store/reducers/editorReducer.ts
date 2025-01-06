@@ -20,13 +20,11 @@ export const editorReducer = (state: UndoableState, action: UnknownAction): Undo
     }
     case 'UNDO_EDITOR': {
       if (state.past.length === 0) {
-        return state; // Если нет истории, ничего не меняется
+        return state; 
       }
-    
-      // Восстанавливаем предыдущее состояние
       const previousState = state.past[state.past.length - 1];  
-      const updatedPast = state.past.slice(0, -1);  // Убираем последнее состояние из истории
-      const updatedFuture = [state.present, ...state.future];  // Добавляем текущее состояние в future для redo
+      const updatedPast = state.past.slice(0, -1);
+      const updatedFuture = [state.present, ...state.future];  
       return {
         past: updatedPast,
         present: previousState,
@@ -37,12 +35,12 @@ export const editorReducer = (state: UndoableState, action: UnknownAction): Undo
     }
     case 'REDO_EDITOR': {
       if (state.future.length === 0) {
-        return state; // Если нет состояния для redo, ничего не меняется
+        return state; 
       }
     
-      const nextState = state.future[0];  // Берем следующее состояние из future
-      const updatedPast = [...state.past, state.present];  // Добавляем текущее состояние в past
-      const updatedFuture = state.future.slice(1);  // Убираем следующее состояние из future
+      const nextState = state.future[0];  
+      const updatedPast = [...state.past, state.present]; 
+      const updatedFuture = state.future.slice(1);  
     
       return {
         past: updatedPast,
@@ -65,8 +63,7 @@ export const editorReducer = (state: UndoableState, action: UnknownAction): Undo
         modal.style.display = "flex";
         modal.style.alignItems = "center";
         modal.style.justifyContent = "center";
-  
-        // Создаём iframe
+
         const iframe = document.createElement("iframe");
         iframe.id = "pdf-preview";
         iframe.style.width = "80%";
@@ -75,7 +72,6 @@ export const editorReducer = (state: UndoableState, action: UnknownAction): Undo
         iframe.style.borderRadius = "8px";
         iframe.src = action.payload as string;
   
-        // Добавляем кнопку закрытия
         const closeButton = document.createElement("button");
         closeButton.textContent = "Close";
         closeButton.style.position = "absolute";
@@ -89,14 +85,12 @@ export const editorReducer = (state: UndoableState, action: UnknownAction): Undo
         closeButton.style.fontSize = "16px";
   
         closeButton.onclick = () => {
-          document.body.removeChild(modal); // Удаляем модальное окно при закрытии
+          document.body.removeChild(modal);
         };
   
-        // Добавляем iframe и кнопку в модальное окно
         modal.appendChild(iframe);
         modal.appendChild(closeButton);
-  
-        // Вставляем модальное окно в DOM
+        
         document.body.appendChild(modal);
       return state
     }

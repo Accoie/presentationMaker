@@ -1,21 +1,23 @@
-import {EditorType} from '/Frontend/presentationMaker/source/presentationMaker'
+import { EditorType, Selection } from '/Frontend/presentationMaker/source/presentationMaker';
 
-function removeSlide(editor: EditorType): EditorType {
-    console.log('editor', editor)
-    
+export function removeSlides(editor: EditorType): EditorType {
     if (!editor.selection) {
-        return editor
+        return {...editor}
     }
+    const selectedSlideIds = editor.selection.map((sel: Selection) => sel.slideId);
 
-    const removeSlideId = editor.selection.slideId
-    const removeSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == removeSlideId)
-    const newSlides = editor.presentation.slides.filter(slide => slide.id != removeSlideId)
+    const newSlides = editor.presentation.slides.filter(
+        slide => !selectedSlideIds.includes(slide.id)
+    );
 
-    let newSelectedSlideId = ''
+    let newSelectedSlideId = '';
 
     if (newSlides.length > 0) {
-        const index = Math.min(removeSlideIndex, newSlides.length - 1)
-        newSelectedSlideId = newSlides[index].id
+        const firstRemovedSlideIndex = editor.presentation.slides.findIndex(slide =>
+            selectedSlideIds.includes(slide.id)
+        );
+        const index = Math.min(firstRemovedSlideIndex, newSlides.length - 1);
+        newSelectedSlideId = newSlides[index].id;
     }
 
     return {
@@ -23,13 +25,11 @@ function removeSlide(editor: EditorType): EditorType {
             ...editor.presentation,
             slides: newSlides,
         },
-        selection: {
-            slideId: newSelectedSlideId,
-            elementId: ''
-        },
-    }
+        selection: newSelectedSlideId
+            ? [{ slideId: newSelectedSlideId, elementId: '' }]
+            : [], 
+
+    };
+    
 }
 
-export {
-    removeSlide,
-}

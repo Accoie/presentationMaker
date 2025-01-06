@@ -6,21 +6,21 @@ export type Presentation = {
     title: string;
     slides: Slide[];
     sizeWorkspace: Size;
-  }
-export type PresentationSelection = {
+}
+export type Selection = {
     elementId: string;
     slideId: string;
 }
+export type PresentationSelection = Selection[];
 export type Color = {
     type: 'solid';
     color: string;
 };
-
-export type ImgObj = BaseSlideObj &{
+export type ImgObj = BaseSlideObj & {
     type: ElementType.image;
     src: string;
 };
-export type TextObj = BaseSlideObj &{
+export type TextObj = BaseSlideObj & {
     type: ElementType.text;
     src: string;
     fontSize: number;
@@ -30,7 +30,7 @@ export type Slide = {
     id: string;
     elements: (SlideObj)[];
     background: string;
-}  
+}
 export enum BackgroundType {
     gradiend = 'gradient',
     image = 'image',
@@ -41,7 +41,7 @@ export type Size = {
     width: number;
     height: number;
 }
-export type Pos  = {
+export type Pos = {
     x: number;
     y: number;
 }

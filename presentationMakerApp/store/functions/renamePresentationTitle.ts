@@ -1,4 +1,4 @@
-import {EditorType} from "/Frontend/presentationMaker/source/presentationMaker";
+import {EditorType} from '../../../source/presentationMaker';
 
 function renamePresentationTitle(editor: EditorType, newTitle: string): EditorType {
     return {
