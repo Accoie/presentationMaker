@@ -5,8 +5,8 @@ function removeElement(editor: EditorType): EditorType {
         ...editor, 
         presentation: {
             ...editor.presentation,
-            slides: editor.presentation.slides.map(slide => slide.id === editor.selection.slideId ?
-             {...slide, elements: slide.elements.filter(element => element.id !== editor.selection.elementId)} : slide)
+            slides: editor.presentation.slides.map(slide => slide.id === editor.selection[0].slideId ?
+             {...slide, elements: slide.elements.filter(element => element.id !== editor.selection[0].elementId)} : slide)
             }
     }
 }

@@ -30,7 +30,7 @@ const loggerMiddleware = (store: any) => (next: any) => (action: any) => {
 };
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
-  UndoableState, 
+  UndoableState,
   unknown,
   UnknownAction
 >;
@@ -48,8 +48,6 @@ export function loadEditorStateFromLocalStorage(): EditorType | null {
 
       console.log(e)
     }
-
-    console.log(editorState)
     if (validateEditorState(editorState)) {
       return editorState
     } else { editorState = editor }

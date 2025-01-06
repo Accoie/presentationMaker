@@ -20,7 +20,7 @@ export const PlayerViewSlidesList = ({ slidesList, selected }: SlidesListProps) 
           <div
             className={`${styles.slideContainer} ${selected.slideId === slide.id ? styles.selected : ''}`}
           >
-            <Slide slide={slide} scale={0.15} selected={defaultSelected} isEditorView={false} />
+            <Slide slide={slide} scale={0.15} selected={defaultSelected} isEditorView={false} isWorkspace={false}/>
           </div>
         </div>
       ))}

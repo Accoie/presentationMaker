@@ -7,11 +7,12 @@ type SlideProps = {
     slide: tools.Slide,
     scale?: number,
     selected: tools.Selection,
-    isEditorView: boolean
+    isEditorView: boolean,
+    isWorkspace: boolean
 }
 
 
-export const Slide = ({slide, scale = 1, selected, isEditorView}: SlideProps) => {   
+export const Slide = ({slide, scale = 1, selected, isEditorView, isWorkspace}: SlideProps) => {   
       const sizeSlide = useAppSelector((state: UndoableState) => state.present.presentation.sizeWorkspace);
     
     const slideStyles:CSSProperties = {
@@ -27,7 +28,7 @@ export const Slide = ({slide, scale = 1, selected, isEditorView}: SlideProps) =>
     return (
         <div className='slide' style={slideStyles} id = {selected.slideId}>
         {slide.elements.map((element) => (
-            <Element  element = {element} scale = {scale} selected={selected} isEditorView={isEditorView}/>
+            <Element  element = {element} scale = {scale} selected={selected} isEditorView={isEditorView} isWorkspace={isWorkspace}/>
           ))}
         </div>
     );

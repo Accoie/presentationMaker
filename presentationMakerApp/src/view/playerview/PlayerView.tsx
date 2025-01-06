@@ -96,6 +96,7 @@ function Player() {
           selected={{ slideId: editor.selection[0].slideId, elementId: "" }}
           scale={scale + 0.01}
           isEditorView={false}
+          isWorkspace={false}
         />
       </div>
 

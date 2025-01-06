@@ -11,7 +11,8 @@ type WorkSpaceProps = {
 }
 
 export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
-  const selectedSlide: tools.Selection = selected[0];
+  console.log(selected)
+  const selectedSlide: tools.Selection = selected[0] || {slideId: '', elementId: ''};
   console.log(selectedSlide)
   const [scale, setScale] = useState(1); 
   const dispatch = useAppDispatch();
@@ -83,7 +84,7 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
       return (
         <div style={{display: "flex", justifyContent: 'center', alignItems: 'center', flexGrow: '1'}}>
           <div style={{padding: 10, fontFamily: 'Calibri', fontSize: 52, color: '#1E2A78'}}>Выбрал слайд?</div>
-          <img src='https://cdni.iconscout.com/illustration/premium/thumb/caucasian-man-getting-lost-in-forest-illustration-download-svg-png-gif-file-formats--scared-male-seeking-way-out-of-wood-dangerous-situation-people-pack-illustrations-9334975.png' style ={{width: '40%', height: '75%', filter: 'grayscale(0) sepia(1) hue-rotate(190deg) saturate(4.7) brightness(1)',}}></img>
+          <img src='../../../icons/workspaceeditorview/no-way-found.png' style ={{width: '40%', height: '75%', filter: 'grayscale(0) sepia(1) hue-rotate(190deg) saturate(4.7) brightness(1)',}}></img>
         </div>
       )
     }
@@ -92,7 +93,7 @@ export const WorkSpace = ({presentationData, selected} : WorkSpaceProps) => {
       
           <div className={styles.workspace} key={selectedSlide.slideId} id = 'workspace'>
             <div className={styles.scrollcontainer} key = {'sdfasdfasd'}>
-              <Slide slide={workspaceSlide} scale = {scale} selected={{slideId: selectedSlide.slideId, elementId: selectedSlide.elementId} }isEditorView={true} />
+              <Slide slide={workspaceSlide} scale = {scale} selected={{slideId: selectedSlide.slideId, elementId: selectedSlide.elementId} }isEditorView={true} isWorkspace={true}/>
             </div>
           </div>
     );
