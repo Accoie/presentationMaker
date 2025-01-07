@@ -1,9 +1,11 @@
 import { Dispatch } from "redux";
 import { AppThunk } from "../store";
 import {addImageToSlideAction} from  '../actions/editorSlideElementsActions'
+import { changeSlideBackgroundAction } from "../actions/editorSlidesActions";
 import { ImgObj } from "../../../source/presentationMaker";
 import { v4 as uuidv4 } from 'uuid';
-export const importImage = (): AppThunk => {
+
+export const importImage = (isBackgroundChange: boolean): AppThunk => {
     return async(dispatch: Dispatch) => {
 
     const modal = document.createElement("div");
@@ -107,7 +109,10 @@ export const importImage = (): AppThunk => {
                 id: uuidv4(),
                 type: 'image'
               } as ImgObj;
-              dispatch(addImageToSlideAction(image));
+              if (!isBackgroundChange) {
+                dispatch(addImageToSlideAction(image));
+              } else { dispatch(changeSlideBackgroundAction(`url(${image.src}) no-repeat center center / cover`))}
+
               document.body.removeChild(modal);
             };
             imagesContainer.appendChild(img);

@@ -4,7 +4,6 @@ const REMOVE_ELEMENT = 'REMOVE_ELEMENT';
 const ADD_IMAGE = 'ADD_IMAGE';
 const ADD_TEXT = 'ADD_TEXT';
 
-
 export const updateElementAction = (newElement: tools.SlideObj) => ({
   type: UPDATE_ELEMENT,
   payload: newElement,

@@ -19,7 +19,6 @@ export const editorSlideElementsReducer = (state: tools.EditorType, action: Unkn
     case 'ADD_TEXT' : {
         return addTextToSlide(state, action.payload as tools.TextObj)
     }
-
     default:
       return state;
   }

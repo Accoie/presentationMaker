@@ -15,6 +15,8 @@ import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import GradientPicker from 'react-best-gradient-color-picker'
 import { v4 as uuidv4 } from 'uuid';
+import { ChangeFontSize } from './toppanelcomponents/ChangeFontSize.tsx';
+import {ChangeFontFamily} from './toppanelcomponents/ChangeFontFamily.tsx'
 type TopPanelProps = {
   presentationTitle: string,
 }
@@ -45,9 +47,8 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
     dispatch(changeSlideBackgroundAction(newGradient as string))
   };
 
-  const handleImageChange = (e) => {
-    console.log(e)
-    const file = e.target.files[0];
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
 
@@ -162,8 +163,8 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
     dispatch(generatePDF(editor));
   }
 
-  const handleOpenModal = () => {
-    dispatch(importImage());
+  const handleOpenModal = (isBackgroundChange: boolean) => {
+    dispatch(importImage(isBackgroundChange));
   };
   function handleGoToPlayer() {
     return (
@@ -185,6 +186,8 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
         <div className={styles.workspacetoolbar}>
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-image.png'} onClick={onAddImageToSlide}></ImgButton>
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-text.png'} onClick={onAddTextToSlide}></ImgButton>
+          <ChangeFontSize/>
+          <ChangeFontFamily/>
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/remove-element.png'} onClick={onRemoveElement}></ImgButton>
           <div className={styles.wrapper}>
             <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/change-background-color.png'} onClick={handleToggleOptions}></ImgButton>
@@ -202,6 +205,7 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
                     hideColorGuide
                     hideInputType
                     hideGradientStop
+                    hideOpacity
                   />
                 </div>
                 <div className={styles.option}>
@@ -221,14 +225,16 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
                     />
                     
                   </label>
+                  <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={() =>handleOpenModal(true)}></ImgButton>
                 </div>
+
               </div>
             )}
           </div>
           
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onUndo}></ImgButton>
           <ImgButton className={styles.toolbarredobutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onRedo}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={handleOpenModal}></ImgButton>
+          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={() => handleOpenModal(false)}></ImgButton>
         </div>
         <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/pdf-icon.png'} onClick={onGeneratePdf}></ImgButton>
         <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/player-icon.png'} onClick={handleGoToPlayer}></ImgButton>

@@ -57,13 +57,12 @@
   }
   .optionsContainer {
     position: absolute;
-    top: 50px; /* Расположение под основной кнопкой */
+    top: 40px; 
     left: 0;
-    background: rgba(30, 42, 120, 0.7);
-    border: 1px solid #ccc;
+    background: rgba(30, 42, 120, 1);
     border-radius: 10px;
     padding: 10px;
-    z-index: 999; /* Поверх всех элементов */
+    z-index: 999; 
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -78,7 +77,6 @@
   
   .gradientPicker {
     width: 200px;
-    border: 1px solid #ccc;
     border-radius: 10px;
 
   }
@@ -95,10 +93,10 @@
   }
   
   .imageInputIcon {
-    width: 30px; /* Задайте размер */
+    width: 30px; 
     height: 30px;
     filter: invert();
-    object-fit: contain; /* Или cover для заполнения */
+    object-fit: contain;
   }
   .imageInputIcon:hover {
     transform: scale(1.2);

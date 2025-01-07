@@ -52,7 +52,6 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
   
     const firstSlideElement = slideRefs.current[slidesToDrag[0]];
     const secondSlideElement = slideRefs.current[slidesToDrag[1]]
-    console.log(firstSlideElement)
     if (firstSlideElement) {
       const firstRect = firstSlideElement.getBoundingClientRect();
       const secondRect = secondSlideElement?.getBoundingClientRect();
@@ -148,9 +147,11 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
         </div>
       )}
 
-      {slidesList.map((slide) => {
+      {slidesList.map((slide, index) => {
         const isDragging = draggedSlideIds.includes(slide.id);
         return (
+          <div style={{display: 'flex'}}>
+          <div className={styles.numberslide}>{index + 1}</div>
           <div
             key={slide.id}
             className={`${styles.slideContainer} ${
@@ -174,9 +175,12 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
                   slideRefs.current[slide.id] = el;
                 }}
           >
+            
             <Slide slide={slide} scale={0.15} selected={safeSelected} isEditorView={true} isWorkspace={false} />
           </div>
+          </div>
         );
+        
       })}
     </div>
   );
