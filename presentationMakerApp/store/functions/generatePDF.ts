@@ -17,7 +17,6 @@ export const generatePDF = (editor: EditorType): AppThunk => {
       img.src = imgSrc;
 
       return new Promise<void>((resolve, reject) => {
-        console.log('asdf')
         img.onload = () => {
           try {
             doc.addImage(img.src, "PNG", x, y, width, height);
@@ -52,6 +51,7 @@ export const generatePDF = (editor: EditorType): AppThunk => {
       if (slide.background) {
         
         doc.setFillColor(slide.background);
+        
         doc.rect(0, 0, editor.presentation.sizeWorkspace.width, editor.presentation.sizeWorkspace.height, "F");
       }
 

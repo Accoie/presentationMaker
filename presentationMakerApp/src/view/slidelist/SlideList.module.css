@@ -14,7 +14,6 @@
   overflow-y: scroll; 
   box-sizing: border-box;
   background-color:rgb(206, 223, 255);
-  padding-left: 10px;
 }
 
 .slideContainer {
@@ -42,6 +41,7 @@
   padding-left: 5px;
   color: #1E2A78;
   font-family:'Impact';
+  display: flex;
 }
 .slideslist::-webkit-scrollbar {
     width: 6px;             
