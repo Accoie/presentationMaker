@@ -10,13 +10,14 @@ import { removeElementAction, addImageToSlideAction, addTextToSlideAction } from
 import { TextObj } from '../../../../source/presentationMaker.ts';
 import { useAppDispatch, useAppSelector } from '../../../store/store.ts';
 import { UndoableState } from '../../../store/store.ts';
-import { generatePDF } from '../../../store/functions/generatePDF.ts';
+import { generatePDF } from '../../../store/functions/generatePDF/generatePDF.ts';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import GradientPicker from 'react-best-gradient-color-picker'
 import { v4 as uuidv4 } from 'uuid';
+import { ChangeFontFamily } from './toppanelcomponents/ChangeFontFamily.tsx';
 import { ChangeFontSize } from './toppanelcomponents/ChangeFontSize.tsx';
-import {ChangeFontFamily} from './toppanelcomponents/ChangeFontFamily.tsx'
+import { ChangeTextColor } from './toppanelcomponents/ChangeTextColor.tsx';
 type TopPanelProps = {
   presentationTitle: string,
 }
@@ -188,6 +189,7 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-text.png'} onClick={onAddTextToSlide}></ImgButton>
           <ChangeFontSize/>
           <ChangeFontFamily/>
+          <ChangeTextColor/>
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/remove-element.png'} onClick={onRemoveElement}></ImgButton>
           <div className={styles.wrapper}>
             <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/change-background-color.png'} onClick={handleToggleOptions}></ImgButton>

@@ -1,5 +1,5 @@
 
-import { TopPanel } from '../toppanel/TopPanel.tsx'
+import { TopPanel } from '../TopPanel/TopPanel.tsx'
 import { SlidesList } from '../slidelist/SlideList.tsx'
 import { WorkSpace } from '../workspace/WorkSpace.tsx'
 import styles from './EditorView.module.css';

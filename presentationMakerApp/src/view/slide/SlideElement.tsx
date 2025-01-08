@@ -37,6 +37,7 @@ export const TextElement = ({ element, scale, isEditorView, isWorkspace}: TextEl
         height: '100%',
         overflowWrap: 'break-word',
         cursor: isEditing ? 'text' : 'default',
+        color: element.color || 'black'
     };
 
     const handleDoubleClick = () => {
@@ -93,13 +94,10 @@ export const TextElement = ({ element, scale, isEditorView, isWorkspace}: TextEl
 
 
 export const ImgElement = ({ element }: ImgElementProps) => {
-    const imgElementStyles: CSSProperties = {
-        width: '100%',
-        height: '100%',
-    }
+ 
 
     return (
-        <img src={element.src} alt={element.id} style={imgElementStyles} ></img>
+        <img src={element.src} alt={element.id} style={{width: '100%', height: '100%'}} ></img>
     )
 };
 
@@ -122,31 +120,31 @@ export const Element = ({ element, scale, selected, isEditorView, isWorkspace }:
     const handleMouseMove = React.useCallback(
         (e: MouseEvent) => {
             e.stopPropagation();
-
+    
             if (isDragging) {
                 const newX = e.clientX - dragOffset.x;
                 const newY = e.clientY - dragOffset.y;
-
+    
                 const updatedElement = {
                     ...element,
                     pos: {
-                        x: Math.max(0, Math.min(sizeSlide.width - 4 - element.size.width, newX / scale)),
-                        y: Math.max(0, Math.min(sizeSlide.height - 4 - element.size.height, newY / scale)),
+                        x: Math.max(0, Math.min(sizeSlide.width - element.size.width, newX / scale)),
+                        y: Math.max(0, Math.min(sizeSlide.height - element.size.height, newY / scale)),
                     },
                 };
                 dispatch(setIsChangingAction(true));
                 dispatch(updateElementAction(updatedElement));
             }
-
+    
             if (isResizing && resizeDirection) {
                 const deltaX = e.movementX / scale;
                 const deltaY = e.movementY / scale;
-
+    
                 let newWidth = element.size.width;
                 let newHeight = element.size.height;
                 let newX = element.pos.x;
                 let newY = element.pos.y;
-
+    
                 if (resizeDirection.includes("right")) {
                     newWidth = Math.max(10, element.size.width + deltaX);
                 }
@@ -161,18 +159,23 @@ export const Element = ({ element, scale, selected, isEditorView, isWorkspace }:
                     newHeight = Math.max(10, element.size.height - deltaY);
                     newY = Math.min(sizeSlide.height - newHeight, Math.max(0, element.pos.y + deltaY));
                 }
-
+    
+                newWidth = Math.min(sizeSlide.width - newX, newWidth);
+                newHeight = Math.min(sizeSlide.height - newY, newHeight);
+    
                 const updatedElement = {
                     ...element,
                     size: { width: newWidth, height: newHeight },
                     pos: { x: newX, y: newY },
                 };
+    
                 dispatch(setIsChangingAction(true));
                 dispatch(updateElementAction(updatedElement));
             }
         },
         [isDragging, isResizing, resizeDirection, element, scale, dragOffset.x, dragOffset.y, dispatch, sizeSlide.width, sizeSlide.height]
     );
+    
 
     const handleMouseUp = React.useCallback(() => {
         dispatch(setIsChangingAction(false));

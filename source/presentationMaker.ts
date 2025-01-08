@@ -25,6 +25,7 @@ export type TextObj = BaseSlideObj & {
     src: string;
     fontSize: number;
     fontFamily: string;
+    color?: string;
 };
 export type Slide = {
     id: string;

@@ -29,7 +29,7 @@ export const generatePDFAction = (editor: EditorType) => ({
     type: GENERATE_PDF,
     payload: editor
 })
-export const showPDFModalAction = ( url: string) => ({
+export const showPDFModalAction = (url: string, name: string) => ({
     type: SHOW_PDF_MODAL,
-    payload: url
-})
+    payload: { url, name } as { url: string; name: string },  // Типизация payload
+});
