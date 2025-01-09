@@ -65,7 +65,7 @@
   transform: rotate(3deg);
 }
 .slideContainer:hover {
-  border: 4px solid #d3d1ff;
+  border: 4px solid #ad8ff8;
 }
 .slideContainer.selected:hover {
   border: 4px solid #1E2A78; 

@@ -1,5 +1,4 @@
 export function showPDFModal(url: string, name: string): void {
-    // Создание модального окна
     const modal = document.createElement("div");
     modal.style.position = "fixed";
     modal.style.top = "0";
@@ -12,7 +11,6 @@ export function showPDFModal(url: string, name: string): void {
     modal.style.alignItems = "center";
     modal.style.justifyContent = "center";
   
-    // Создание iframe для отображения PDF
     const iframe = document.createElement("iframe");
     iframe.id = "pdf-preview";
     iframe.style.width = "80%";
@@ -22,7 +20,6 @@ export function showPDFModal(url: string, name: string): void {
     iframe.src = url;
     
   
-    // Создание кнопки закрытия
     const closeButton = document.createElement("button");
     closeButton.textContent = "Закрыть";
     closeButton.style.position = "absolute";
@@ -35,12 +32,10 @@ export function showPDFModal(url: string, name: string): void {
     closeButton.style.cursor = "pointer";
     closeButton.style.fontSize = "16px";
   
-    // Действие при нажатии на кнопку закрытия
     closeButton.onclick = () => {
       document.body.removeChild(modal);
     };
   
-    // Создание кнопки скачивания
     const downloadButton = document.createElement("button");
     downloadButton.textContent = "Скачать PDF";
     downloadButton.style.position = "absolute";
@@ -53,22 +48,19 @@ export function showPDFModal(url: string, name: string): void {
     downloadButton.style.cursor = "pointer";
     downloadButton.style.fontSize = "16px";
   
-    // Действие при нажатии на кнопку скачивания
     downloadButton.onclick = () => {
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${name}.pdf`; // Указание имени файла для загрузки
+      a.download = `${name}.pdf`; 
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
     };
   
-    // Добавление iframe, кнопок закрытия и скачивания в модальное окно
     modal.appendChild(iframe);
     modal.appendChild(closeButton);
     modal.appendChild(downloadButton);
   
-    // Добавление модального окна на страницу
     document.body.appendChild(modal);
   }
   

@@ -1,108 +1,122 @@
 .toppanel {
-    background-color: rgb(206, 223, 255);
-    box-shadow: 0 0 5px rgba(18, 37, 164, 0.5);
-    z-index: 500;
-} 
+  background-color: rgb(206, 223, 255);
+  box-shadow: 0 0 5px rgba(18, 37, 164, 0.5);
+  z-index: 500;
+}
+
 .title {
-    padding-top: 8px;
-    padding-bottom: 8x;
-    width: 300px;
-    font-size: 20px;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: #1E2A78;
-    background: none;
-    padding-left: 10px;
-    border: 0;
-  }
-.title:focus{
-    outline: none;
+  padding-top: 8px;
+  padding-bottom: 8x;
+  width: 300px;
+  font-size: 20px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #1E2A78;
+  background: none;
+  padding-left: 10px;
+  border: 0;
 }
+
+.title:focus {
+  outline: none;
+}
+
 .toolbar {
-    display: flex;
-    width: 100%;
-    padding-left: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+  display: flex;
+  width: 100%;
+  padding-left: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 
-    gap:10px;
-    background: none;
-  }
-.toolbarbutton {
-    padding: 7px;
-    background-color: transparent;
+  gap: 10px;
+  background: none;
 }
+
+.toolbarbutton {
+  padding: 7px;
+  background-color: transparent;
+}
+
 .toolbarredobutton {
-    padding: 7px;
-    background-color: transparent;
-    transform: scaleX(-1);
+  padding: 7px;
+  background-color: transparent;
+  transform: scaleX(-1);
 }
+
 .colorPicker {
-    width: 30px;
-    height: auto;
-    border: none;
-    background-color:#1E2A78;
+  width: 30px;
+  height: auto;
+  border: none;
+  background-color: #1E2A78;
 }
+
 .slideslisttoolbar {
-    display: flex;
+  display: flex;
 }
+
 .workspacetoolbar {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .toolbarbutton {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  .wrapper {
-    position: relative;
-  }
-  .optionsContainer {
-    position: absolute;
-    top: 40px; 
-    left: 0;
-    background: rgba(30, 42, 120, 1);
-    border-radius: 10px;
-    padding: 10px;
-    z-index: 999; 
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .option {
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .gradientPicker {
-    width: 200px;
-    border-radius: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
 
-  }
-  
-  .imageInput {
-    cursor: pointer;
-  }
-  .imageInputHidden {
-    display: none;
-  }
-  .imageInputLabel {
-    cursor: pointer;
-    display: inline-block;
-  }
-  
-  .imageInputIcon {
-    width: 30px; 
-    height: 30px;
-    filter: invert();
-    object-fit: contain;
-  }
-  .imageInputIcon:hover {
-    transform: scale(1.2);
-    color: #1E2A78;
-  }
+.wrapper {
+  position: relative;
+}
+
+.optionsContainer {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: rgba(209, 207, 255, 1);
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gradientPicker {
+  width: 200px;
+  border-radius: 10px;
+
+}
+
+.imageInput {
+  cursor: pointer;
+}
+
+.imageInputHidden {
+  display: none;
+}
+
+.imageInputLabel {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.imageInputIcon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.unsplashInputbutton {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+}

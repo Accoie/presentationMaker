@@ -36,8 +36,7 @@ export const ChangeFontFamily = () => {
                         left: 0,
                         width: "120px",
                         padding: "5px",
-                        backgroundColor: "rgba(30, 42, 120, 1)",
-                        
+                        backgroundColor: 'rgba(209,207,255,1)',
                         borderRadius: "5px",
                         boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.7)",
                         zIndex: 100,
@@ -52,9 +51,9 @@ export const ChangeFontFamily = () => {
                                 padding: "5px 10px",
                                 cursor: "pointer",
                                 fontFamily: font,
-                                color: "#dceaff",     
+                                color: "rgb(30, 42, 120)",     
                                 border: "3px solid transparent"                       }}
-                            onMouseEnter={(e) => (e.currentTarget.style.border = "3px solid #dceaff")}
+                            onMouseEnter={(e) => (e.currentTarget.style.border = "3px solid rgb(30, 42, 120)")}
                             onMouseLeave={(e) => (e.currentTarget.style.border = "3px solid transparent")}
                         >
                             {font}

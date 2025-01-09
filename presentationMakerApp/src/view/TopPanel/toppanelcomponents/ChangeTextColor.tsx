@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from "../../../../store/store";
 import { ImgButton } from "../../../components/button/Button";
 import styles from '../TopPanel.module.css';
 import { useState } from "react";
-import GradientColorPicker from "react-best-gradient-color-picker"; // Импорт компонента GradientColorPicker
+import GradientColorPicker from "react-best-gradient-color-picker"; 
 
 export const ChangeTextColor = () => {
     const [isChoosing, setIsChoosing] = useState(false);
@@ -33,7 +33,7 @@ export const ChangeTextColor = () => {
                         position: "absolute",
                         left: 0,
                         padding: "5px",
-                        backgroundColor: "#1e2a78",
+                        backgroundColor: "rgba(209,207,255,1)",
                         borderRadius: "5px",
                         boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.7)",
                         zIndex: 100,

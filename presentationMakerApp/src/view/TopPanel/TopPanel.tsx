@@ -219,15 +219,10 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
                     className={styles.imageInputHidden}
                   />
                   <label htmlFor="fileInput" className={styles.imageInputLabel}>
-                    <img
-                      src={'../../../icons/toppaneleditorview/add-image.png'}
-                      alt="Выбрать файл"
-                      className={styles.imageInputIcon}
-                      
-                    />
                     
+                    <ImgButton className={styles.imageInputbutton} img={'../../../icons/toppaneleditorview/add-image.png'} onClick={() =>{}}></ImgButton>
                   </label>
-                  <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={() =>handleOpenModal(true)}></ImgButton>
+                  <ImgButton className={styles.unsplashInputbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={() =>handleOpenModal(true)}></ImgButton>
                 </div>
 
               </div>

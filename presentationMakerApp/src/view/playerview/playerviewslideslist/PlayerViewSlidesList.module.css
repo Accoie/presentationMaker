@@ -1,6 +1,5 @@
 * {
   box-sizing: border-box;
-  /* Учитывает padding и border внутри размера блока */
 }
 .slideslist {
   margin-left: auto;
@@ -8,8 +7,8 @@
   padding-top: 13px;
   padding-bottom: 10px;
   display: flex;
-  width: fit-content; /* Устанавливает ширину по содержимому */
-  max-width: 100%;    /* Не превышает ширину родителя */
+  width: fit-content;
+  max-width: 100%;    
   overflow-x: auto;
   box-sizing: border-box;
   padding-left: 10px;
@@ -32,10 +31,9 @@
 .slideContainer.selected {
   border: 4px solid #1E2A78;
   transform: scale(1.02);
-  /* Цвет рамки для выбранного слайда */
 }
 .slideContainer:hover {
-  border: 4px solid #948ff8;
+  border: 4px solid #ad8ff8;
 }
 .slideContainer.selected:hover {
   border: 4px solid #1E2A78; 

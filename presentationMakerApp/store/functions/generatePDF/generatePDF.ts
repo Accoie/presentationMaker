@@ -1,6 +1,6 @@
 import { EditorType } from "../../../../source/presentationMaker";
 import { PDFDocument, rgb } from "pdf-lib";
-import fontkit from "@pdf-lib/fontkit"; // Импорт fontkit
+import fontkit from "@pdf-lib/fontkit"; 
 import { AppThunk } from "../../store";
 import { showPDFModal } from "./showPDFModal.ts";
 import { createSmoothGradient } from "./createSmoothGradient.ts";
@@ -28,27 +28,24 @@ export const generatePDF = (editor: EditorType): AppThunk => {
   return async () => {
     const pdfDoc = await PDFDocument.create();
 
-    // Регистрация fontkit для поддержки пользовательских шрифтов
     pdfDoc.registerFontkit(fontkit);
 
-    // Функция загрузки и кэширования шрифтов
     const fontCache: Record<string, any> = {};
     async function getFont(fontFamily: string) {
       if (!fontCache[fontFamily]) {
         try {
-          const fontPath = `../../../fonts/${fontFamily}.ttf`; // Путь к шрифтам
+          const fontPath = `../../../fonts/${fontFamily}.ttf`; 
           const fontBytes = await fetch(fontPath).then((res) => res.arrayBuffer());
           fontCache[fontFamily] = await pdfDoc.embedFont(fontBytes);
         } catch (error) {
           console.error(`Не удалось загрузить шрифт ${fontFamily}:`, error);
           alert(`Шрифт ${fontFamily} недоступен. Используется шрифт по умолчанию.`);
-          fontCache[fontFamily] = font; // Использовать шрифт по умолчанию
+          fontCache[fontFamily] = font; 
         }
       }
       return fontCache[fontFamily];
     }
 
-    // Загружаем шрифт по умолчанию
     const defaultFontBytes = await fetch("../../../fonts/Arial.ttf").then((res) =>
       res.arrayBuffer()
     );
@@ -61,7 +58,6 @@ export const generatePDF = (editor: EditorType): AppThunk => {
         sizeSlide.height,
       ]);
 
-      // Обработка фона слайда
       if (slide.background.includes("data:image")) {
         try {
           const image = await fromStringToPDFImage(slide.background, pdfDoc);
@@ -98,7 +94,6 @@ export const generatePDF = (editor: EditorType): AppThunk => {
           });
         }
       } else {
-        // Если фон задан как цвет или градиент
         const colors = parseColor(slide.background);
 
         if (colors.length > 1) {
@@ -120,23 +115,20 @@ export const generatePDF = (editor: EditorType): AppThunk => {
         }
       }
 
-      // Обработка элементов слайда
       for (const element of slide.elements) {
         try {
           if (element.type === "text") {
             const textObj = element;
 
-            // Получаем шрифт для элемента
             const elementFont = textObj.fontFamily
               ? await getFont(textObj.fontFamily)
               : font;
 
-            // Определяем цвет текста
             const textColorArray = parseColor(textObj.color || "#000000")[0]; // По умолчанию черный
             const [r, g, b] = textColorArray;
 
             page.drawText(textObj.src, {
-              x: sizeSlide.width - textObj.pos.x - textObj.size.width ,
+              x:  textObj.pos.x,
               y: sizeSlide.height - textObj.pos.y - textObj.size.height,
               size: textObj.fontSize,
               font: elementFont,
@@ -144,14 +136,13 @@ export const generatePDF = (editor: EditorType): AppThunk => {
               maxWidth: textObj.size.width,
             });
           } else if (element.type === "image") {
-            // Загрузка изображения элемента
             const imgObj = element;
             const image = await fromStringToPDFImage(element.src, pdfDoc);
 
             if (image) {
               page.drawImage(image, {
-                x: sizeSlide.width - imgObj.pos.x - imgObj.size.width - 10,
-                y: sizeSlide.height - imgObj.pos.y - imgObj.size.height - 10,
+                x: imgObj.pos.x,
+                y: sizeSlide.height - imgObj.pos.y - imgObj.size.height,
                 width: imgObj.size.width,
                 height: imgObj.size.height,
               });

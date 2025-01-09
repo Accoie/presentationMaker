@@ -27,7 +27,7 @@ export const TextElement = ({ element, scale, isEditorView, isWorkspace}: TextEl
     const [isEditing, setIsEditing] = React.useState(false);
     const [text, setText] = React.useState(element.src);
     const dispatch = useDispatch();
-    const textareaRef = React.useRef<HTMLTextAreaElement | null>(null); // Реф для textarea
+    const textareaRef = React.useRef<HTMLTextAreaElement | null>(null); 
     
     
     const textElementStyles: CSSProperties = {
@@ -36,7 +36,7 @@ export const TextElement = ({ element, scale, isEditorView, isWorkspace}: TextEl
         width: '100%',
         height: '100%',
         overflowWrap: 'break-word',
-        cursor: isEditing ? 'text' : 'default',
+        cursor: isEditing ? 'text' : 'auto',
         color: element.color || 'black'
     };
 
@@ -193,7 +193,7 @@ export const Element = ({ element, scale, selected, isEditorView, isWorkspace }:
             document.removeEventListener("mousemove", handleMouseMove);
             document.removeEventListener("mouseup", handleMouseUp);
         };
-    }, [isDragging, isResizing, handleMouseMove, handleMouseUp]);
+    });
 
     const onElementClick = (slideId: string, elementId: string) => {
         dispatch(setSelectionAction([{ slideId, elementId }]));
@@ -211,6 +211,7 @@ export const Element = ({ element, scale, selected, isEditorView, isWorkspace }:
     };
 
     const elementStyles: CSSProperties = {
+        
         cursor: isDragging ? "grabbing" : "auto",
         width: element.size.width * scale,
         height: element.size.height * scale,
