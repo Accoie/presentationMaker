@@ -21,7 +21,7 @@
     flex-direction: column;
     width: 100vw;
     height: 100vh;
-    background-color: #dceaff;
+    background: linear-gradient(90deg, rgba(209,207,255,1) 0%, rgba(213,213,255,1) 35%, rgba(187,243,255,1) 100%);  
   }
   
   .presentationcontainer {

@@ -14,8 +14,7 @@ function Player() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [scale, setScale] = useState(1);
-
-  editor.selection = [{ ...editor.selection, slideId: slides[currentSlideIndex].id, elementId: '' }];
+  const currentSlide = slides.find((slide) => slide.id === editor.selection[0].slideId);
 
   const goToNextSlide = () => {
     setCurrentSlideIndex((prevIndex) => Math.min(slides.length - 1, prevIndex + 1));
@@ -68,12 +67,11 @@ function Player() {
 
   useEffect(() => {
     const updateScale = () => {
-      const pvslideslistHeight: number = document.getElementById('playerviewslideslist')?.offsetHeight || 0;
-      const playerpanelHeight: number = document.getElementById('playerpanel')?.offsetHeight || 0;
+      const playerpanelHeight: number = document.getElementById('playerdown')?.offsetHeight || 0;
       const screenWidth = window.innerWidth;
       const screenHeight = isFullscreen
         ? window.innerHeight
-        : window.innerHeight - pvslideslistHeight - playerpanelHeight;
+        : window.innerHeight -  playerpanelHeight - 22;
 
       const scaleX = screenWidth / editor.presentation.sizeWorkspace.width;
       const scaleY = screenHeight / editor.presentation.sizeWorkspace.height;
@@ -91,26 +89,28 @@ function Player() {
   return (
     <div className={styles.playercontainer}>
       <div style={{ marginRight: 'auto', marginLeft: 'auto', width: 'auto' }} id="player">
+        <div className={styles.slideContainer}>
         <Slide
-          slide={editor.presentation.slides[currentSlideIndex]}
+          slide={currentSlide || slides[0]}
           selected={{ slideId: editor.selection[0].slideId, elementId: "" }}
           scale={scale + 0.01}
           isEditorView={false}
           isWorkspace={false}
         />
+        </div>
       </div>
 
       {!isFullscreen && (
-        <>
+        <div style = {{width: '100%'}} id="playerdown">
           <PlayerPanel 
             goToNextSlide={goToNextSlide} 
             goToPreviousSlide={goToPreviousSlide} 
             toggleFullscreen={toggleFullscreen}
           />
-          <div style={{ width: '100%', overflowX: 'auto' }} id='playerviewslideslist'>
+          <div className={styles.playerviewslideslist}>
             <PlayerViewSlidesList slidesList={slides} selected={editor.selection[0]} />
           </div>
-        </>
+        </div>
       )}
     </div>
   );

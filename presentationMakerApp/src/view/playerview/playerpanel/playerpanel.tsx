@@ -19,7 +19,7 @@ export const PlayerPanel = ({ goToNextSlide, goToPreviousSlide, toggleFullscreen
     return (
       <>
         {/*здесь ссылка в img записывается относительно компонента ImgButton, который находится в components */}
-        <div style={{backgroundColor: '#1E2A78', display: 'flex'}} id='playerpanel'>
+        <div className={styles.playerpanel}>
         <ImgButton className='' img={'../../../icons/playerpanelplayerview/close.png'} onClick={handleGoToEditor}></ImgButton> 
         <div className={styles.playergotobuttons}>
         <ImgButton className={styles.playerprevbutton} img={'../../../icons/playerpanelplayerview/next.png'} onClick={goToPreviousSlide}></ImgButton> 
