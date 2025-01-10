@@ -6,6 +6,6 @@ interface ImgElementProps {
 
 export const ImgElement = ({ element }: ImgElementProps) => {
   return (
-    <img src={element.src} alt={element.id} style={{ width: '100%', height: '100%' }} ></img>
+    <img src={element.src} alt={element.id} style={{ width: '100%', height: '100%' }} draggable='false'></img>
   )
 };

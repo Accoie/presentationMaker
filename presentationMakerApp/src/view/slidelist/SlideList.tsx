@@ -40,7 +40,7 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
 
   function onDragStart(slideId: string, event: React.DragEvent<HTMLDivElement>) {
     event.stopPropagation();
-
+        
     const selectedSlideIds = selected.map((sel) => sel.slideId);
     const isSlideSelected = selectedSlideIds.includes(slideId);
 
@@ -53,6 +53,7 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
 
     const firstSlideElement = slideRefs.current[slidesToDrag[0]];
     const secondSlideElement = slideRefs.current[slidesToDrag[1]];
+    
     if (firstSlideElement) {
       const firstRect = firstSlideElement.getBoundingClientRect();
       const secondRect = secondSlideElement?.getBoundingClientRect();
@@ -64,10 +65,11 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
     } else {
       setDraggingGroupPosition({ x: event.clientX, y: event.clientY });
     }
+    
   }
 
   function onDrag(event: React.DragEvent<HTMLDivElement>) {
-
+    event.preventDefault();
     if (draggingGroupPosition && draggedSlideIds.length > 1) {
       setDraggingGroupPosition({
         x: event.clientX,
@@ -116,9 +118,7 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
     const insertIndex = targetIndex > draggedIndices[0] ? targetIndex - draggedSlides.length + 1 : targetIndex;
     updatedSlides.splice(insertIndex, 0, ...draggedSlides);
 
-    console.time('onDrop');
     dispatch(updateSlidesAction(updatedSlides));
-    console.timeEnd('onDrop');
     onDragEnd();
   }
 
