@@ -1,32 +1,27 @@
 import styles from './TopPanel.module.css';
 import React from 'react';
 import { ImgButton } from '../../components/button/Button.tsx';
-import { ElementType, ImgObj } from '/Frontend/presentationMaker/source/presentationMaker.ts';
-import { addSlideAction, changeSlideBackgroundAction, removeSlideAction } from '../../../store/actions/editorSlidesActions.ts'
+import { addSlideAction, removeSlideAction } from '../../../store/actions/editorSlidesActions.ts'
 import { importImage } from '../../../store/functions/importImage.ts'
 import { renamePresentationTitleAction } from '../../../store/actions/editorPresentationActions.ts'
 import { exportEditorAction, importEditorAction, undoEditorAction, redoEditorAction } from '../../../store/actions/editorActions.ts'
 import { removeElementAction, addImageToSlideAction, addTextToSlideAction } from '../../../store/actions/editorSlideElementsActions.ts'
-import { TextObj } from '../../../../source/presentationMaker.ts';
+import { TextObj, ElementType, ImgObj } from '../../../../types/presentationMaker.ts';
 import { useAppDispatch, useAppSelector } from '../../../store/store.ts';
 import { UndoableState } from '../../../store/store.ts';
 import { generatePDF } from '../../../store/functions/generatePDF/generatePDF.ts';
 import { useNavigate } from 'react-router';
-import { useState } from 'react';
-import GradientPicker from 'react-best-gradient-color-picker'
 import { v4 as uuidv4 } from 'uuid';
 import { ChangeFontFamily } from './toppanelcomponents/ChangeFontFamily.tsx';
 import { ChangeFontSize } from './toppanelcomponents/ChangeFontSize.tsx';
 import { ChangeTextColor } from './toppanelcomponents/ChangeTextColor.tsx';
+import { ChangeBackgroundColor } from './toppanelcomponents/changebackgroundcolor/ChangeBackgroundColor.tsx';
+
 type TopPanelProps = {
   presentationTitle: string,
 }
 
 export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
-  const [showOptions, setShowOptions] = useState(false);
-  const [gradient, setGradient] = useState('');
-
-
   const editor = useAppSelector((state: UndoableState) => state.present);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -39,33 +34,7 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
   const onTitleChange: React.ChangeEventHandler = (event) => {
     dispatch(renamePresentationTitleAction((event.target as HTMLInputElement).value))
   }
-  const handleToggleOptions = () => {
-    setShowOptions(!showOptions);
-  };
 
-  const handleGradientChange = (newGradient: string) => {
-    setGradient(newGradient);
-    dispatch(changeSlideBackgroundAction(newGradient as string))
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        const base64Image = reader.result as string;
-        dispatch(changeSlideBackgroundAction(`url(${base64Image}) no-repeat center center / cover`));
-        console.log('Base64 Image:', base64Image);
-      };
-
-      reader.onerror = () => {
-        console.error('Error reading file:', reader.error);
-      };
-
-      reader.readAsDataURL(file); 
-    }
-  };
   function onAddImageToSlide() {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -105,7 +74,7 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
       id: '',
       type: ElementType.text,
       fontSize: 20,
-      fontFamily: 'Helvetica',
+      fontFamily: 'Arial',
       src: 'Новый текст',
       size: { width: 200, height: 200 },
       pos: { x: 0, y: 0 }
@@ -187,48 +156,12 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
         <div className={styles.workspacetoolbar}>
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-image.png'} onClick={onAddImageToSlide}></ImgButton>
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-text.png'} onClick={onAddTextToSlide}></ImgButton>
-          <ChangeFontSize/>
-          <ChangeFontFamily/>
-          <ChangeTextColor/>
+          <ChangeFontSize />
+          <ChangeFontFamily />
+          <ChangeTextColor />
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/remove-element.png'} onClick={onRemoveElement}></ImgButton>
-          <div className={styles.wrapper}>
-            <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/change-background-color.png'} onClick={handleToggleOptions}></ImgButton>
-            {showOptions && (
-              <div className={styles.optionsContainer}>
-                <div className={styles.option}>
-                  <GradientPicker
-                    value={gradient}
-                    onChange={handleGradientChange}
-                    className={styles.gradientPicker}
-                    hidePresets
-                    width={170}
-                    height={100}
-                    hideAdvancedSliders
-                    hideColorGuide
-                    hideInputType
-                    hideGradientStop
-                    hideOpacity
-                  />
-                </div>
-                <div className={styles.option}>
-                  <input
-                    id="fileInput"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className={styles.imageInputHidden}
-                  />
-                  <label htmlFor="fileInput" className={styles.imageInputLabel}>
-                    
-                    <ImgButton className={styles.imageInputbutton} img={'../../../icons/toppaneleditorview/add-image.png'} onClick={() =>{}}></ImgButton>
-                  </label>
-                  <ImgButton className={styles.unsplashInputbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={() =>handleOpenModal(true)}></ImgButton>
-                </div>
+          <ChangeBackgroundColor />
 
-              </div>
-            )}
-          </div>
-          
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onUndo}></ImgButton>
           <ImgButton className={styles.toolbarredobutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onRedo}></ImgButton>
           <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={() => handleOpenModal(false)}></ImgButton>

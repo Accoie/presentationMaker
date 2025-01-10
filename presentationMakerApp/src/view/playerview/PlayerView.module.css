@@ -3,23 +3,33 @@
 }
 
 .playercontainer {
+  
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(90deg, rgba(209,207,255,1) 0%, rgba(213,213,255,1) 35%, rgba(187,243,255,1) 100%);
+  background: linear-gradient(90deg, rgba(209, 207, 255, 1) 0%, rgba(213, 213, 255, 1) 35%, rgba(187, 243, 255, 1) 100%);
 }
+
 .slideContainer {
-  
-   
-   width: fit-content;
-   height: fit-content;
-   margin-right: auto;
-   margin-left: auto;
-   overflow: hidden;
+  margin-top: 10px;
+  width: fit-content;
+  height: fit-content;
+  margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
+  border: 4px solid #1E2A78;
+  border-radius: 5%;
+  box-sizing: border-box;
+  box-shadow: 0 0 10px #a5a9e9;
 }
+
+:-webkit-full-screen .slideContainer {
+  border: none; 
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
 .playerviewslideslist {
   max-width: '100%';
-  
-
 }
-

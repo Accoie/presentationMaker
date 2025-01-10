@@ -1,6 +1,6 @@
-import {EditorType} from '../../../source/presentationMaker';
+import { EditorType } from '../../../types/presentationMaker';
 
-function renamePresentationTitle(editor: EditorType, newTitle: string): EditorType {
+export function renamePresentationTitle(editor: EditorType, newTitle: string): EditorType {
     return {
         ...editor,
         presentation: {
@@ -8,8 +8,4 @@ function renamePresentationTitle(editor: EditorType, newTitle: string): EditorTy
             title: newTitle,
         }
     }
-}
-
-export {
-    renamePresentationTitle,
 }

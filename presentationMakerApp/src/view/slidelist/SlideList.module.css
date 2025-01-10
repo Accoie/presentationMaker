@@ -1,19 +1,20 @@
 * {
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
+
 .slideslist {
   padding-top: 15px;
   padding-right: 7px;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   box-shadow: 0 0 10px rgba(18, 37, 164, 0.5);
   align-items: center;
-  flex-grow: 1; 
+  flex-grow: 1;
   width: 100%;
   height: 100%;
-  overflow-y: scroll; 
+  overflow-y: scroll;
   box-sizing: border-box;
-  background-color:rgb(206, 223, 255);
+  background-color: rgb(206, 223, 255);
 }
 
 .slideContainer {
@@ -27,51 +28,56 @@
   border: 4px solid transparent;
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(18, 37, 164, 0.5);
-
   transition: box-shadow 0.2s ease, transform 0.1s ease;
 }
+
 .slideContainer.hovered {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   transform: scale(1.02);
 }
+
 .slideContainer.selected {
   border: 4px solid #1E2A78;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  transform:scale(1.02)
+  transform: scale(1.02)
 }
 
 .numberslide {
   padding-right: 5px;
   padding-left: 5px;
   color: #1E2A78;
-  font-family:'Impact';
+  font-family: 'Impact';
   display: flex;
 }
+
 .slideslist::-webkit-scrollbar {
-    width: 6px;             
-    height: 6px;
-  }
-  
-  .slideslist::-webkit-scrollbar-track {
-    background: transparent;       
-  }
-  
-  .slideslist::-webkit-scrollbar-thumb {
-    background-color: #1E2A78;
-    border-radius: 20px;      
-  }
+  width: 6px;
+  height: 6px;
+}
+
+.slideslist::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slideslist::-webkit-scrollbar-thumb {
+  background-color: #1E2A78;
+  border-radius: 20px;
+}
 
 .slideContainer:active {
   transform: rotate(3deg);
 }
-.slideContainer:hover {
-  border: 4px solid #ad8ff8;
-}
-.slideContainer.selected:hover {
-  border: 4px solid #1E2A78; 
-}.dragging {
 
-  border: 4px solid #1E2A78; 
+.slideContainer:hover {
+  border: 4px solid #a5a9e9;
+}
+
+.slideContainer.selected:hover {
+  border: 4px solid #1E2A78;
+}
+
+.dragging {
+  border: 4px solid #1E2A78;
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 20px;

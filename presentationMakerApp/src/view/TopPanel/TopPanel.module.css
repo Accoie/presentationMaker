@@ -83,7 +83,6 @@
 }
 
 .option {
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -93,30 +92,4 @@
   width: 200px;
   border-radius: 10px;
 
-}
-
-.imageInput {
-  cursor: pointer;
-}
-
-.imageInputHidden {
-  display: none;
-}
-
-.imageInputLabel {
-  cursor: pointer;
-  display: inline-block;
-}
-
-.imageInputIcon {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-}
-
-.unsplashInputbutton {
-  width: 30px;
-  height: 30px;
-
-  object-fit: contain;
 }

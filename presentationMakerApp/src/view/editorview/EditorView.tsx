@@ -1,5 +1,4 @@
-
-import { TopPanel } from '../TopPanel/TopPanel.tsx'
+import { TopPanel } from '../toppanel/TopPanel.tsx'
 import { SlidesList } from '../slidelist/SlideList.tsx'
 import { WorkSpace } from '../workspace/WorkSpace.tsx'
 import styles from './EditorView.module.css';
@@ -7,9 +6,7 @@ import { useAppSelector, UndoableState } from '../../../store/store.ts';
 
 export function EditorView() {
   const editor = useAppSelector((state: UndoableState) => state.present);
-
   const slides = editor.presentation.slides;
-  
   return (
     <>
       <div className={styles.presentation}>
@@ -25,4 +22,3 @@ export function EditorView() {
   );
 }
 
-export default EditorView;

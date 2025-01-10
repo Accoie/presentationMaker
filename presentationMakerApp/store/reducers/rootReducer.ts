@@ -1,12 +1,10 @@
-import { UnknownAction } from "redux";
-import { editorPresentationReducer } from "./editorPresentationReducer";
-import { editorReducer } from "./editorReducer";
-import { editorSlidesReducer } from "./editorSlidesReducer";
-import { editorSlideElementsReducer } from "./editorSlideElementsReducer";
-
-import {  UndoableState, saveEditorStateToLocalStorage } from "../store";
-import { editor } from "../data";
-
+import { UnknownAction } from 'redux';
+import { editorPresentationReducer } from './editorPresentationReducer';
+import { editorReducer } from './editorReducer';
+import { editorSlidesReducer } from './editorSlidesReducer';
+import { editorSlideElementsReducer } from './editorSlideElementsReducer';
+import {  UndoableState, saveEditorStateToLocalStorage } from '../store';
+import { editor } from '../data';
 
 export const rootReducer = (state: UndoableState = {past: [], present: editor, future: [], isChanging: false}, action: UnknownAction): UndoableState => {
   let newState = {...state};
@@ -21,11 +19,11 @@ export const rootReducer = (state: UndoableState = {past: [], present: editor, f
     action.type !== 'REDO_EDITOR' &&
     action.type !== 'SET_SELECTION'        
   ) {
+    
     newState.past = [...newState.past, state.present];
     newState.future = [];
-  }
-  if(!state.isChanging || action.payload === false) {
     saveEditorStateToLocalStorage(newState.present);
   }
+  
   return newState;
 };

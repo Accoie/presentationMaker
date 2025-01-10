@@ -1,4 +1,4 @@
-import {EditorType, PresentationSelection} from '../../../source/presentationMaker.ts';
+import { EditorType, PresentationSelection } from '../../../types/presentationMaker.ts';
 
 export function setSelection(editor: EditorType, newSelection: PresentationSelection): EditorType {
     return {

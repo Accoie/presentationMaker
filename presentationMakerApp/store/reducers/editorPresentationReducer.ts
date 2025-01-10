@@ -1,8 +1,7 @@
 import { UnknownAction } from 'redux';
-import * as tools from '../../../source/presentationMaker';
+import * as tools from '../../../types/presentationMaker';
 import { renamePresentationTitle } from '../functions/renamePresentationTitle';
 import { setSelection } from '../functions/setSelection';
-
 
 export const editorPresentationReducer = (state: tools.EditorType, action: UnknownAction): tools.EditorType => {
   switch (action.type) {

@@ -1,31 +1,32 @@
 import React, { useState, useRef } from 'react';
-import { Slide } from ".././slide/Slide.tsx";
+import { Slide } from '.././slide/Slide.tsx';
 import styles from './SlideList.module.css';
-import * as tools from "../../../../source/presentationMaker.ts";
+import * as tools from '../../../../types/presentationMaker.ts';
 import { useDispatch } from 'react-redux';
 import { setSelectionAction } from '../../../store/actions/editorPresentationActions.ts';
 import { updateSlidesAction } from '../../../store/actions/editorSlidesActions.ts';
-import { PresentationSelection } from '/Frontend/presentationMaker/source/presentationMaker.ts';
+
 
 type SlidesListProps = {
-  slidesList: tools.Slide[], 
+  slidesList: tools.Slide[],
   selected: tools.PresentationSelection,
 };
 
-export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
+export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps) => {
   const safeSelected: tools.Selection = selected[0] || { slideId: '', elementId: '' };
   const [draggedSlideIds, setDraggedSlideIds] = useState<string[]>([]);
   const [hoveredSlideId, setHoveredSlideId] = useState<string | null>(null);
   const [draggingGroupPosition, setDraggingGroupPosition] = useState<{ x: number; y: number } | null>(null);
-  const [rectT, setRectT] = useState<DOMRect[]>([])
+  const [rectT, setRectT] = useState<DOMRect[]>([]);
   const dispatch = useDispatch();
 
   const slideRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const slidesListRef = useRef<HTMLDivElement | null>(null);
 
   function onSlideClick(slideId: string, event: React.MouseEvent<HTMLDivElement>) {
     if (event.ctrlKey || event.metaKey) {
       const isAlreadySelected: boolean = selected.some((sel) => sel.slideId === slideId);
-      let updatedSelection: PresentationSelection;
+      let updatedSelection: tools.PresentationSelection;
       if (isAlreadySelected) {
         updatedSelection = selected.filter((sel) => sel.slideId !== slideId);
       } else {
@@ -33,7 +34,7 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
       }
       dispatch(setSelectionAction(updatedSelection));
     } else {
-      dispatch(setSelectionAction([{ slideId, elementId: '' }])); 
+      dispatch(setSelectionAction([{ slideId, elementId: '' }]));
     }
   }
 
@@ -42,16 +43,16 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
 
     const selectedSlideIds = selected.map((sel) => sel.slideId);
     const isSlideSelected = selectedSlideIds.includes(slideId);
-  
+
     let slidesToDrag = isSlideSelected ? selectedSlideIds : [slideId];
     slidesToDrag = slidesToDrag.sort(
       (a, b) => slidesList.findIndex((slide) => slide.id === a) - slidesList.findIndex((slide) => slide.id === b)
     );
-  
+
     setDraggedSlideIds(slidesToDrag);
-  
+
     const firstSlideElement = slideRefs.current[slidesToDrag[0]];
-    const secondSlideElement = slideRefs.current[slidesToDrag[1]]
+    const secondSlideElement = slideRefs.current[slidesToDrag[1]];
     if (firstSlideElement) {
       const firstRect = firstSlideElement.getBoundingClientRect();
       const secondRect = secondSlideElement?.getBoundingClientRect();
@@ -60,21 +61,19 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
       } else {
         setRectT([firstRect]);
       }
-      
-    
     } else {
-      
       setDraggingGroupPosition({ x: event.clientX, y: event.clientY });
     }
   }
 
   function onDrag(event: React.DragEvent<HTMLDivElement>) {
+
     if (draggingGroupPosition && draggedSlideIds.length > 1) {
       setDraggingGroupPosition({
         x: event.clientX,
         y: event.clientY + (((rectT[1]?.y || 0) - (rectT[0]?.y || 0))) * (draggedSlideIds.length - 1) / 2,
       });
-    } else { 
+    } else {
       setDraggingGroupPosition({
         x: event.clientX,
         y: event.clientY,
@@ -83,8 +82,8 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
   }
 
   function onDragOver(slideId: string, event: React.DragEvent<HTMLDivElement>) {
-    event.preventDefault();
     event.stopPropagation();
+    event.preventDefault();
     setHoveredSlideId(slideId);
   }
 
@@ -117,19 +116,25 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
     const insertIndex = targetIndex > draggedIndices[0] ? targetIndex - draggedSlides.length + 1 : targetIndex;
     updatedSlides.splice(insertIndex, 0, ...draggedSlides);
 
+    console.time('onDrop');
     dispatch(updateSlidesAction(updatedSlides));
+    console.timeEnd('onDrop');
     onDragEnd();
   }
 
   return (
-    <div className={styles.slideslist}>
+    <div
+      className={styles.slideslist}
+      ref={slidesListRef}
+
+    >
       {draggedSlideIds.length > 0 && draggingGroupPosition && (
         <div
           className={styles.draggingGroup}
           style={{
             left: draggingGroupPosition.x,
             top: draggingGroupPosition.y,
-            transform: 'translate(-50%, -50%)', 
+            transform: 'translate(-50%, -50%)',
             position: 'fixed',
             pointerEvents: 'none',
           }}
@@ -150,38 +155,34 @@ export const SlidesList = ({ slidesList, selected }: SlidesListProps) => {
       {slidesList.map((slide, index) => {
         const isDragging = draggedSlideIds.includes(slide.id);
         return (
-          <div style={{display: 'flex'}}>
-          <div className={styles.numberslide}>{index + 1}</div>
-          <div
-            key={slide.id}
-            className={`${styles.slideContainer} ${
-              selected.some((sel) => sel.slideId === slide.id) ? styles.selected : ''
-            } ${hoveredSlideId === slide.id ? styles.hovered : ''}`}
-            draggable
-            onDragStartCapture={(event) => onDragStart(slide.id, event)}
-            onDrag={(event) => onDrag(event)}
-            onDragOver={(event) => onDragOver(slide.id, event)}
-            onDrop={() => onDrop(slide.id)}
-            onDragLeave={onDragLeave}
-            onDragEnd={onDragEnd}
-            onClick={(event) => {
-              event.stopPropagation();
-              onSlideClick(slide.id, event);
-            }}
-            style={{ opacity: isDragging ? 0 : 1, 
-              
-                }}
-                ref={(el) => {
-                  slideRefs.current[slide.id] = el;
-                }}
-          >
-            
-            <Slide slide={slide} scale={0.15} selected={safeSelected} isEditorView={true} isWorkspace={false} />
-          </div>
+          <div style={{ display: 'flex' }} key={slide.id}>
+            <div className={styles.numberslide}>{index + 1}</div>
+            <div
+              className={`${styles.slideContainer} ${selected.some((sel) => sel.slideId === slide.id) ? styles.selected : ''
+                } ${hoveredSlideId === slide.id ? styles.hovered : ''}`}
+              draggable
+              onDragStart={(event) => onDragStart(slide.id, event)}
+              onDrag={(event) => onDrag(event)}
+              onDragOver={(event) => onDragOver(slide.id, event)}
+              onDrop={() => onDrop(slide.id)}
+              onDragLeave={onDragLeave}
+              onDragEnd={onDragEnd}
+              onClick={(event) => {
+                event.stopPropagation();
+                onSlideClick(slide.id, event);
+              }}
+              style={{
+                opacity: isDragging ? 0 : 1,
+              }}
+              ref={(el) => {
+                slideRefs.current[slide.id] = el;
+              }}
+            >
+              <Slide slide={slide} scale={0.15} selected={safeSelected} isEditorView={true} isWorkspace={false} />
+            </div>
           </div>
         );
-        
       })}
     </div>
   );
-};
+});

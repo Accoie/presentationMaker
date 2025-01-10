@@ -1,4 +1,4 @@
-import * as tools from '../../source/presentationMaker'
+import * as tools from '../../types/presentationMaker'
 
  const maximalPresentation: tools.Presentation = {
   title: 'Super Presentation',

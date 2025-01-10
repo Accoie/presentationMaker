@@ -1,7 +1,7 @@
-import {EditorType, Slide} from '../../../source/presentationMaker.ts';
-import { v4 as uuidv4 } from 'uuid';
+import {EditorType, Slide} from '../../../types/presentationMaker.ts';
+import {v4 as uuidv4} from 'uuid';
 
-function addSlide(editor: EditorType): EditorType {
+export function addSlide(editor: EditorType): EditorType {
     console.log(editor.selection)
     let insertIndex = 0
     insertIndex = editor.presentation.slides.findIndex(slide => slide.id === editor.selection[editor.selection.length - 1].slideId);
@@ -26,6 +26,3 @@ function addSlide(editor: EditorType): EditorType {
     }
 }
 
-export {
-    addSlide,
-}

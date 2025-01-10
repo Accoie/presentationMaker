@@ -1,7 +1,6 @@
-import {EditorType} from "/Frontend/presentationMaker/source/presentationMaker";
+import { EditorType } from '/Frontend/presentationMaker/types/presentationMaker';
 
 export function changeSlideBackground(editor: EditorType, newBackground: string): EditorType {
-   
     return {
         ...editor,
         presentation: {

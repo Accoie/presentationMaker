@@ -1,5 +1,5 @@
-import { EditorType, TextObj } from "/Frontend/presentationMaker/source/presentationMaker";
-import { v4 as uuidv4 } from "uuid";
+import {EditorType, TextObj} from '/Frontend/presentationMaker/types/presentationMaker';
+import {v4 as uuidv4} from 'uuid';
 
 function addTextToSlide(editor: EditorType, newText: TextObj): EditorType {
     newText.id = uuidv4();

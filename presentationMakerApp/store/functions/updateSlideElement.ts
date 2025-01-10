@@ -1,14 +1,12 @@
-import * as tools from "/Frontend//presentationMaker/source/presentationMaker"
+import * as tools from '../../../types/presentationMaker'
 
 export function updateElement(editor: tools.EditorType, newElement: tools.SlideObj): tools.EditorType {
     let slideId: string | undefined;
-
     if (editor.selection && editor.selection.length > 0 && editor.selection[0]) {
         slideId = editor.selection[0].slideId;
     } else {
         return { ...editor };
     }
-
     return {
         ...editor, 
         presentation: {

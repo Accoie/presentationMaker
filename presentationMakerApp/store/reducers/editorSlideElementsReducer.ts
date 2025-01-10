@@ -1,5 +1,5 @@
 import { UnknownAction } from 'redux';
-import * as tools from '/Frontend/presentationMaker/source/presentationMaker';
+import * as tools from '/Frontend/presentationMaker/types/presentationMaker';
 import { updateElement} from '../functions/updateSlideElement'
 import {removeElement} from '../functions/removeElement'
 import { addImageToSlide } from '../functions/addImageToSlide';

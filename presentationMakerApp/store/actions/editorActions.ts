@@ -1,4 +1,4 @@
-import { EditorType } from "../../../source/presentationMaker";
+import { EditorType } from '../../../source/presentationMaker';
 
 const IMPORT_EDITOR = 'IMPORT_EDITOR';
 const EXPORT_EDITOR = 'EXPORT_EDITOR';
@@ -12,24 +12,30 @@ export const importEditorAction = (jsonString: string) => ({
     type: IMPORT_EDITOR,
     payload: jsonString,
 });
+
 export const exportEditorAction = () => ({
     type: EXPORT_EDITOR,
 });
+
 export const undoEditorAction = () => ({
     type: UNDO_EDITOR
 });
+
 export const redoEditorAction = () => ({
     type: REDO_EDITOR
 });
+
 export const setIsChangingAction = (isChanging: boolean) => ({
     type: SET_IS_CHANGING,
     payload: isChanging
 });
+
 export const generatePDFAction = (editor: EditorType) => ({
     type: GENERATE_PDF,
     payload: editor
-})
+});
+
 export const showPDFModalAction = (url: string, name: string) => ({
     type: SHOW_PDF_MODAL,
-    payload: { url, name } as { url: string; name: string },  // Типизация payload
+    payload: { url, name } as { url: string; name: string },
 });

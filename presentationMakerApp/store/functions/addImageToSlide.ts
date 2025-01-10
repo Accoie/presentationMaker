@@ -1,6 +1,7 @@
-import {EditorType, ImgObj} from "/Frontend/presentationMaker/source/presentationMaker";
+import {EditorType, ImgObj} from '/Frontend/presentationMaker/types/presentationMaker';
 import { v4 as uuidv4 } from 'uuid';
-function addImageToSlide(editor: EditorType, newImage: ImgObj): EditorType {
+
+export function addImageToSlide(editor: EditorType, newImage: ImgObj): EditorType {
     newImage.id = uuidv4();
     let slideId: string | undefined;
     if (editor.selection && editor.selection.length > 0 && editor.selection[0]) {
@@ -8,7 +9,6 @@ function addImageToSlide(editor: EditorType, newImage: ImgObj): EditorType {
     } else {
         return { ...editor };
     }
-
     return {
         ...editor,
         selection: [
@@ -29,6 +29,3 @@ function addImageToSlide(editor: EditorType, newImage: ImgObj): EditorType {
     }
 }
 
-export {
-    addImageToSlide,
-}
