@@ -111,8 +111,10 @@ export const Element = React.memo(({ element, scale, selected, isEditorView, isW
     };
   });
 
-  const onElementClick = (slideId: string, elementId: string) => {
-    dispatch(setSelectionAction([{ slideId, elementId }]));
+  function onElementClick (slideId: string, elementId: string) {
+    if(elementId !== selected?.elementId) {
+      dispatch(setSelectionAction([{ slideId, elementId }]));
+    }
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {

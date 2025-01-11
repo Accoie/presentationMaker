@@ -67,11 +67,12 @@ function Player() {
 
   useEffect(() => {
     const updateScale = () => {
-      const playerpanelHeight: number = document.getElementById('playerdown')?.offsetHeight || 0;
+      const playerdownHeight: number = document.getElementById('playerdown')?.offsetHeight || 0;
+      console.log(playerdownHeight)
       const screenWidth = window.innerWidth;
       const screenHeight = isFullscreen
         ? window.innerHeight
-        : window.innerHeight - playerpanelHeight - 40;
+        : window.innerHeight - playerdownHeight - 40;
 
       const scaleX = screenWidth / editor.presentation.sizeWorkspace.width;
       const scaleY = screenHeight / editor.presentation.sizeWorkspace.height;

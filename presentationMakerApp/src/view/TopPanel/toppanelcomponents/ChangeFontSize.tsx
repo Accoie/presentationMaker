@@ -2,17 +2,25 @@ import { updateElementAction } from '../../../../store/actions/editorSlideElemen
 import { useAppSelector, useAppDispatch } from '../../../../store/store';
 import { ImgButton } from '../../../components/button/Button';
 import styles from '../TopPanel.module.css';
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 
 export const ChangeFontSize = () => {
   const [isChoosing, setIsChoosing] = useState(false);
-  const [fontSize, setFontSize] = useState<number | ''>('');
+  
   const dispatch = useAppDispatch();
   const selected = useAppSelector((state) => state.present.selection[0] || { slideId: '', elementId: '' });
   const element = ((useAppSelector((state) => state.present.presentation.slides)
     .find((slide) => slide.id === selected.slideId))
     ?.elements.find((el) => el.id === selected.elementId));
-
+  
+  const [fontSize, setFontSize] = useState<number | ''>('');
+  useEffect(() => {
+    if (element?.type === 'text' && element.fontSize) {
+      setFontSize(element.fontSize);
+    } else {
+      setFontSize(20); // Значение по умолчанию
+    }
+  }, [element]);
   function onChangeFontSize(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     if (value === '') {

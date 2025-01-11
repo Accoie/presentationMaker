@@ -20,6 +20,8 @@
   transform: scaleY(-1);
 }
 
+
+
 .slideslist::-webkit-scrollbar {
   height: 8px;
 }

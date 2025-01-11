@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { TextObj } from '../../../../../types/presentationMaker';
 import { CSSProperties } from 'react';
-import { updateElementAction } from '../../../../store/actions/editorSlideElementsActions';
+import { removeElementAction, updateElementAction } from '../../../../store/actions/editorSlideElementsActions';
 
 interface TextElementProps {
   element: TextObj;
@@ -33,9 +33,11 @@ export const TextElement = ({ element, scale, isEditorView, isWorkspace }: TextE
 
   const handleBlur = () => {
     setIsEditing(false);
-    if (text !== element.src) {
+    if (text !== element.src && text !== '') {
       const updatedElement = { ...element, src: text };
       dispatch(updateElementAction(updatedElement));
+    } else if(text === '') {
+      dispatch(removeElementAction())
     }
   };
 
@@ -65,7 +67,7 @@ export const TextElement = ({ element, scale, isEditorView, isWorkspace }: TextE
   return isEditing ? (
     <textarea
       ref={textareaRef}
-      style={{ ...textElementStyles, resize: 'none', border: '1px solid #ccc', padding: '4px', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+      style={{ ...textElementStyles, resize: 'none', border: '1px solid #ccc', padding: '4px', backgroundColor: 'rgba(0, 0, 0, 0.5)', color: 'white'}}
       value={text}
       onChange={handleChange}
       onBlur={handleBlur}

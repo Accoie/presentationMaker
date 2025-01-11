@@ -56,7 +56,6 @@ export const ChangeTextColor = () => {
             hideGradientControls
             hideInputs
             hideColorTypeBtns
-            hideControls
           />
         </div>
       )}

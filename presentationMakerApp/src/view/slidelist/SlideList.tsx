@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Slide } from '.././slide/Slide.tsx';
 import styles from './SlideList.module.css';
 import * as tools from '../../../../types/presentationMaker.ts';
 import { useDispatch } from 'react-redux';
 import { setSelectionAction } from '../../../store/actions/editorPresentationActions.ts';
 import { updateSlidesAction } from '../../../store/actions/editorSlidesActions.ts';
+import { useAppSelector } from '../../../store/store.ts';
 
 
 type SlidesListProps = {
@@ -13,16 +14,61 @@ type SlidesListProps = {
 };
 
 export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps) => {
+  const editor = useAppSelector((state) => state.present)
   const safeSelected: tools.Selection = selected[0] || { slideId: '', elementId: '' };
   const [draggedSlideIds, setDraggedSlideIds] = useState<string[]>([]);
   const [hoveredSlideId, setHoveredSlideId] = useState<string | null>(null);
   const [draggingGroupPosition, setDraggingGroupPosition] = useState<{ x: number; y: number } | null>(null);
   const [rectT, setRectT] = useState<DOMRect[]>([]);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+
+  const currentSlide = slidesList.find((slide) => slide.id === editor.selection[0]?.slideId) ;
+
+  const goToNextSlide = () => {
+    setCurrentSlideIndex((prevIndex) => Math.min(editor.presentation.slides.length - 1, prevIndex + 1));
+    const slide = { ...editor.presentation.slides[Math.min(editor.presentation.slides.length - 1, currentSlideIndex + 1)] };
+    dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
+  };
+
+  const goToPreviousSlide = () => {
+    setCurrentSlideIndex((prevIndex) => Math.max(0, prevIndex - 1));
+    const slide = { ...editor.presentation.slides[Math.max(0, currentSlideIndex - 1)] };
+    dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
+  };
+
   const dispatch = useDispatch();
 
   const slideRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  useEffect(() => {
+    if (slidesListRef.current && safeSelected.slideId) {
+      const selectedSlideElement = slideRefs.current[safeSelected.slideId];
+      if (selectedSlideElement) {
+        selectedSlideElement.scrollIntoView({
+          behavior: 'smooth', // Плавная прокрутка
+          block: 'center',    // Центрирование по вертикали
+          inline: 'center',   // Центрирование по горизонтали
+        });
+      }
+    }
+  }, [safeSelected.slideId])
   const slidesListRef = useRef<HTMLDivElement | null>(null);
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+      event.preventDefault();
+      goToNextSlide();
+    } else if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+      event.preventDefault();
+      goToPreviousSlide();
+    }
+  };
 
+ 
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  });
   function onSlideClick(slideId: string, event: React.MouseEvent<HTMLDivElement>) {
     if (event.ctrlKey || event.metaKey) {
       const isAlreadySelected: boolean = selected.some((sel) => sel.slideId === slideId);
@@ -34,7 +80,9 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
       }
       dispatch(setSelectionAction(updatedSelection));
     } else {
-      dispatch(setSelectionAction([{ slideId, elementId: '' }]));
+      if(slideId !== selected?.[0]?.slideId) {
+        dispatch(setSelectionAction([{ slideId, elementId: '' }]));
+      }
     }
   }
 
@@ -42,8 +90,11 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
     event.stopPropagation();
         
     const selectedSlideIds = selected.map((sel) => sel.slideId);
+    
     const isSlideSelected = selectedSlideIds.includes(slideId);
-
+    if(!isSlideSelected) {
+      return;
+    }
     let slidesToDrag = isSlideSelected ? selectedSlideIds : [slideId];
     slidesToDrag = slidesToDrag.sort(
       (a, b) => slidesList.findIndex((slide) => slide.id === a) - slidesList.findIndex((slide) => slide.id === b)
@@ -144,7 +195,7 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
             return (
               slide && (
                 <div key={slide.id} className={styles.dragging}>
-                  <Slide slide={slide} scale={0.15} selected={safeSelected} isEditorView={true} isWorkspace={false} />
+                  <Slide slide={currentSlide || editor.presentation.slides[0]} scale={0.15} selected={safeSelected} isEditorView={true} isWorkspace={false} />
                 </div>
               )
             );

@@ -18,14 +18,22 @@ export const WorkSpace = React.memo(({ presentationData, selected }: WorkSpacePr
   const sizeSlide = useAppSelector((state: UndoableState) => state.present.presentation.sizeWorkspace);
 
   const calculateScale = () => {
-    const maxWidth = sizeSlide.width + sizeSlide.width * 0.3;
-    const maxHeight = sizeSlide.height;
-    const scaleWidth = window.innerWidth / maxWidth;
-    const scaleHeight = window.innerHeight / maxHeight;
-
-    return Math.min(scaleWidth, scaleHeight) * 0.8;
-  };
+    if (typeof window === 'undefined') {
+      return 0.15; // Значение по умолчанию
+    }
   
+    try {
+      const maxWidth = sizeSlide.width + sizeSlide.width * 0.3;
+      const maxHeight = sizeSlide.height;
+      const scaleWidth = window.innerWidth / maxWidth;
+      const scaleHeight = window.innerHeight / maxHeight;
+  
+      return Math.min(scaleWidth, scaleHeight) * 0.8;
+    } catch (e) {
+      console.error('Ошибка при вычислении масштаба:', e);
+      return 0.15;
+    }
+  };
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const undoKeys = new Set(['z', 'Z', 'Я', 'я']);

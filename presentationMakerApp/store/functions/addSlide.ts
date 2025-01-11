@@ -8,7 +8,7 @@ export function addSlide(editor: EditorType): EditorType {
     const newSlide: Slide = {
         id: uuidv4(),
         elements: [],
-        background: 'white'
+        background: 'rgb(255, 255, 255)'
     };
     const newSlides = [...editor.presentation.slides]; 
     

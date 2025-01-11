@@ -3,7 +3,7 @@ import React from 'react';
 import { ImgButton } from '../../components/button/Button.tsx';
 import { addSlideAction, removeSlideAction } from '../../../store/actions/editorSlidesActions.ts'
 import { importImage } from '../../../store/functions/importImage.ts'
-import { renamePresentationTitleAction } from '../../../store/actions/editorPresentationActions.ts'
+import { renamePresentationTitleAction, setSelectionAction } from '../../../store/actions/editorPresentationActions.ts'
 import { exportEditorAction, importEditorAction, undoEditorAction, redoEditorAction } from '../../../store/actions/editorActions.ts'
 import { removeElementAction, addImageToSlideAction, addTextToSlideAction } from '../../../store/actions/editorSlideElementsActions.ts'
 import { TextObj, ElementType, ImgObj } from '../../../../types/presentationMaker.ts';
@@ -26,10 +26,14 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   function onAddSlide() {
-    dispatch(addSlideAction());
+    if(editor.selection?.[0]?.slideId) {
+      dispatch(addSlideAction());
+    }
   }
   function onRemoveSlide() {
-    dispatch(removeSlideAction())
+    if(editor.selection?.[0]?.slideId) {
+        dispatch(removeSlideAction());
+    }
   }
   const onTitleChange: React.ChangeEventHandler = (event) => {
     dispatch(renamePresentationTitleAction((event.target as HTMLInputElement).value))
@@ -120,7 +124,9 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
     dispatch(exportEditorAction());
   }
   function onRemoveElement() {
-    dispatch(removeElementAction());
+    if(editor.selection?.[0]?.elementId) {
+      dispatch(removeElementAction());
+    }
   }
   function onUndo() {
     dispatch(undoEditorAction());
@@ -137,9 +143,12 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
     dispatch(importImage(isBackgroundChange));
   };
   function handleGoToPlayer() {
-    return (
+    if(editor.presentation.slides){
+      dispatch(setSelectionAction([{slideId: editor.presentation.slides[0].id, elementId: ''}]));
+      return(
       navigate('/player')
-    )
+      )
+    }
   }
 
   return (
