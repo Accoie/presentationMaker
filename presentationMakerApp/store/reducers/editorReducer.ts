@@ -6,7 +6,6 @@ import { UndoableState } from '../store';
 export const editorReducer = (state: UndoableState, action: UnknownAction): UndoableState => {
   switch (action.type) {
     case 'SET_IS_CHANGING': {
-      
       return {past: state.past, present: state.present, future: state.future, isChanging: action.payload as boolean};
     }
     case 'IMPORT_EDITOR': {
@@ -29,17 +28,14 @@ export const editorReducer = (state: UndoableState, action: UnknownAction): Undo
         future: updatedFuture,
         isChanging: false
       };
-
     }
     case 'REDO_EDITOR': {
       if (state.future.length === 0) {
         return state; 
       }
-    
       const nextState = state.future[0];  
       const updatedPast = [...state.past, state.present]; 
       const updatedFuture = state.future.slice(1);  
-    
       return {
         past: updatedPast,
         present: nextState,

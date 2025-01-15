@@ -12,6 +12,7 @@ export const rootReducer = (state: UndoableState = {past: [], present: editor, f
   newState.present = editorSlidesReducer(newState.present, action);
   newState.present = editorSlideElementsReducer(newState.present, action);
   newState = editorReducer(newState, action);
+  
   if (
     state.isChanging !== action.payload &&
     state.isChanging === false &&     

@@ -90,7 +90,6 @@ export const generatePDF = (editor: EditorType): AppThunk => {
         }
       } else {
         const colors = parseColor(slide.background);
-
         if (colors.length > 1) {
           createSmoothGradient(
             page,

@@ -1,11 +1,12 @@
 import { Slide } from '../slide/Slide';
-import * as tools from '/Frontend/presentationMaker/types/presentationMaker';
+import * as tools from '../../../../types/presentationMaker';
 import styles from './WorkSpace.module.css';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector, UndoableState } from '../../../store/store';
 import { setSelectionAction } from '../../../store/actions/editorPresentationActions';
 import { undoEditorAction, redoEditorAction } from '../../../store/actions/editorActions';
 import React from 'react';
+
 type WorkSpaceProps = {
   presentationData: tools.Presentation,
   selected: tools.PresentationSelection,
@@ -21,26 +22,25 @@ export const WorkSpace = React.memo(({ presentationData, selected }: WorkSpacePr
     if (typeof window === 'undefined') {
       return 0.15;
     }
-  
     try {
       const maxWidth = sizeSlide.width + sizeSlide.width * 0.3;
       const maxHeight = sizeSlide.height;
       const scaleWidth = window.innerWidth / maxWidth;
       const scaleHeight = window.innerHeight / maxHeight;
-  
+
       return Math.min(scaleWidth, scaleHeight) * 0.8;
     } catch (e) {
       console.error('Ошибка при вычислении масштаба:', e);
       return 0.15;
     }
   };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const undoKeys = new Set(['z', 'Z', 'Я', 'я']);
       const redoKeys = new Set(['y', 'Y', 'н', 'Н']);
       const isUndo = (e.ctrlKey || e.metaKey) && undoKeys.has(e.key);
       const isRedo = (e.ctrlKey || e.metaKey) && redoKeys.has(e.key);
-
       if (isUndo) {
         e.preventDefault();
         dispatch(undoEditorAction());
@@ -61,10 +61,8 @@ export const WorkSpace = React.memo(({ presentationData, selected }: WorkSpacePr
     const handleResize = () => {
       setScale(calculateScale());
     };
-
     handleResize();
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -75,12 +73,10 @@ export const WorkSpace = React.memo(({ presentationData, selected }: WorkSpacePr
       const workspace = document.getElementById('workspace');
       const fontlist = document.getElementById('fontlist');
       if (workspace?.contains(e.target as Node) && !fontlist) {
-        dispatch(setSelectionAction([{ slideId: selectedSlide.slideId, elementId: '' }])); 
+        dispatch(setSelectionAction([{ slideId: selectedSlide.slideId, elementId: '' }]));
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };

@@ -1,35 +1,39 @@
 .filepopupbutton {
-    position: relative;
+  position: relative;
 }
 
-.filepopupbutton:hover{
-    cursor: pointer;
+.filepopupbutton:hover {
+  cursor: pointer;
 }
+
 .popupbutton {
-    display: flex;
-    border-radius: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 9px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    margin-bottom: 9px;
+  display: flex;
+  border-radius: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 9px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-bottom: 9px;
 }
-.popupbutton:hover{
-    cursor: pointer;
-    background-color: #97979766;
+
+.popupbutton:hover {
+  cursor: pointer;
+  background-color: #97979766;
 }
-.popup{
-    overflow: hidden;
-    width: 247px;
-    top: 105px;
-    border-radius: 8px;
-    position: absolute;
-    z-index: 990;
-    background-color: #484848;
+
+.popup {
+  overflow: hidden;
+  width: 247px;
+  top: 105px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 990;
+  background-color: #484848;
 }
+
 .splitter {
   margin: auto;
   width: 85%;

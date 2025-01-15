@@ -10,15 +10,12 @@ export const ChangeBackgroundColor = () => {
   const [gradient, setGradient] = useState('');
   const dispatch = useAppDispatch();
 
-
-
   const handleGradientChange = (newGradient: string) => {
     setGradient(newGradient);
     dispatch(changeSlideBackgroundAction(newGradient as string))
   };
  
   return (
-    
     <div className={styles.wrapper}>
         <div className={styles.optionsContainer}>
           <div className={styles.option}>
@@ -37,7 +34,6 @@ export const ChangeBackgroundColor = () => {
             />
           </div>
         </div>
-    
     </div>
   )
 }

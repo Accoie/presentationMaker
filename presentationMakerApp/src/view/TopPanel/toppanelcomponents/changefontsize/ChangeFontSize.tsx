@@ -18,7 +18,7 @@ export const ChangeFontSize = () => {
     if (element?.type === 'text' && element.fontSize) {
       setFontSize(element.fontSize);
     } else {
-      setFontSize(20); // Значение по умолчанию
+      setFontSize(20); 
     }
   }, [element]);
   function onChangeFontSize(e: ChangeEvent<HTMLInputElement>) {

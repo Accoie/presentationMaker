@@ -37,7 +37,7 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
       }
     }
   }, [safeSelected.slideId])
-  
+
   const slidesListRef = useRef<HTMLDivElement | null>(null);
 
   const goToNextSlide = () => {
@@ -178,16 +178,19 @@ export const SlidesList = React.memo(({ slidesList, selected }: SlidesListProps)
     dispatch(updateSlidesAction(updatedSlides));
     onDragEnd();
   }
+
   function onAddSlide() {
     if (editor.selection?.[0]?.slideId) {
       dispatch(addSlideAction());
     }
   }
+
   function onRemoveSlide() {
     if (editor.selection?.[0]?.slideId) {
       dispatch(removeSlideAction());
     }
   }
+  
   return (
     <div className={styles.slideslistcontainer}>
       <div style={{ display: 'flex' }}>

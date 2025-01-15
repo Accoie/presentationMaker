@@ -1,4 +1,4 @@
-import * as tools from '/Frontend/presentationMaker/types/presentationMaker.ts'
+import * as tools from '../../../../types/presentationMaker.ts'
 import { CSSProperties } from 'react'
 import { Element } from './SlideElement/SlideElement'
 import { UndoableState, useAppSelector } from '../../../store/store'

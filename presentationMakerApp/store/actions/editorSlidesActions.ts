@@ -6,19 +6,19 @@ const ADD_SLIDE = 'ADD_SLIDE';
 const REMOVE_SLIDE = 'REMOVE_SLIDE';
 
 export const updateSlidesAction = (newSlides: tools.Slide[]) => ({
-    type: UPDATE_SLIDES,
-    payload: newSlides,
+  type: UPDATE_SLIDES,
+  payload: newSlides,
 });
 
 export const changeSlideBackgroundAction = (newBackground: string) => ({
-    type: CHANGE_BACKGROUND,
-    payload: newBackground,
+  type: CHANGE_BACKGROUND,
+  payload: newBackground,
 });
 
 export const addSlideAction = () => ({
-    type: ADD_SLIDE,
+  type: ADD_SLIDE,
 });
 
 export const removeSlideAction = () => ({
-    type: REMOVE_SLIDE,
+  type: REMOVE_SLIDE,
 });

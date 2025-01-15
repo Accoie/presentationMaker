@@ -20,7 +20,6 @@ export const PlayerPanel = ({ isVisible, toggleFullscreen }: PlayerPanelProps) =
 
   const playerDownWidth = document.getElementById('playerdown')?.offsetWidth ?? 0;
   const playerPanelRef = useRef<HTMLDivElement>(null);
-  
 
   const playerButtonStyles: CSSProperties = {
     top: '90%',
@@ -43,7 +42,6 @@ export const PlayerPanel = ({ isVisible, toggleFullscreen }: PlayerPanelProps) =
     dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
   };
 
- 
   function handleGoToEditor() {
     return (
       navigate('/')

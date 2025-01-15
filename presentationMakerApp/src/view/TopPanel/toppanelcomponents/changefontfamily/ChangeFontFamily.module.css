@@ -29,19 +29,23 @@
   margin-right: 16px;
   display: flex;
 }
+
 .button:hover {
   box-shadow: 0 0 10px #97979766;
   background-color: #97979766;
 }
+
 .arrow {
   margin-left: auto;
   width: 10px;
 }
+
 .arrowup {
   margin-left: auto;
   width: 10px;
   transform: rotate(180deg);
 }
+
 .dropdown {
   top: 40px;
   position: absolute;
@@ -56,6 +60,7 @@
   z-index: 100;
   list-style-type: none;
 }
+
 .listItem {
   padding: 5px 5px;
   cursor: pointer;

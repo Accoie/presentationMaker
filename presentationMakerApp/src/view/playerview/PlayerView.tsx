@@ -1,20 +1,19 @@
-import { useAppSelector, UndoableState, useAppDispatch} from '../../../store/store';
+import { useAppSelector, UndoableState, useAppDispatch } from '../../../store/store';
 import { Slide } from '../slide/Slide';
 import { useState, useEffect } from 'react';
 import styles from './PlayerView.module.css';
 import { PlayerViewSlidesList } from './playerviewslideslist/PlayerViewSlidesList';
 import { PlayerPanel } from './playerpanel/playerpanel';
 import { setSelectionAction } from '../../../store/actions/editorPresentationActions';
+
 function Player() {
   const editor = useAppSelector((state: UndoableState) => state.present);
   const slides = editor.presentation.slides;
   const dispatch = useAppDispatch();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [scale, setScale] = useState(1);
-  const [isPanelVisible, setIsPanelVisible] = useState(false); 
+  const [isPanelVisible, setIsPanelVisible] = useState(false);
   const currentSlide = slides.find((slide) => slide.id === editor.selection[0].slideId);
-
- 
 
   const handleFullscreenChange = () => {
     setIsFullscreen(!!document.fullscreenElement);
@@ -44,8 +43,8 @@ function Player() {
   useEffect(() => {
     const updateScale = () => {
       const playerdownWidth: number = document.getElementById('playerdown')?.offsetWidth || 0;
-      const screenWidth = isFullscreen 
-        ? window.innerWidth 
+      const screenWidth = isFullscreen
+        ? window.innerWidth
         : window.innerWidth - playerdownWidth - 100;
       const screenHeight = window.innerHeight;
       const scaleX = screenWidth / editor.presentation.sizeWorkspace.width;
@@ -60,52 +59,52 @@ function Player() {
     };
   }, [editor.presentation.sizeWorkspace.height, editor.presentation.sizeWorkspace.width, isFullscreen]);
   const goToNextSlide = () => {
-    
+
     const currentIndex = editor.presentation.slides.findIndex(
       (slide) => slide.id === editor.selection[0].slideId
     );
-    
+
     if (currentIndex === -1) return;
-  
+
     const nextIndex = Math.min(editor.presentation.slides.length - 1, currentIndex + 1);
     const slide = { ...editor.presentation.slides[nextIndex] };
     dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
   };
-  
+
   const goToPreviousSlide = () => {
     const currentIndex = editor.presentation.slides.findIndex(
       (slide) => slide.id === editor.selection[0].slideId
     );
-    
+
 
     if (currentIndex === -1) return;
-  
+
     const prevIndex = Math.max(0, currentIndex - 1);
     const slide = { ...editor.presentation.slides[prevIndex] };
 
     dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
   };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowDown' || event.key === 'PageDown') {
-        goToNextSlide();
-      } else if ( event.key === 'ArrowUp' || event.key === 'PageUp') {
-        goToPreviousSlide();
-      }
-    };
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+      goToNextSlide();
+    } else if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+      goToPreviousSlide();
+    }
+  };
   useEffect(() => {
-   
+
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-    
+
   });
 
   useEffect(() => {
     let hidePanelTimeout: ReturnType<typeof setTimeout>;
 
     const showPanel = (event: MouseEvent) => {
-      const movementThreshold = 3; 
+      const movementThreshold = 3;
       if (Math.abs(event.movementX) < movementThreshold && Math.abs(event.movementY) < movementThreshold) {
         return;
       }
@@ -126,11 +125,11 @@ function Player() {
 
   return (
     <div className={styles.playercontainer}>
-      {!isFullscreen &&(
+      {!isFullscreen && (
         <PlayerPanel
-            isVisible ={isPanelVisible} 
-            toggleFullscreen={toggleFullscreen}
-          />)}
+          isVisible={isPanelVisible}
+          toggleFullscreen={toggleFullscreen}
+        />)}
       <div style={{ margin: 'auto' }} id='player'>
         <div className={styles.slideContainer}>
           <Slide

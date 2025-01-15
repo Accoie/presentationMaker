@@ -1,4 +1,4 @@
-import * as tools from '/Frontend/presentationMaker/types/presentationMaker.ts'
+import * as tools from '../../../../../types/presentationMaker.ts'
 import { CSSProperties } from 'react'
 import { useAppSelector, UndoableState } from '../../../../store/store';
 import React from 'react';
@@ -91,7 +91,6 @@ export const Element = React.memo(({ element, scale, selected, isEditorView, isW
     },
     [isDragging, isResizing, resizeDirection, element, scale, dragOffset.x, dragOffset.y, dispatch, sizeSlide.width, sizeSlide.height]
   );
-
 
   const handleMouseUp = React.useCallback(() => {
     dispatch(setIsChangingAction(false));

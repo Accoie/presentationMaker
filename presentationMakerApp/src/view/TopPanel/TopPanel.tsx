@@ -25,10 +25,9 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
   const dispatch = useAppDispatch();
   const onTitleChange: React.ChangeEventHandler = (event) => {
     dispatch(renamePresentationTitleAction((event.target as HTMLInputElement).value))
-  }  
- 
-  function onAddTextToSlide() {
+  }
 
+  function onAddTextToSlide() {
     const textObj: TextObj = {
       id: '',
       type: ElementType.text,
@@ -39,56 +38,52 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
       pos: { x: 0, y: 0 }
     };
     dispatch(addTextToSlideAction(textObj))
-
-
   }
-  
+
   function onRemoveElement() {
-    if(editor.selection?.[0]?.elementId) {
+    if (editor.selection?.[0]?.elementId) {
       dispatch(removeElementAction());
     }
   }
+
   function onUndo() {
     dispatch(undoEditorAction());
   }
+  
   function onRedo() {
     dispatch(redoEditorAction());
   }
 
   function handleGoToPlayer() {
-    if(editor.presentation.slides){
-      dispatch(setSelectionAction([{slideId: editor.presentation.slides[0].id, elementId: ''}]));
-      return(
-      navigate('/player')
+    if (editor.presentation.slides) {
+      dispatch(setSelectionAction([{ slideId: editor.presentation.slides[0].id, elementId: '' }]));
+      return (
+        navigate('/player')
       )
     }
   }
 
   return (
-    <div id = 'toppanel' className={styles.toppanel}>
-      <input className={styles.title} type="text" defaultValue={presentationTitle} onChange={(e) => {onTitleChange(e)}} />
+    <div id='toppanel' className={styles.toppanel}>
+      <input className={styles.title} type="text" defaultValue={presentationTitle} onChange={(e) => { onTitleChange(e) }} />
       <div className={styles.toolbar}>
-        <FilePopUp/>
+        <FilePopUp />
         <div className={styles.workspacetoolbar}>
           <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-text.svg'} onClick={onAddTextToSlide} />
           <ChangeFontFamily />
           <ChangeTextColor />
           <ChangeFontSize />
-
-          <div style={{paddingRight: '16px'}}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
-          <AddImagePopUp/>
+          <div style={{ paddingRight: '16px' }}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
+          <AddImagePopUp />
           <ChangeBackground />
-
-          <div style={{paddingRight: '16px'}}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
-          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/undo.svg'} onClick={onUndo}/>
-          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/redo.svg'} onClick={onRedo}/>
-          <div style={{paddingRight: '16px'}}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
-
-          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/delete.svg'} onClick={onRemoveElement}/>
-
+          <div style={{ paddingRight: '16px' }}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
+          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/undo.svg'} onClick={onUndo} />
+          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/redo.svg'} onClick={onRedo} />
+          <div style={{ paddingRight: '16px' }}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
+          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/delete.svg'} onClick={onRemoveElement} />
         </div>
-        
-        <SlideShowButton className={styles.gotoplayerbutton} img={'../../../icons/toppaneleditorview/gotoplayer.svg'} onClick={handleGoToPlayer}/>
+
+        <SlideShowButton className={styles.gotoplayerbutton} img={'../../../icons/toppaneleditorview/gotoplayer.svg'} onClick={handleGoToPlayer} />
       </div>
     </div>
   );
