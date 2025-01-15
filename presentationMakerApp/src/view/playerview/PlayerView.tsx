@@ -1,42 +1,20 @@
-import { useAppSelector, UndoableState, useAppDispatch } from '../../../store/store';
+import { useAppSelector, UndoableState, useAppDispatch} from '../../../store/store';
 import { Slide } from '../slide/Slide';
 import { useState, useEffect } from 'react';
 import styles from './PlayerView.module.css';
-import { setSelectionAction } from '../../../store/actions/editorPresentationActions';
 import { PlayerViewSlidesList } from './playerviewslideslist/PlayerViewSlidesList';
-import { PlayerPanel } from '../playerview/playerpanel/playerpanel';
-
+import { PlayerPanel } from './playerpanel/playerpanel';
+import { setSelectionAction } from '../../../store/actions/editorPresentationActions';
 function Player() {
   const editor = useAppSelector((state: UndoableState) => state.present);
   const slides = editor.presentation.slides;
   const dispatch = useAppDispatch();
-
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [scale, setScale] = useState(1);
+  const [isPanelVisible, setIsPanelVisible] = useState(false); 
   const currentSlide = slides.find((slide) => slide.id === editor.selection[0].slideId);
 
-  const goToNextSlide = () => {
-    setCurrentSlideIndex((prevIndex) => Math.min(slides.length - 1, prevIndex + 1));
-    const slide = { ...slides[Math.min(slides.length - 1, currentSlideIndex + 1)] };
-    dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
-  };
-
-  const goToPreviousSlide = () => {
-    setCurrentSlideIndex((prevIndex) => Math.max(0, prevIndex - 1));
-    const slide = { ...slides[Math.max(0, currentSlideIndex - 1)] };
-    dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
-  };
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'PageDown') {
-      event.preventDefault();
-      goToNextSlide();
-    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp' || event.key === 'PageUp') {
-      event.preventDefault();
-      goToPreviousSlide();
-    }
-  };
+ 
 
   const handleFullscreenChange = () => {
     setIsFullscreen(!!document.fullscreenElement);
@@ -56,27 +34,22 @@ function Player() {
   };
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('fullscreenchange', handleFullscreenChange);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
   });
 
   useEffect(() => {
     const updateScale = () => {
-      const playerdownHeight: number = document.getElementById('playerdown')?.offsetHeight || 0;
-      console.log(playerdownHeight)
-      const screenWidth = window.innerWidth;
-      const screenHeight = isFullscreen
-        ? window.innerHeight
-        : window.innerHeight - playerdownHeight - 40;
-
+      const playerdownWidth: number = document.getElementById('playerdown')?.offsetWidth || 0;
+      const screenWidth = isFullscreen 
+        ? window.innerWidth 
+        : window.innerWidth - playerdownWidth - 100;
+      const screenHeight = window.innerHeight;
       const scaleX = screenWidth / editor.presentation.sizeWorkspace.width;
       const scaleY = screenHeight / editor.presentation.sizeWorkspace.height;
-
       setScale(Math.min(scaleX, scaleY));
     };
 
@@ -86,10 +59,79 @@ function Player() {
       window.removeEventListener('resize', updateScale);
     };
   }, [editor.presentation.sizeWorkspace.height, editor.presentation.sizeWorkspace.width, isFullscreen]);
+  const goToNextSlide = () => {
+    
+    const currentIndex = editor.presentation.slides.findIndex(
+      (slide) => slide.id === editor.selection[0].slideId
+    );
+    
+    if (currentIndex === -1) return;
+  
+    const nextIndex = Math.min(editor.presentation.slides.length - 1, currentIndex + 1);
+    const slide = { ...editor.presentation.slides[nextIndex] };
+    dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
+  };
+  
+  const goToPreviousSlide = () => {
+    const currentIndex = editor.presentation.slides.findIndex(
+      (slide) => slide.id === editor.selection[0].slideId
+    );
+    
+
+    if (currentIndex === -1) return;
+  
+    const prevIndex = Math.max(0, currentIndex - 1);
+    const slide = { ...editor.presentation.slides[prevIndex] };
+
+    dispatch(setSelectionAction([{ slideId: slide.id, elementId: '' }]));
+  };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+        goToNextSlide();
+      } else if ( event.key === 'ArrowUp' || event.key === 'PageUp') {
+        goToPreviousSlide();
+      }
+    };
+  useEffect(() => {
+   
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+    
+  });
+
+  useEffect(() => {
+    let hidePanelTimeout: ReturnType<typeof setTimeout>;
+
+    const showPanel = (event: MouseEvent) => {
+      const movementThreshold = 3; 
+      if (Math.abs(event.movementX) < movementThreshold && Math.abs(event.movementY) < movementThreshold) {
+        return;
+      }
+      setIsPanelVisible(true);
+      clearTimeout(hidePanelTimeout);
+      hidePanelTimeout = setTimeout(() => {
+        setIsPanelVisible(false);
+      }, 3000);
+    };
+
+    document.addEventListener('mousemove', showPanel);
+
+    return () => {
+      clearTimeout(hidePanelTimeout);
+      document.removeEventListener('mousemove', showPanel);
+    };
+  }, []);
 
   return (
     <div className={styles.playercontainer}>
-      <div style={{ marginRight: 'auto', marginLeft: 'auto', width: 'auto' }} id="player">
+      {!isFullscreen &&(
+        <PlayerPanel
+            isVisible ={isPanelVisible} 
+            toggleFullscreen={toggleFullscreen}
+          />)}
+      <div style={{ margin: 'auto' }} id='player'>
         <div className={styles.slideContainer}>
           <Slide
             slide={currentSlide || slides[0]}
@@ -102,15 +144,8 @@ function Player() {
       </div>
 
       {!isFullscreen && (
-        <div style={{ width: '100%' }} id="playerdown">
-          <PlayerPanel
-            goToNextSlide={goToNextSlide}
-            goToPreviousSlide={goToPreviousSlide}
-            toggleFullscreen={toggleFullscreen}
-          />
-          <div className={styles.playerviewslideslist}>
-            <PlayerViewSlidesList slidesList={slides} selected={editor.selection[0]} />
-          </div>
+        <div className={styles.playerviewslideslist} id='playerdown'>
+          <PlayerViewSlidesList slidesList={slides} selected={editor.selection[0]} />
         </div>
       )}
     </div>

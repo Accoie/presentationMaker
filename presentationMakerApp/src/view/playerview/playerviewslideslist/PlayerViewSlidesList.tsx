@@ -15,7 +15,6 @@ export const PlayerViewSlidesList = ({ slidesList, selected }: SlidesListProps) 
   const dispatch = useAppDispatch();
 
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
-    event.preventDefault();
     const container = event.currentTarget;
     container.scrollLeft += event.deltaY;
   };
@@ -33,17 +32,18 @@ useEffect(() => {
   }, [selected.slideId])
   return (
     <div className={styles.slideslist} id={'playerslideslist'} onWheel={handleWheel}>
-      {slidesList.map((slide) => (
-        <div style={{ display: 'flex', height: '100%' }} key={slide.id}>
+      {slidesList.map((slide, index) => (
+        <div style={{display: 'flex'}} key={slide.id}>
+          <div className={styles.numberslide}>{index + 1}</div>
           <div
             className={`${styles.slideContainer} ${selected.slideId === slide.id ? styles.selected : ''}`}
             onMouseDown={() => dispatch(setSelectionAction([{slideId: slide.id, elementId: ''}]))}
             key={slide.id}
             ref={(el) => {
-            slideRefs.current[slide.id] = el; // Привязываем DOM-элемент к ID слайда
+            slideRefs.current[slide.id] = el;
           }}
           >
-            <Slide slide={slide} scale={0.15} selected={defaultSelected} isEditorView={false} isWorkspace={false}/>
+            <Slide slide={slide} scale={0.20} selected={defaultSelected} isEditorView={false} isWorkspace={false}/>
           </div>
         </div>
       ))}

@@ -1,0 +1,56 @@
+.wrapper {
+  position: relative;
+}
+
+.toolbarbutton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 7px;
+}
+
+.toolbarbutton:hover {
+  padding: 3px;
+  background-color: transparent;
+}
+
+.optionsContainer {
+  position: absolute;
+  
+  left: 257px;
+  background: #484848;
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gradientPicker {
+  width: 200px;
+  border-radius: 10px;
+
+}
+
+.imageInputIcon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.unsplashInputbutton {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.imageInputHidden {
+  display: none;
+}

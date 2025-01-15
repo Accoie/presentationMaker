@@ -22,7 +22,6 @@ export function saveEditorStateToLocalStorage(editorState: tools.EditorType): vo
   }
 }
 
-
 const loggerMiddleware = (store: any) => (next: any) => (action: any) => {
   console.log('Dispatching action:', action);
   const result = next(action);
@@ -42,7 +41,6 @@ export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 
 export function loadEditorStateFromLocalStorage(): tools.EditorType | null {
-  
   const storedState = localStorage.getItem(LOCAL_STORAGE_KEY);
   let editorState = editor;
   if (storedState) {
@@ -51,7 +49,6 @@ export function loadEditorStateFromLocalStorage(): tools.EditorType | null {
     } catch(e) {
       console.log(e)
     }
-     
      console.log(editorState)
      if (validateEditorState(editorState)){
       return editorState
@@ -59,7 +56,6 @@ export function loadEditorStateFromLocalStorage(): tools.EditorType | null {
   }
   return editorState;
 }
-
 
 const preloadedState: UndoableState = {
   past: [],

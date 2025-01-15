@@ -124,7 +124,7 @@ export const generatePDF = (editor: EditorType): AppThunk => {
 
             page.drawText(textObj.src, {
               x: textObj.pos.x,
-              y: sizeSlide.height - textObj.pos.y,
+              y: sizeSlide.height - textObj.pos.y - textObj.size.height + textObj.fontSize,
               size: textObj.fontSize,
               font: elementFont,
               color: rgb(r / 255, g / 255, b / 255),

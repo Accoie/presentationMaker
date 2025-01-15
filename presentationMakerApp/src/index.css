@@ -1,12 +1,19 @@
 @font-face {
-  font-family: 'IBMPlexSans-Regular';
-  src: url('../fonts/IBMPlexSans-Regular.ttf') format('truetype');
+  font-family: 'IBMPlexSans';
+  src: url('../fonts/IBMPlexSans.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
-
+@font-face {
+  font-family: 'Montserrat';
+  src: url('../../../fonts/Montserrat.ttf')
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('../fonts/Ubuntu.ttf')
+}
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif, IBMPlexSans-Regular;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif, IBMPlexSans, Ubuntu, Montserrat;
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;

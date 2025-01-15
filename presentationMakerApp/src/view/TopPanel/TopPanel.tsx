@@ -1,21 +1,19 @@
 import styles from './TopPanel.module.css';
 import React from 'react';
-import { ImgButton } from '../../components/button/Button.tsx';
-import { addSlideAction, removeSlideAction } from '../../../store/actions/editorSlidesActions.ts'
-import { importImage } from '../../../store/functions/importImage.ts'
+import { SlideShowButton, ToolPanelButton } from '../../components/button/Button.tsx';
 import { renamePresentationTitleAction, setSelectionAction } from '../../../store/actions/editorPresentationActions.ts'
-import { exportEditorAction, importEditorAction, undoEditorAction, redoEditorAction } from '../../../store/actions/editorActions.ts'
-import { removeElementAction, addImageToSlideAction, addTextToSlideAction } from '../../../store/actions/editorSlideElementsActions.ts'
-import { TextObj, ElementType, ImgObj } from '../../../../types/presentationMaker.ts';
+import { undoEditorAction, redoEditorAction } from '../../../store/actions/editorActions.ts'
+import { removeElementAction, addTextToSlideAction } from '../../../store/actions/editorSlideElementsActions.ts'
+import { TextObj, ElementType } from '../../../../types/presentationMaker.ts';
 import { useAppDispatch, useAppSelector } from '../../../store/store.ts';
 import { UndoableState } from '../../../store/store.ts';
-import { generatePDF } from '../../../store/functions/generatePDF/generatePDF.ts';
 import { useNavigate } from 'react-router';
-import { v4 as uuidv4 } from 'uuid';
-import { ChangeFontFamily } from './toppanelcomponents/ChangeFontFamily.tsx';
-import { ChangeFontSize } from './toppanelcomponents/ChangeFontSize.tsx';
+import { ChangeFontFamily } from './toppanelcomponents/changefontfamily/ChangeFontFamily.tsx';
+import { ChangeFontSize } from './toppanelcomponents/changefontsize/ChangeFontSize.tsx';
 import { ChangeTextColor } from './toppanelcomponents/ChangeTextColor.tsx';
-import { ChangeBackgroundColor } from './toppanelcomponents/changebackgroundcolor/ChangeBackgroundColor.tsx';
+import { ChangeBackground } from './toppanelcomponents/changebackground/ChangeBackground.tsx';
+import { FilePopUp } from './toppanelcomponents/filepopup/FilePopUp.tsx';
+import { AddImagePopUp } from './toppanelcomponents/addimagepopup/AddImagePopUp.tsx';
 
 type TopPanelProps = {
   presentationTitle: string,
@@ -25,53 +23,10 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
   const editor = useAppSelector((state: UndoableState) => state.present);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  function onAddSlide() {
-    if(editor.selection?.[0]?.slideId) {
-      dispatch(addSlideAction());
-    }
-  }
-  function onRemoveSlide() {
-    if(editor.selection?.[0]?.slideId) {
-        dispatch(removeSlideAction());
-    }
-  }
   const onTitleChange: React.ChangeEventHandler = (event) => {
     dispatch(renamePresentationTitleAction((event.target as HTMLInputElement).value))
-  }
-
-  function onAddImageToSlide() {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-
-    fileInput.addEventListener('change', async (event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-
-      if (file) {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          const imageUrl = reader.result as string;
-
-          const imgObj: ImgObj = {
-            id: uuidv4(),
-            type: ElementType.image,
-            src: imageUrl,
-            size: { width: 200, height: 200 },
-            pos: { x: 10, y: 100 },
-          };
-
-          dispatch(addImageToSlideAction(imgObj));
-        };
-
-        reader.readAsDataURL(file);
-      } else {
-        alert('Вы не выбрали файл!');
-      }
-    });
-
-    fileInput.click();
-  }
+  }  
+ 
   function onAddTextToSlide() {
 
     const textObj: TextObj = {
@@ -87,42 +42,7 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
 
 
   }
-  function onImportEditorState() {
-
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.json';
-    fileInput.style.display = 'none';
-
-
-    fileInput.addEventListener('change', () => {
-      const file = fileInput.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          try {
-            const jsonString = reader.result as string;
-            dispatch(importEditorAction(jsonString));
-
-          } catch (error) {
-            alert('Ошибка при импорте: некорректный JSON файл.');
-            console.error('Error during import:', error);
-          }
-        };
-        reader.onerror = () => {
-          alert('Ошибка чтения файла.');
-          console.error('FileReader error:', reader.error);
-        };
-        reader.readAsText(file);
-      }
-    });
-
-    fileInput.click();
-  }
-
-  function onExportEditorState() {
-    dispatch(exportEditorAction());
-  }
+  
   function onRemoveElement() {
     if(editor.selection?.[0]?.elementId) {
       dispatch(removeElementAction());
@@ -135,13 +55,6 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
     dispatch(redoEditorAction());
   }
 
-  function onGeneratePdf() {
-    dispatch(generatePDF(editor));
-  }
-
-  const handleOpenModal = (isBackgroundChange: boolean) => {
-    dispatch(importImage(isBackgroundChange));
-  };
   function handleGoToPlayer() {
     if(editor.presentation.slides){
       dispatch(setSelectionAction([{slideId: editor.presentation.slides[0].id, elementId: ''}]));
@@ -152,31 +65,30 @@ export const TopPanel = ({ presentationTitle }: TopPanelProps) => {
   }
 
   return (
-    <div className={styles.toppanel}>
-      <input className={styles.title} type="text" defaultValue={presentationTitle} onChange={onTitleChange} />
+    <div id = 'toppanel' className={styles.toppanel}>
+      <input className={styles.title} type="text" defaultValue={presentationTitle} onChange={(e) => {onTitleChange(e)}} />
       <div className={styles.toolbar}>
-        <div className={styles.slideslisttoolbar}>
-          {/*здесь ссылка в img записывается относительно компонента ImgButton, который находится в components */}
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/import-icon.png'} onClick={onImportEditorState}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/export-icon.png'} onClick={onExportEditorState}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-slide.png'} onClick={onAddSlide}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/delete-icon.png'} onClick={onRemoveSlide}></ImgButton>
-        </div>
+        <FilePopUp/>
         <div className={styles.workspacetoolbar}>
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-image.png'} onClick={onAddImageToSlide}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-text.png'} onClick={onAddTextToSlide}></ImgButton>
-          <ChangeFontSize />
+          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/add-text.svg'} onClick={onAddTextToSlide} />
           <ChangeFontFamily />
           <ChangeTextColor />
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/remove-element.png'} onClick={onRemoveElement}></ImgButton>
-          <ChangeBackgroundColor />
+          <ChangeFontSize />
 
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onUndo}></ImgButton>
-          <ImgButton className={styles.toolbarredobutton} img={'../../../icons/toppaneleditorview/undo.png'} onClick={onRedo}></ImgButton>
-          <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/unsplash.png'} onClick={() => handleOpenModal(false)}></ImgButton>
+          <div style={{paddingRight: '16px'}}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
+          <AddImagePopUp/>
+          <ChangeBackground />
+
+          <div style={{paddingRight: '16px'}}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
+          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/undo.svg'} onClick={onUndo}/>
+          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/redo.svg'} onClick={onRedo}/>
+          <div style={{paddingRight: '16px'}}><img src='../../../../../icons/toppaneleditorview/Splitter.svg'></img></div>
+
+          <ToolPanelButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/delete.svg'} onClick={onRemoveElement}/>
+
         </div>
-        <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/pdf-icon.png'} onClick={onGeneratePdf}></ImgButton>
-        <ImgButton className={styles.toolbarbutton} img={'../../../icons/toppaneleditorview/player-icon.png'} onClick={handleGoToPlayer}></ImgButton>
+        
+        <SlideShowButton className={styles.gotoplayerbutton} img={'../../../icons/toppaneleditorview/gotoplayer.svg'} onClick={handleGoToPlayer}/>
       </div>
     </div>
   );

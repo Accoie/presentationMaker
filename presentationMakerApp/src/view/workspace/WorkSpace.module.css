@@ -11,22 +11,8 @@
 .scrollcontainer {
   overflow: hidden;
   max-height: 100%;
-  border: 4px solid transparent;
+  border: 4px solid #686868;
   border-radius: 15px;
   box-shadow: 0 0 5px rgba(18, 37, 164, 0.5);
 
-}
-
-.scrollcontainer::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.scrollcontainer::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.scrollcontainer::-webkit-scrollbar-thumb {
-  background-color: #2A4878;
-  border-radius: 20px;
 }

@@ -19,7 +19,7 @@ export const WorkSpace = React.memo(({ presentationData, selected }: WorkSpacePr
 
   const calculateScale = () => {
     if (typeof window === 'undefined') {
-      return 0.15; // Значение по умолчанию
+      return 0.15;
     }
   
     try {
@@ -73,8 +73,8 @@ export const WorkSpace = React.memo(({ presentationData, selected }: WorkSpacePr
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const workspace = document.getElementById('workspace');
-
-      if (workspace?.contains(e.target as Node)) {
+      const fontlist = document.getElementById('fontlist');
+      if (workspace?.contains(e.target as Node) && !fontlist) {
         dispatch(setSelectionAction([{ slideId: selectedSlide.slideId, elementId: '' }])); 
       }
     };

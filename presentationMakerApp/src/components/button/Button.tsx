@@ -18,12 +18,27 @@ function TextButton({ text, onClick, className }: TextButtonProps) {
   )
 }
 
-function ImgButton({ img, onClick, className }: ImgButtonProps) {
+
+function StandartButton({ img, onClick, className }: ImgButtonProps) {
   return (
     <img className={`${styles.imgbutton} ${className}`} src={img} onClick={onClick}></img>
   )
 }
-
+function ToolPanelButton({ img, onClick, className }: ImgButtonProps) {
+  return (
+    <div><StandartButton className={className} img={img} onClick={onClick}/></div>
+  )
+}
+function SlideShowButton({ img, onClick, className }: ImgButtonProps) {
+  return (
+    <div><img className={`${styles.slideshowbutton} ${className}`} src={img} onClick={onClick}></img></div>
+  )
+}
+function ActiveButton({ img, onClick, className }: ImgButtonProps) {
+  return (
+    <div><img className={`${styles.activebutton} ${className}`} src={img} onClick={onClick}></img></div>
+  )
+}
 export {
-  TextButton, ImgButton
+  TextButton, StandartButton, ToolPanelButton, SlideShowButton, ActiveButton
 }

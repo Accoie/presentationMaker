@@ -137,15 +137,15 @@ export const Element = React.memo(({ element, scale, selected, isEditorView, isW
     left: element.pos.x * scale,
     borderWidth: `${4 * scale}px`,
     boxSizing: 'border-box',
-    borderStyle: 'dotted',
-    borderColor: isSelected ? '#1E2A78' : 'transparent',
+    borderStyle: 'dashed',
+    borderColor: isSelected ? '#EB5E28' : 'transparent',
   };
 
   const handleStyles: CSSProperties = {
     position: 'absolute',
     width: 8 * scale,
     height: 8 * scale,
-    background: '#1E2A78',
+    background: '#EB5E28',
   };
 
   const handlePositions = [
